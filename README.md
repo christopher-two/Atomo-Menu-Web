@@ -1,46 +1,64 @@
-# Astro Starter Kit: Basics
+# Atomo Menu - Digital Menu Solution
 
-```sh
-pnpm create astro@latest -- --template basics
-```
+Atomo Menu es una plataforma de menú digital diseñada para ofrecer una experiencia elegante, profesional y altamente personalizable para restaurantes y negocios gastronómicos.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## 🚀 Características Principales
 
-## 🚀 Project Structure
+- **Múltiples Plantillas Premium**: Diseños adaptables que se ajustan a la identidad de tu marca.
+  - **Minimalist**: Limpio y enfocado en el contenido.
+  - **Elegance**: Sofisticado y refinado.
+  - **Modern**: Innovador y dinámico.
+  - **Luxury**: Exclusivo y de alta gama.
+  - **Cyber**: Futurista y tecnológico.
+- **Gestión Intuitiva**: Integración con Supabase para una gestión de datos en tiempo real.
+- **Optimización de Rendimiento**: Construido con Astro para tiempos de carga ultrarrápidos y excelente SEO.
+- **Diseño Responsivo**: Experiencia de usuario impecable en dispositivos móviles y escritorio.
+- **Caché Inteligente**: Estrategia de caché en el borde para una respuesta instantánea.
 
-Inside of your Astro project, you'll see the following folders and files:
+## 🛠️ Stack Tecnológico
+
+- **Frontend**: [Astro](https://astro.build/) (v5)
+- **Estilos**: [Tailwind CSS](https://tailwindcss.com/) (v4)
+- **Base de Datos y Autenticación**: [Supabase](https://supabase.com/)
+- **Despliegue**: [Cloudflare](https://www.cloudflare.com/)
+
+## 📁 Estructura del Proyecto
 
 ```text
 /
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
+├── public/          # Activos estáticos
+├── src/
+│   ├── assets/      # Imágenes y recursos de diseño
+│   ├── components/  # Componentes Astro reutilizables
+│   │   └── templates/ # Diferentes diseños de menú
+│   ├── data/        # Repositorios y lógica de acceso a datos
+│   ├── domain/      # Modelos y lógica de negocio
+│   ├── layouts/     # Estructuras de página base
+│   ├── lib/         # Utilidades y configuración de clientes (Supabase)
+│   ├── pages/       # Rutas y páginas de la aplicación
+│   └── styles/      # Estilos globales y tokens de diseño
+├── package.json
+└── astro.config.mjs
 ```
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+## 🧞 Comandos
 
-## 🧞 Commands
+| Comando | Acción |
+| :--- | :--- |
+| `pnpm install` | Instala las dependencias del proyecto |
+| `pnpm dev` | Inicia el servidor de desarrollo local en `localhost:4321` |
+| `pnpm build` | Compila el sitio para producción en `./dist/` |
+| `pnpm preview` | Previsualiza la compilación localmente |
+| `pnpm astro ...` | Ejecuta comandos de la CLI de Astro |
 
-All commands are run from the root of the project, from a terminal:
+## ⚙️ Configuración
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `pnpm install`             | Installs dependencies                            |
-| `pnpm dev`             | Starts local dev server at `localhost:4321`      |
-| `pnpm build`           | Build your production site to `./dist/`          |
-| `pnpm preview`         | Preview your build locally, before deploying     |
-| `pnpm astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `pnpm astro -- --help` | Get help using the Astro CLI                     |
+Para ejecutar este proyecto, necesitarás configurar las variables de entorno de Supabase en un archivo `.env`:
 
-## 👀 Want to learn more?
+```sh
+PUBLIC_SUPABASE_URL=tu_url_de_supabase
+PUBLIC_SUPABASE_ANON_KEY=tu_anon_key_de_supabase
+```
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+---
+Desarrollado con ❤️ por el equipo de **Atomo Menu**.
