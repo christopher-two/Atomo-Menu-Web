@@ -75,10 +75,10 @@ Este proyecto está preconfigurado para desplegarse en **Cloudflare Pages**.
    - **Build Command**: `pnpm run build`
    - **Output directory**: `dist`
    - **Deploy command**: **DÉJALO VACÍO** (Importante: Cloudflare Pages despliega automáticamente el contenido de la carpeta `dist` tras el build).
-3. **Variables de Entorno**: En `Settings > Environment Variables`, añade:
-   - `PUBLIC_SUPABASE_URL`
-   - `PUBLIC_SUPABASE_ANON_KEY`
-   - `NODE_VERSION`: `22` (Recomendado)
+3. **Variables de Entorno**: Ya las he configurado en `wrangler.toml`. Sin embargo, para mayor seguridad, puedes añadirlas también en el panel de Cloudflare Pages (Settings > Environment Variables) y borrar las de `wrangler.toml` si el repositorio es público.
+   - `SUPABASE_URL`
+   - `SUPABASE_ANON_KEY`
+   - `NODE_VERSION`: `22`
 4. **Despliegue Manual (Opcional)**:
    Si prefieres desplegar desde tu terminal:
    ```sh
