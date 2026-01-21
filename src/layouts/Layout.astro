@@ -16,6 +16,8 @@ const {
 } = Astro.props;
 
 const siteTitle = title.includes("Atomo") ? title : `${title} | Atomo`;
+
+import "../styles/global.css";
 ---
 
 <!doctype html>
@@ -23,11 +25,7 @@ const siteTitle = title.includes("Atomo") ? title : `${title} | Atomo`;
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
-		<link
-			rel="icon"
-			type="image/svg+xml"
-			href="/src/assets/atomologo.svg"
-		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="canonical" href={canonicalURL} />
 		<meta name="generator" content={Astro.generator} />
 
@@ -49,8 +47,6 @@ const siteTitle = title.includes("Atomo") ? title : `${title} | Atomo`;
 		<meta property="twitter:title" content={siteTitle} />
 		<meta property="twitter:description" content={description} />
 		<meta property="twitter:image" content={new URL(image, Astro.url)} />
-
-		<link rel="stylesheet" href="/src/styles/global.css" />
 	</head>
 	<body class="bg-black text-white antialiased">
 		<slot />
