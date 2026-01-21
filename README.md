@@ -74,6 +74,7 @@ Este proyecto está preconfigurado para desplegarse en **Cloudflare Pages**.
    - **Framework Preset**: `Astro`
    - **Build Command**: `pnpm run build`
    - **Output directory**: `dist`
+   - **Deploy command**: **DÉJALO VACÍO** (Importante: Cloudflare Pages despliega automáticamente el contenido de la carpeta `dist` tras el build).
 3. **Variables de Entorno**: En `Settings > Environment Variables`, añade:
    - `PUBLIC_SUPABASE_URL`
    - `PUBLIC_SUPABASE_ANON_KEY`

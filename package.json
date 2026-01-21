@@ -7,8 +7,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "pages:deploy": "pnpm build && wrangler pages deploy ./dist",
-    "deploy": "pnpm pages:deploy"
+    "deploy": "wrangler pages deploy ./dist"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^12.6.12",
