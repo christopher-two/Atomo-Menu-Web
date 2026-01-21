@@ -60,5 +60,23 @@ PUBLIC_SUPABASE_URL=tu_url_de_supabase
 PUBLIC_SUPABASE_ANON_KEY=tu_anon_key_de_supabase
 ```
 
+## 🌐 Despliegue en Cloudflare
+
+Este proyecto está preconfigurado para desplegarse en **Cloudflare Pages**.
+
+### Requisitos Previos
+1. Tener una cuenta en [Cloudflare](https://dash.cloudflare.com/).
+2. Tener instalado [Wrangler](https://developers.cloudflare.com/workers/wrangler/install-and-setup/) globalmente o usar `npx`.
+
+### Pasos para Desplegar
+1. **Configurar Variables de Envío**: Asegúrate de añadir `PUBLIC_SUPABASE_URL` y `PUBLIC_SUPABASE_ANON_KEY` en el panel de Cloudflare Pages (Settings > Environment Variables).
+2. **Ejecutar Despliegue**:
+   ```sh
+   pnpm deploy
+   ```
+
+O alternativamente, conecta tu repositorio de GitHub a Cloudflare Pages para despliegues automáticos cada vez que hagas push.
+
+
 ---
 Desarrollado con ❤️ por el equipo de **Atomo Menu**.
