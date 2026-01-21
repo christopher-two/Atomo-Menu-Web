@@ -1,0 +1,92 @@
+---
+import type { Menu } from "../../domain/models/DigitalMenu";
+
+interface Props {
+    menu: Menu;
+}
+
+const { menu } = Astro.props;
+---
+
+<div
+    class="luxury-template min-h-screen bg-[#0a0a0a] py-20 px-4 relative overflow-hidden"
+>
+    <!-- Subtle Marble-like Gradient/Texture -->
+    <div
+        class="absolute inset-0 opacity-20 pointer-events-none bg-[radial-gradient(circle_at_50%_50%,_#1a1a1a_0%,_transparent_100%)]"
+    >
+    </div>
+    <div
+        class="absolute inset-0 opacity-10 pointer-events-none"
+        style="background-image: url('https://www.transparenttextures.com/patterns/carbon-fibre.png');"
+    >
+    </div>
+
+    <div class="max-w-4xl mx-auto relative z-10">
+        <div
+            class="bg-black/80 backdrop-blur-sm border border-white/10 p-8 md:p-16 shadow-2xl"
+        >
+            <header class="text-center mb-20">
+                <h1
+                    class="text-5xl md:text-6xl font-serif text-white mb-6 uppercase tracking-[0.2em] font-light"
+                >
+                    {menu.name}
+                </h1>
+                <div class="flex items-center justify-center gap-4 mb-6">
+                    <div class="h-px w-12 bg-white/20"></div>
+                    <span
+                        class="text-white/40 uppercase tracking-widest text-xs"
+                        >Exquisite Dining</span
+                    >
+                    <div class="h-px w-12 bg-white/20"></div>
+                </div>
+            </header>
+
+            <section>
+                <h2
+                    class="text-2xl font-serif text-white/90 uppercase tracking-[0.15em] mb-12 text-center italic"
+                >
+                    {menu.description || "Menú de la Casa"}
+                </h2>
+
+                <div class="grid md:grid-cols-2 gap-x-16 gap-y-12">
+                    {
+                        menu.dishes?.map((dish: any) => (
+                            <div class="luxury-item group">
+                                <div class="flex justify-between items-baseline mb-3">
+                                    <h3 class="text-white text-lg font-serif uppercase tracking-wider group-hover:text-white transition-colors">
+                                        {dish.name}
+                                    </h3>
+                                    <div class="flex-grow border-b border-white/10 mx-3 translate-y-[-4px]" />
+                                    <span class="text-white/60 font-mono text-sm">
+                                        {Number(dish.price).toFixed(0)}
+                                    </span>
+                                </div>
+                                <p class="text-white/40 text-sm italic font-light leading-relaxed">
+                                    {dish.description}
+                                </p>
+                            </div>
+                        ))
+                    }
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+
+<style>
+    @import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap");
+
+    .luxury-template {
+        font-family: "Cormorant Garamond", serif;
+    }
+
+    h1,
+    .tracking-widest {
+        font-family: "Cinzel", serif;
+    }
+
+    .luxury-item h3 {
+        position: relative;
+    }
+</style>

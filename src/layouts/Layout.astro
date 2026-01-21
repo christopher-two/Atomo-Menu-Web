@@ -1,0 +1,58 @@
+---
+interface Props {
+	title?: string;
+	description?: string;
+	image?: string;
+	canonicalURL?: string | URL;
+	type?: string;
+}
+
+const {
+	title = "Atomo - Menu Digital",
+	description = "La plataforma de menús digitales más elegante y funcional para tu negocio.",
+	image = "/og-image.jpg", // Default OG image path
+	canonicalURL = Astro.url,
+	type = "website",
+} = Astro.props;
+
+const siteTitle = title.includes("Atomo") ? title : `${title} | Atomo`;
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+		<link
+			rel="icon"
+			type="image/svg+xml"
+			href="/src/assets/Overridelogo.svg"
+		/>
+		<link rel="canonical" href={canonicalURL} />
+		<meta name="generator" content={Astro.generator} />
+
+		<!-- Primary Meta Tags -->
+		<title>{siteTitle}</title>
+		<meta name="title" content={siteTitle} />
+		<meta name="description" content={description} />
+
+		<!-- Open Graph / Facebook -->
+		<meta property="og:type" content={type} />
+		<meta property="og:url" content={Astro.url} />
+		<meta property="og:title" content={siteTitle} />
+		<meta property="og:description" content={description} />
+		<meta property="og:image" content={new URL(image, Astro.url)} />
+
+		<!-- Twitter -->
+		<meta property="twitter:card" content="summary_large_image" />
+		<meta property="twitter:url" content={Astro.url} />
+		<meta property="twitter:title" content={siteTitle} />
+		<meta property="twitter:description" content={description} />
+		<meta property="twitter:image" content={new URL(image, Astro.url)} />
+
+		<link rel="stylesheet" href="/src/styles/global.css" />
+	</head>
+	<body class="bg-black text-white antialiased">
+		<slot />
+	</body>
+</html>

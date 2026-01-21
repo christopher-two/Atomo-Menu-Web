@@ -1,0 +1,64 @@
+---
+import type { Menu } from "../../domain/models/DigitalMenu";
+
+interface Props {
+    menu: Menu;
+}
+
+const { menu } = Astro.props;
+---
+
+<div
+    class="elegance-template bg-[#fdfaf5] min-h-screen py-16 px-4 font-serif text-[#1a1a1a]"
+>
+    <div class="max-w-4xl mx-auto">
+        <header class="text-center mb-16">
+            <h1
+                class="text-6xl md:text-7xl font-bold tracking-widest uppercase mb-4"
+            >
+                {menu.name}
+            </h1>
+            <p class="text-[#c5a059] italic text-lg mb-8">
+                {menu.description}
+            </p>
+            <div class="w-16 h-px bg-[#c5a059] mx-auto"></div>
+        </header>
+
+        <section class="mb-12">
+            <h2
+                class="text-3xl text-center uppercase tracking-[0.3em] font-medium mb-12 text-[#1a1a1a]"
+            >
+                Nuestro Menú
+            </h2>
+
+            <div class="grid md:grid-cols-2 gap-x-12 gap-y-10">
+                {
+                    menu.dishes?.map((dish: any) => (
+                        <div class="dish-item">
+                            <div class="flex justify-between items-baseline mb-2">
+                                <h3 class="text-lg font-bold uppercase tracking-wider">
+                                    {dish.name}
+                                </h3>
+                                <span class="text-[#c5a059] font-medium">
+                                    ${dish.price}
+                                </span>
+                            </div>
+                            <div class="w-full h-px bg-[#e5e7eb] mb-2" />
+                            <p class="text-sm text-[#666] italic leading-relaxed">
+                                {dish.description}
+                            </p>
+                        </div>
+                    ))
+                }
+            </div>
+        </section>
+    </div>
+</div>
+
+<style>
+    @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap");
+
+    .elegance-template {
+        font-family: "Playfair Display", serif;
+    }
+</style>

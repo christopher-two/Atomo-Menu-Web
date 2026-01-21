@@ -1,0 +1,83 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { MenuRepository } from "../../data/MenuRepository";
+import {
+    MenuTemplate,
+    type Menu,
+    type Dish,
+} from "../../domain/models/DigitalMenu";
+import MinimalistTemplate from "../../components/templates/MinimalistTemplate.astro";
+import EleganceTemplate from "../../components/templates/EleganceTemplate.astro";
+import ModernTemplate from "../../components/templates/ModernTemplate.astro";
+import LuxuryTemplate from "../../components/templates/LuxuryTemplate.astro";
+import CyberTemplate from "../../components/templates/CyberTemplate.astro";
+
+const TEMPLATE_MAP: Record<string, any> = {
+    [MenuTemplate.MINIMALIST]: MinimalistTemplate,
+    [MenuTemplate.ELEGANCE]: EleganceTemplate,
+    [MenuTemplate.MODERN]: ModernTemplate,
+    [MenuTemplate.LUXURY]: LuxuryTemplate,
+    [MenuTemplate.CYBER]: CyberTemplate,
+};
+
+const { slug } = Astro.params;
+
+// Cache Strategy: 1 hour shared cache
+Astro.response.headers.set("Cache-Control", "public, s-maxage=3600");
+
+// Fetch Menu Data
+let menu: Menu | null = null;
+let dishes: Dish[] = [];
+
+if (slug) {
+    const repository = new MenuRepository();
+    menu = await repository.getBySlug(slug);
+
+    if (menu) {
+        console.log("Menu fetched:", {
+            id: menu.id,
+            template_id: menu.template_id,
+            primary_color: menu.primary_color,
+            font_family: menu.font_family,
+        });
+        dishes = menu.dishes || [];
+    }
+}
+
+if (!menu) {
+    Astro.response.status = 404;
+    Astro.response.statusText = "Not Found";
+}
+
+// Pre-calculate template to avoid issues in the template section
+const templateId = menu?.template_id || "minimalist";
+const TemplateComponent = menu
+    ? TEMPLATE_MAP[templateId] || MinimalistTemplate
+    : null;
+---
+
+<Layout
+    title={menu?.name || "Menú No Encontrado"}
+    description={menu?.description || "Consulta nuestro menú digital."}
+    image={dishes.find((d) => d.image_url)?.image_url}
+>
+    {
+        menu && TemplateComponent ? (
+            <div
+                style={{
+                    "--primary": menu.primary_color || "#000000",
+                    "--font-main": menu.font_family || "Inter",
+                }}
+            >
+                <TemplateComponent menu={menu} />
+            </div>
+        ) : (
+            <div class="min-h-screen flex items-center justify-center bg-neutral-50">
+                <div class="text-center">
+                    <h1 class="text-4xl font-bold mb-4">404</h1>
+                    <p class="text-neutral-500">Menu not found</p>
+                </div>
+            </div>
+        )
+    }
+</Layout>
