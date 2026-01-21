@@ -1,0 +1,48 @@
+---
+// import type { CV } from "../../../domain/models/CV"; // To be defined
+// For now using any
+interface Props {
+    cv: any;
+}
+
+const { cv } = Astro.props;
+---
+
+<div
+    class="max-w-3xl mx-auto px-6 py-12 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white font-sans"
+>
+    <header
+        class="border-b border-neutral-200 dark:border-neutral-800 pb-8 mb-8"
+    >
+        <h1 class="text-4xl font-bold tracking-tight mb-2">{cv.title}</h1>
+        <p class="text-lg text-neutral-500">{cv.professional_summary}</p>
+    </header>
+
+    <div class="space-y-12">
+        <section>
+            <h2
+                class="text-xl font-semibold uppercase tracking-wider mb-6 text-neutral-400"
+            >
+                Experience
+            </h2>
+            <div class="space-y-8">
+                <p class="text-neutral-500 italic">
+                    Experience items will be rendered here...
+                </p>
+            </div>
+        </section>
+
+        <section>
+            <h2
+                class="text-xl font-semibold uppercase tracking-wider mb-6 text-neutral-400"
+            >
+                Education
+            </h2>
+            <div class="space-y-4">
+                <p class="text-neutral-500 italic">
+                    Education items will be rendered here...
+                </p>
+            </div>
+        </section>
+    </div>
+</div>

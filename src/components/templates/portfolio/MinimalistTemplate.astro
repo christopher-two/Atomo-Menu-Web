@@ -1,0 +1,52 @@
+---
+import type { Portfolio } from "../../../domain/models/Portfolio";
+
+interface Props {
+    portfolio: Portfolio;
+}
+
+const { portfolio } = Astro.props;
+---
+
+<div class="max-w-4xl mx-auto px-4 py-12">
+    <header class="mb-16 text-center">
+        <h1 class="text-4xl font-bold mb-4">{portfolio.title}</h1>
+        <p class="text-xl text-neutral-600 dark:text-neutral-400">
+            {portfolio.description}
+        </p>
+    </header>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {
+            portfolio.items?.map((item) => (
+                <article class="group relative overflow-hidden rounded-lg bg-white dark:bg-neutral-800 shadow-sm transition hover:shadow-md">
+                    {item.image_url && (
+                        <div class="aspect-video overflow-hidden bg-neutral-100">
+                            <img
+                                src={item.image_url}
+                                alt={item.title}
+                                class="h-full w-full object-cover transition duration-300 group-hover:scale-105"
+                            />
+                        </div>
+                    )}
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">{item.title}</h3>
+                        <p class="text-neutral-600 dark:text-neutral-400 mb-4 text-sm line-clamp-3">
+                            {item.description}
+                        </p>
+                        {item.project_url && (
+                            <a
+                                href={item.project_url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="inline-flex items-center text-sm font-medium text-blue-600 hover:underline"
+                            >
+                                View Project &rarr;
+                            </a>
+                        )}
+                    </div>
+                </article>
+            ))
+        }
+    </div>
+</div>

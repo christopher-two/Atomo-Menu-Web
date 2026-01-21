@@ -1,0 +1,111 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import { ProfileRepository } from "../../../data/ProfileRepository";
+import { MenuRepository } from "../../../data/MenuRepository";
+import { PortfolioRepository } from "../../../data/PortfolioRepository";
+import { MenuTemplate, type Menu } from "../../../domain/models/DigitalMenu";
+import type { Portfolio } from "../../../domain/models/Portfolio";
+
+// Template Imports
+import MinimalistTemplate from "../../../components/templates/menu/MinimalistTemplate.astro";
+import EleganceTemplate from "../../../components/templates/menu/EleganceTemplate.astro";
+import ModernTemplate from "../../../components/templates/menu/ModernTemplate.astro";
+import LuxuryTemplate from "../../../components/templates/menu/LuxuryTemplate.astro";
+import CyberTemplate from "../../../components/templates/menu/CyberTemplate.astro";
+
+const TEMPLATE_MAP: Record<string, any> = {
+    [MenuTemplate.MINIMALIST]: MinimalistTemplate,
+    [MenuTemplate.ELEGANCE]: EleganceTemplate,
+    [MenuTemplate.MODERN]: ModernTemplate,
+    [MenuTemplate.LUXURY]: LuxuryTemplate,
+    [MenuTemplate.CYBER]: CyberTemplate,
+    // Add Portfolio templates here if they differ or share
+};
+
+const { user, service } = Astro.params;
+
+// 1. Get Profile
+const profileRepo = new ProfileRepository();
+const profile = await profileRepo.getByUsername(user || "");
+
+if (!profile) {
+    return Astro.redirect("/404");
+}
+
+let contentComponent = null;
+let data: any = null;
+let TemplateComponent = null;
+let title = "Atomo";
+
+// 2. Route Service
+switch (service) {
+    case "menu":
+        const menuRepo = new MenuRepository();
+        data = await menuRepo.getByUserId(profile.id);
+        if (data) {
+            const templateId = (data as Menu).template_id || "minimalist";
+            TemplateComponent = TEMPLATE_MAP[templateId] || MinimalistTemplate;
+            title = (data as Menu).name || "Menu";
+        }
+        break;
+    case "portfolio":
+        const portfolioRepo = new PortfolioRepository();
+        data = await portfolioRepo.getByUserId(profile.id);
+        if (data) {
+            // Assuming Portfolio uses similar template mechanism or a default one
+            // For now using MinimalistTemplate as placeholder or a specific Portfolio component
+            // title = (data as Portfolio).title;
+            // TemplateComponent = MinimalistTemplate; // REPLACE with PortfolioTemplate
+        }
+        break;
+    case "cv":
+        break;
+    case "shop":
+        break;
+    default:
+        return Astro.redirect("/404");
+}
+
+// Fallback for missing service data
+const placeholders = {
+    menu: "No active menu found for this user.",
+    portfolio: "No portfolio found for this user.",
+    cv: "CV Service coming soon",
+    shop: "Shop Service coming soon",
+};
+---
+
+<Layout
+    title={title}
+    description={`Service ${service} for ${profile.username}`}
+>
+    {
+        data && TemplateComponent ? (
+            <div
+                style={{
+                    "--primary": data.primary_color || "#000000",
+                    "--font-main": data.font_family || "Inter",
+                }}
+            >
+                {service === "menu" && <TemplateComponent menu={data} />}
+                {service === "portfolio" && (
+                    <TemplateComponent portfolio={data} />
+                )}
+                {service === "cv" && <TemplateComponent cv={data} />}
+                {service === "shop" && <TemplateComponent shop={data} />}
+                {service === "invitation" && (
+                    <TemplateComponent invitation={data} />
+                )}
+            </div>
+        ) : (
+            <div class="min-h-screen flex flex-col items-center justify-center bg-neutral-900 text-white">
+                <h1 class="text-4xl font-bold mb-4 capitalize">{service}</h1>
+                <p class="text-neutral-400">User: {profile.username}</p>
+                <div class="mt-8 p-6 border border-neutral-800 rounded-lg bg-neutral-950">
+                    {placeholders[service as keyof typeof placeholders] ||
+                        "Service not found"}
+                </div>
+            </div>
+        )
+    }
+</Layout>

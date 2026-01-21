@@ -1,0 +1,45 @@
+---
+// import type { Invitation } from "../../../domain/models/Invitation";
+interface Props {
+    invitation: any;
+}
+
+const { invitation } = Astro.props;
+---
+
+<div
+    class="min-h-screen flex items-center justify-center bg-neutral-100 dark:bg-neutral-900 p-4"
+>
+    <div
+        class="max-w-lg w-full bg-white dark:bg-black border border-neutral-200 dark:border-neutral-800 p-12 text-center shadow-2xl"
+    >
+        <div class="uppercase tracking-widest text-sm text-neutral-500 mb-8">
+            You are invited
+        </div>
+
+        <h1 class="text-4xl md:text-5xl font-serif mb-6">
+            {invitation.event_name}
+        </h1>
+
+        <p
+            class="text-lg mb-8 leading-relaxed text-neutral-600 dark:text-neutral-300"
+        >
+            {invitation.description}
+        </p>
+
+        <div
+            class="border-t border-b border-neutral-200 dark:border-neutral-800 py-6 my-8 space-y-2"
+        >
+            <p class="font-medium text-lg">
+                {new Date(invitation.event_date).toLocaleString()}
+            </p>
+            <p class="text-neutral-500">{invitation.location}</p>
+        </div>
+
+        <button
+            class="bg-black dark:bg-white text-white dark:text-black px-8 py-3 uppercase tracking-wider text-sm font-medium hover:opacity-80 transition"
+        >
+            RSVP Now
+        </button>
+    </div>
+</div>

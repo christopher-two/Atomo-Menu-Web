@@ -6,11 +6,11 @@ import {
     type Menu,
     type Dish,
 } from "../../domain/models/DigitalMenu";
-import MinimalistTemplate from "../../components/templates/MinimalistTemplate.astro";
-import EleganceTemplate from "../../components/templates/EleganceTemplate.astro";
-import ModernTemplate from "../../components/templates/ModernTemplate.astro";
-import LuxuryTemplate from "../../components/templates/LuxuryTemplate.astro";
-import CyberTemplate from "../../components/templates/CyberTemplate.astro";
+import MinimalistTemplate from "../../components/templates/menu/MinimalistTemplate.astro";
+import EleganceTemplate from "../../components/templates/menu/EleganceTemplate.astro";
+import ModernTemplate from "../../components/templates/menu/ModernTemplate.astro";
+import LuxuryTemplate from "../../components/templates/menu/LuxuryTemplate.astro";
+import CyberTemplate from "../../components/templates/menu/CyberTemplate.astro";
 
 const TEMPLATE_MAP: Record<string, any> = {
     [MenuTemplate.MINIMALIST]: MinimalistTemplate,

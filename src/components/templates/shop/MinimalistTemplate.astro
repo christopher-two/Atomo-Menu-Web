@@ -1,0 +1,24 @@
+---
+// import type { Shop } from "../../../domain/models/Shop"; // To be defined
+interface Props {
+    shop: any;
+}
+
+const { shop } = Astro.props;
+---
+
+<div class="max-w-6xl mx-auto px-4 py-8">
+    <header class="flex flex-col items-center justify-center mb-12">
+        <h1 class="text-3xl font-bold mb-2">{shop.name}</h1>
+        <p class="text-neutral-500">{shop.description}</p>
+    </header>
+
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+        {/* Placeholder products */}
+        <div
+            class="bg-neutral-50 dark:bg-neutral-900 p-4 rounded-lg text-center"
+        >
+            <p class="text-neutral-400">No products yet.</p>
+        </div>
+    </div>
+</div>
