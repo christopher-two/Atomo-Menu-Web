@@ -68,14 +68,24 @@ Este proyecto está preconfigurado para desplegarse en **Cloudflare Pages**.
 1. Tener una cuenta en [Cloudflare](https://dash.cloudflare.com/).
 2. Tener instalado [Wrangler](https://developers.cloudflare.com/workers/wrangler/install-and-setup/) globalmente o usar `npx`.
 
-### Pasos para Desplegar
-1. **Configurar Variables de Envío**: Asegúrate de añadir `PUBLIC_SUPABASE_URL` y `PUBLIC_SUPABASE_ANON_KEY` en el panel de Cloudflare Pages (Settings > Environment Variables).
-2. **Ejecutar Despliegue**:
+### Pasos para Desplegar (Dashboard de Cloudflare)
+1. **Conectar Repositorio**: En el dashboard de Cloudflare Pages, conecta tu repositorio de GitHub.
+2. **Configuración de Build**:
+   - **Framework Preset**: `Astro`
+   - **Build Command**: `pnpm run build`
+   - **Output directory**: `dist`
+3. **Variables de Entorno**: En `Settings > Environment Variables`, añade:
+   - `PUBLIC_SUPABASE_URL`
+   - `PUBLIC_SUPABASE_ANON_KEY`
+   - `NODE_VERSION`: `22` (Recomendado)
+4. **Despliegue Manual (Opcional)**:
+   Si prefieres desplegar desde tu terminal:
    ```sh
    pnpm deploy
    ```
 
-O alternativamente, conecta tu repositorio de GitHub a Cloudflare Pages para despliegues automáticos cada vez que hagas push.
+> [!IMPORTANT]
+> El error `wrangler: not found` ocurría porque faltaba en las dependencias. Ya ha sido añadido. Si usas la integración de Git, asegúrate de que el "Deploy command" en Cloudflare esté vacío o configurado como el comando de build estándar.
 
 
 ---

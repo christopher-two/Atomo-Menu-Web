@@ -6,3 +6,7 @@ pages_build_output_dir = "./dist"
 # Add your environment variables here if NOT using Cloudflare Dashboard for secrets
 # PUBLIC_SUPABASE_URL = "your_url"
 # PUBLIC_SUPABASE_ANON_KEY = "your_key"
+
+# [[kv_namespaces]]
+# binding = "SESSION"
+# id = "SESSION_KV_ID"
