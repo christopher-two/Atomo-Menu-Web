@@ -30,17 +30,15 @@ let menu: Menu | null = null;
 let dishes: Dish[] = [];
 
 if (slug) {
+    console.log("Searching for menu with slug:", slug);
     const repository = new MenuRepository();
     menu = await repository.getBySlug(slug);
 
     if (menu) {
-        console.log("Menu fetched:", {
-            id: menu.id,
-            template_id: menu.template_id,
-            primary_color: menu.primary_color,
-            font_family: menu.font_family,
-        });
+        console.log("Menu found:", menu.name);
         dishes = menu.dishes || [];
+    } else {
+        console.warn("No menu found for slug:", slug);
     }
 }
 
