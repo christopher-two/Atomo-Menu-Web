@@ -1,5 +1,5 @@
 ---
-import type { Menu } from "../../domain/models/DigitalMenu";
+import type { Menu } from "../../../domain/models/DigitalMenu";
 
 interface Props {
     menu: Menu;
@@ -9,67 +9,113 @@ const { menu } = Astro.props;
 ---
 
 <div
-    class="luxury-template min-h-screen bg-[#0a0a0a] py-20 px-4 relative overflow-hidden"
+    class="luxury-template min-h-screen bg-[#050505] text-[#e5e5e5] py-12 md:py-20 px-4 relative overflow-hidden font-serif"
 >
-    <!-- Subtle Marble-like Gradient/Texture -->
+    <!-- Ambient Background Effects -->
     <div
-        class="absolute inset-0 opacity-20 pointer-events-none bg-[radial-gradient(circle_at_50%_50%,_#1a1a1a_0%,_transparent_100%)]"
+        class="absolute top-0 left-0 w-full h-[500px] bg-gradient-to-b from-[#1a1a1a] to-transparent opacity-40 pointer-events-none"
     >
     </div>
     <div
-        class="absolute inset-0 opacity-10 pointer-events-none"
-        style="background-image: url('https://www.transparenttextures.com/patterns/carbon-fibre.png');"
+        class="absolute bottom-0 right-0 w-[500px] h-[500px] bg-[radial-gradient(circle_at_center,_#333_0%,_transparent_70%)] opacity-20 pointer-events-none"
     >
     </div>
 
-    <div class="max-w-4xl mx-auto relative z-10">
+    <!-- Texture -->
+    <div
+        class="absolute inset-0 opacity-[0.07] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/stardust.png')]"
+    >
+    </div>
+
+    <div class="max-w-5xl mx-auto relative z-10">
         <div
-            class="bg-black/80 backdrop-blur-sm border border-white/10 p-8 md:p-16 shadow-2xl"
+            class="bg-[#0a0a0a]/60 backdrop-blur-md border border-white/5 p-6 md:p-16 shadow-2xl relative"
         >
-            <header class="text-center mb-20">
+            <!-- Decorative Corners -->
+            <div
+                class="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-[#D4AF37]"
+            >
+            </div>
+            <div
+                class="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-[#D4AF37]"
+            >
+            </div>
+            <div
+                class="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-[#D4AF37]"
+            >
+            </div>
+            <div
+                class="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-[#D4AF37]"
+            >
+            </div>
+
+            <header class="text-center mb-16 md:mb-24">
+                <div class="inline-block mb-6">
+                    <span
+                        class="text-[#D4AF37] tracking-[0.5em] text-[10px] md:text-xs uppercase border-b border-[#D4AF37]/30 pb-2"
+                        >Premium Selection</span
+                    >
+                </div>
                 <h1
-                    class="text-5xl md:text-6xl font-serif text-white mb-6 uppercase tracking-[0.2em] font-light"
+                    class="text-4xl md:text-6xl lg:text-7xl font-serif text-white mb-8 uppercase tracking-[0.15em] font-light leading-tight"
                 >
                     {menu.name}
                 </h1>
-                <div class="flex items-center justify-center gap-4 mb-6">
-                    <div class="h-px w-12 bg-white/20"></div>
-                    <span
-                        class="text-white/40 uppercase tracking-widest text-xs"
-                        >Exquisite Dining</span
+                <div class="flex items-center justify-center gap-4 opacity-60">
+                    <span class="text-2xl text-[#D4AF37]">&#9733;</span>
+                    <div
+                        class="h-px w-24 bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent"
                     >
-                    <div class="h-px w-12 bg-white/20"></div>
+                    </div>
+                    <span class="text-2xl text-[#D4AF37]">&#9733;</span>
                 </div>
             </header>
 
             <section>
-                <h2
-                    class="text-2xl font-serif text-white/90 uppercase tracking-[0.15em] mb-12 text-center italic"
-                >
-                    {menu.description || "Menú de la Casa"}
-                </h2>
+                {
+                    menu.description && (
+                        <div class="mb-16 text-center max-w-2xl mx-auto">
+                            <p class="text-[#D4AF37]/80 text-lg md:text-xl italic font-light leading-relaxed">
+                                "{menu.description}"
+                            </p>
+                        </div>
+                    )
+                }
 
-                <div class="grid md:grid-cols-2 gap-x-16 gap-y-12">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-20 gap-y-12">
                     {
                         menu.dishes?.map((dish: any) => (
-                            <div class="luxury-item group">
+                            <div class="luxury-item group relative pl-6 transition-all duration-500 hover:pl-8">
+                                <div class="absolute left-0 top-2 w-[2px] h-0 bg-[#D4AF37] transition-all duration-500 group-hover:h-full" />
+
                                 <div class="flex justify-between items-baseline mb-3">
-                                    <h3 class="text-white text-lg font-serif uppercase tracking-wider group-hover:text-white transition-colors">
+                                    <h3 class="text-white text-lg md:text-xl font-serif tracking-widest uppercase group-hover:text-[#D4AF37] transition-colors duration-300">
                                         {dish.name}
                                     </h3>
-                                    <div class="flex-grow border-b border-white/10 mx-3 translate-y-[-4px]" />
-                                    <span class="text-white/60 font-mono text-sm">
-                                        {Number(dish.price).toFixed(0)}
-                                    </span>
                                 </div>
-                                <p class="text-white/40 text-sm italic font-light leading-relaxed">
+
+                                <p class="text-neutral-400 text-sm italic font-light leading-relaxed mb-3 group-hover:text-neutral-300 transition-colors">
                                     {dish.description}
                                 </p>
+
+                                <div class="flex items-center justify-end mt-2">
+                                    <span class="text-[#D4AF37] font-mono text-lg tracking-wider">
+                                        ${Number(dish.price).toFixed(2)}
+                                    </span>
+                                </div>
                             </div>
                         ))
                     }
                 </div>
             </section>
+
+            <footer class="mt-20 pt-8 border-t border-white/5 text-center">
+                <p
+                    class="text-neutral-600 text-[10px] uppercase tracking-[0.2em]"
+                >
+                    Excellence in every detail
+                </p>
+            </footer>
         </div>
     </div>
 </div>

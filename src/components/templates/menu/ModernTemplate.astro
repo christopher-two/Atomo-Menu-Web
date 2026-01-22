@@ -1,5 +1,5 @@
 ---
-import type { Menu } from "../../domain/models/DigitalMenu";
+import type { Menu } from "../../../domain/models/DigitalMenu";
 
 interface Props {
     menu: Menu;
@@ -8,40 +8,47 @@ interface Props {
 const { menu } = Astro.props;
 ---
 
-<div class="modern-template bg-[#f3f3f3] min-h-screen font-sans text-black">
-    <div class="container mx-auto px-6 py-16">
-        <header class="mb-20">
-            <h1 class="text-3xl font-medium mb-10 tracking-tight">
+<div
+    class="modern-template bg-[#f3f3f3] min-h-screen font-sans text-black relative"
+>
+    <div class="container mx-auto px-6 py-12 md:py-20 max-w-5xl">
+        <header class="mb-16 md:mb-24">
+            <h1
+                class="text-2xl md:text-3xl font-medium mb-6 md:mb-10 tracking-tight text-gray-500 uppercase"
+            >
                 {menu.name}
             </h1>
             <h2
-                class="text-7xl md:text-9xl font-bold uppercase leading-[0.85] tracking-tighter"
+                class="text-6xl md:text-8xl lg:text-9xl font-bold uppercase leading-[0.85] tracking-tighter break-words text-transparent bg-clip-text bg-gradient-to-br from-black to-gray-600"
             >
-                {menu.description || "MENÚ DE LA CASA"}
+                {menu.description || "SELECTION"}
             </h2>
         </header>
 
         <section>
             <h3
-                class="text-2xl font-bold uppercase mb-8 tracking-wide border-b-2 border-black pb-2"
+                class="text-xl md:text-2xl font-bold uppercase mb-10 tracking-wide border-b-2 border-black pb-4 inline-block"
             >
-                Nuestra Selección
+                Curated List
             </h3>
 
-            <div class="space-y-12">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-12">
                 {
                     menu.dishes?.map((dish: any) => (
-                        <div class="dish-item group">
-                            <div class="flex flex-col md:flex-row md:justify-between md:items-end gap-2 mb-4">
-                                <h4 class="text-xl md:text-2xl font-extrabold uppercase tracking-tight">
-                                    {dish.name}
-                                </h4>
-                                <div class="flex-grow border-b border-black border-dotted mb-1 mx-4 hidden md:block" />
-                                <span class="text-lg font-bold whitespace-nowrap">
-                                    MXN {Number(dish.price).toFixed(2)}
-                                </span>
+                        <div class="dish-item group relative">
+                            <div class="absolute -left-4 top-0 bottom-0 w-[2px] bg-black scale-y-0 group-hover:scale-y-100 transition-transform origin-top duration-300" />
+
+                            <div class="flex flex-col gap-2 mb-3">
+                                <div class="flex justify-between items-baseline">
+                                    <h4 class="text-xl md:text-2xl font-extrabold uppercase tracking-tight group-hover:text-gray-700 transition-colors">
+                                        {dish.name}
+                                    </h4>
+                                    <span class="text-lg font-bold whitespace-nowrap bg-black text-white px-2 py-1 transform -rotate-2 group-hover:rotate-0 transition-transform duration-300">
+                                        ${Number(dish.price).toFixed(2)}
+                                    </span>
+                                </div>
                             </div>
-                            <p class="text-sm md:text-base text-gray-700 max-w-3xl leading-relaxed">
+                            <p class="text-sm md:text-base text-gray-600 leading-relaxed font-medium">
                                 {dish.description}
                             </p>
                         </div>
@@ -49,6 +56,13 @@ const { menu } = Astro.props;
                 }
             </div>
         </section>
+
+        <footer
+            class="mt-24 border-t border-gray-300 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm font-bold text-gray-400 uppercase tracking-widest"
+        >
+            <span>Override Templates</span>
+            <span>Est. {new Date().getFullYear()}</span>
+        </footer>
     </div>
 </div>
 
