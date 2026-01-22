@@ -4,6 +4,12 @@ Atomo Menu es una plataforma de menú digital diseñada para ofrecer una experie
 
 ## 🚀 Características Principales
 
+- **Ecosistema Completo**:
+  - **Digital Menu**: Cartas interactivas para restaurantes.
+  - **Portfolio**: Galerías visuales para creativos.
+  - **Shop**: Tiendas minimalistas con categorías y productos.
+  - **CV**: Hojas de vida digitales profesionales.
+  - **Invitations**: Invitaciones a eventos con RSVP.
 - **Múltiples Plantillas Premium**: Diseños adaptables que se ajustan a la identidad de tu marca.
   - **Minimalist**: Limpio y enfocado en el contenido.
   - **Elegance**: Sofisticado y refinado.
@@ -13,7 +19,6 @@ Atomo Menu es una plataforma de menú digital diseñada para ofrecer una experie
 - **Gestión Intuitiva**: Integración con Supabase para una gestión de datos en tiempo real.
 - **Optimización de Rendimiento**: Construido con Astro para tiempos de carga ultrarrápidos y excelente SEO.
 - **Diseño Responsivo**: Experiencia de usuario impecable en dispositivos móviles y escritorio.
-- **Caché Inteligente**: Estrategia de caché en el borde para una respuesta instantánea.
 
 ## 🛠️ Stack Tecnológico
 
@@ -43,13 +48,13 @@ Atomo Menu es una plataforma de menú digital diseñada para ofrecer una experie
 
 ## 🧞 Comandos
 
-| Comando | Acción |
-| :--- | :--- |
-| `pnpm install` | Instala las dependencias del proyecto |
-| `pnpm dev` | Inicia el servidor de desarrollo local en `localhost:4321` |
-| `pnpm build` | Compila el sitio para producción en `./dist/` |
-| `pnpm preview` | Previsualiza la compilación localmente |
-| `pnpm astro ...` | Ejecuta comandos de la CLI de Astro |
+| Comando          | Acción                                                     |
+| :--------------- | :--------------------------------------------------------- |
+| `pnpm install`   | Instala las dependencias del proyecto                      |
+| `pnpm dev`       | Inicia el servidor de desarrollo local en `localhost:4321` |
+| `pnpm build`     | Compila el sitio para producción en `./dist/`              |
+| `pnpm preview`   | Previsualiza la compilación localmente                     |
+| `pnpm astro ...` | Ejecuta comandos de la CLI de Astro                        |
 
 ## ⚙️ Configuración
 
@@ -65,10 +70,12 @@ PUBLIC_SUPABASE_ANON_KEY=tu_anon_key_de_supabase
 Este proyecto está preconfigurado para desplegarse en **Cloudflare Pages**.
 
 ### Requisitos Previos
+
 1. Tener una cuenta en [Cloudflare](https://dash.cloudflare.com/).
 2. Tener instalado [Wrangler](https://developers.cloudflare.com/workers/wrangler/install-and-setup/) globalmente o usar `npx`.
 
 ### Pasos para Desplegar (Dashboard de Cloudflare)
+
 1. **Conectar Repositorio**: En el dashboard de Cloudflare Pages, conecta tu repositorio de GitHub.
 2. **Configuración de Build**:
    - **Framework Preset**: `Astro`
@@ -88,6 +95,6 @@ Este proyecto está preconfigurado para desplegarse en **Cloudflare Pages**.
 > [!IMPORTANT]
 > El error `wrangler: not found` ocurría porque faltaba en las dependencias. Ya ha sido añadido. Si usas la integración de Git, asegúrate de que el "Deploy command" en Cloudflare esté vacío o configurado como el comando de build estándar.
 
-
 ---
+
 Desarrollado con ❤️ por el equipo de **Atomo Menu**.

@@ -1,11 +1,5 @@
 import { supabase } from "../lib/supabase";
-
-export interface Profile {
-    id: string; // matches auth.users(id)
-    username: string;
-    display_name: string;
-    avatar_url?: string;
-}
+import type { Profile } from "../domain/models/Profile";
 
 export class ProfileRepository {
     async getByUsername(username: string): Promise<Profile | null> {

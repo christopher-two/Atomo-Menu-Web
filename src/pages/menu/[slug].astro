@@ -2,9 +2,9 @@
 import Layout from "../../layouts/Layout.astro";
 import { MenuRepository } from "../../data/MenuRepository";
 import {
-    MenuTemplate,
-    type Menu,
-    type Dish,
+  MenuTemplate,
+  type Menu,
+  type Dish,
 } from "../../domain/models/DigitalMenu";
 import MinimalistTemplate from "../../components/templates/menu/MinimalistTemplate.astro";
 import EleganceTemplate from "../../components/templates/menu/EleganceTemplate.astro";
@@ -13,11 +13,11 @@ import LuxuryTemplate from "../../components/templates/menu/LuxuryTemplate.astro
 import CyberTemplate from "../../components/templates/menu/CyberTemplate.astro";
 
 const TEMPLATE_MAP: Record<string, any> = {
-    [MenuTemplate.MINIMALIST]: MinimalistTemplate,
-    [MenuTemplate.ELEGANCE]: EleganceTemplate,
-    [MenuTemplate.MODERN]: ModernTemplate,
-    [MenuTemplate.LUXURY]: LuxuryTemplate,
-    [MenuTemplate.CYBER]: CyberTemplate,
+  [MenuTemplate.MINIMALIST]: MinimalistTemplate,
+  [MenuTemplate.ELEGANCE]: EleganceTemplate,
+  [MenuTemplate.MODERN]: ModernTemplate,
+  [MenuTemplate.LUXURY]: LuxuryTemplate,
+  [MenuTemplate.CYBER]: CyberTemplate,
 };
 
 const { slug } = Astro.params;
@@ -30,52 +30,51 @@ let menu: Menu | null = null;
 let dishes: Dish[] = [];
 
 if (slug) {
-    console.log("Searching for menu with slug:", slug);
-    const repository = new MenuRepository();
-    menu = await repository.getBySlug(slug);
+  if (error) {
+    console.error("Error fetching menu:", error);
+  }
 
-    if (menu) {
-        console.log("Menu found:", menu.name);
-        dishes = menu.dishes || [];
-    } else {
-        console.warn("No menu found for slug:", slug);
-    }
+  if (menu) {
+    dishes = menu.dishes || [];
+  } else {
+    console.warn("No menu found for slug:", slug);
+  }
 }
 
 if (!menu) {
-    Astro.response.status = 404;
-    Astro.response.statusText = "Not Found";
+  Astro.response.status = 404;
+  Astro.response.statusText = "Not Found";
 }
 
 // Pre-calculate template to avoid issues in the template section
 const templateId = menu?.template_id || "minimalist";
 const TemplateComponent = menu
-    ? TEMPLATE_MAP[templateId] || MinimalistTemplate
-    : null;
+  ? TEMPLATE_MAP[templateId] || MinimalistTemplate
+  : null;
 ---
 
 <Layout
-    title={menu?.name || "Menú No Encontrado"}
-    description={menu?.description || "Consulta nuestro menú digital."}
-    image={dishes.find((d) => d.image_url)?.image_url}
+  title={menu?.name || "Menú No Encontrado"}
+  description={menu?.description || "Consulta nuestro menú digital."}
+  image={dishes.find((d) => d.image_url)?.image_url}
 >
-    {
-        menu && TemplateComponent ? (
-            <div
-                style={{
-                    "--primary": menu.primary_color || "#000000",
-                    "--font-main": menu.font_family || "Inter",
-                }}
-            >
-                <TemplateComponent menu={menu} />
-            </div>
-        ) : (
-            <div class="min-h-screen flex items-center justify-center bg-neutral-50">
-                <div class="text-center">
-                    <h1 class="text-4xl font-bold mb-4">404</h1>
-                    <p class="text-neutral-500">Menu not found</p>
-                </div>
-            </div>
-        )
-    }
+  {
+    menu && TemplateComponent ? (
+      <div
+        style={{
+          "--primary": menu.primary_color || "#000000",
+          "--font-main": menu.font_family || "Inter",
+        }}
+      >
+        <TemplateComponent menu={menu} />
+      </div>
+    ) : (
+      <div class="min-h-screen flex items-center justify-center bg-neutral-50">
+        <div class="text-center">
+          <h1 class="text-4xl font-bold mb-4">404</h1>
+          <p class="text-neutral-500">Menu not found</p>
+        </div>
+      </div>
+    )
+  }
 </Layout>

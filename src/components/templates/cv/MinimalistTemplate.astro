@@ -1,48 +1,109 @@
 ---
-// import type { CV } from "../../../domain/models/CV"; // To be defined
-// For now using any
+import type { CV } from "../../../domain/models/CV";
+
 interface Props {
-    cv: any;
+  cv: CV;
 }
 
 const { cv } = Astro.props;
 ---
 
 <div
-    class="max-w-3xl mx-auto px-6 py-12 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white font-sans"
+  class="max-w-3xl mx-auto px-6 py-12 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white font-sans"
 >
-    <header
-        class="border-b border-neutral-200 dark:border-neutral-800 pb-8 mb-8"
-    >
-        <h1 class="text-4xl font-bold tracking-tight mb-2">{cv.title}</h1>
+  <header class="border-b border-neutral-200 dark:border-neutral-800 pb-8 mb-8">
+    <h1 class="text-4xl font-bold tracking-tight mb-2">{cv.title}</h1>
+    {
+      cv.professional_summary && (
         <p class="text-lg text-neutral-500">{cv.professional_summary}</p>
-    </header>
+      )
+    }
+  </header>
 
-    <div class="space-y-12">
+  <div class="space-y-12">
+    {
+      cv.experience && cv.experience.length > 0 && (
         <section>
-            <h2
-                class="text-xl font-semibold uppercase tracking-wider mb-6 text-neutral-400"
-            >
-                Experience
-            </h2>
-            <div class="space-y-8">
-                <p class="text-neutral-500 italic">
-                    Experience items will be rendered here...
+          <h2 class="text-xl font-semibold uppercase tracking-wider mb-6 text-neutral-400">
+            Experience
+          </h2>
+          <div class="space-y-8">
+            {cv.experience.map((exp) => (
+              <div class="relative pl-6 border-l-2 border-neutral-200 dark:border-neutral-800">
+                <h3 class="text-xl font-bold">{exp.role}</h3>
+                <p class="text-neutral-600 dark:text-neutral-400 font-medium">
+                  {exp.company}
                 </p>
-            </div>
+                <p class="text-sm text-neutral-500 mb-2">
+                  {exp.start_date ? new Date(exp.start_date).getFullYear() : ""}{" "}
+                  -{" "}
+                  {exp.is_current
+                    ? "Present"
+                    : exp.end_date
+                      ? new Date(exp.end_date).getFullYear()
+                      : ""}
+                </p>
+                {exp.description && (
+                  <p class="text-neutral-600 dark:text-neutral-400 leading-relaxed">
+                    {exp.description}
+                  </p>
+                )}
+              </div>
+            ))}
+          </div>
         </section>
+      )
+    }
 
+    {
+      cv.education && cv.education.length > 0 && (
         <section>
-            <h2
-                class="text-xl font-semibold uppercase tracking-wider mb-6 text-neutral-400"
-            >
-                Education
-            </h2>
-            <div class="space-y-4">
-                <p class="text-neutral-500 italic">
-                    Education items will be rendered here...
+          <h2 class="text-xl font-semibold uppercase tracking-wider mb-6 text-neutral-400">
+            Education
+          </h2>
+          <div class="space-y-6">
+            {cv.education.map((edu) => (
+              <div>
+                <h3 class="text-lg font-bold">{edu.degree}</h3>
+                <p class="text-neutral-600 dark:text-neutral-400">
+                  {edu.institution}
                 </p>
-            </div>
+                <p class="text-sm text-neutral-500">
+                  {edu.start_date ? new Date(edu.start_date).getFullYear() : ""}{" "}
+                  -{" "}
+                  {edu.is_current
+                    ? "Present"
+                    : edu.end_date
+                      ? new Date(edu.end_date).getFullYear()
+                      : ""}
+                </p>
+              </div>
+            ))}
+          </div>
         </section>
-    </div>
+      )
+    }
+
+    {
+      cv.skills && cv.skills.length > 0 && (
+        <section>
+          <h2 class="text-xl font-semibold uppercase tracking-wider mb-6 text-neutral-400">
+            Skills
+          </h2>
+          <div class="flex flex-wrap gap-2">
+            {cv.skills.map((skill) => (
+              <span class="px-3 py-1 bg-neutral-100 dark:bg-neutral-800 rounded-full text-sm font-medium">
+                {skill.name}{" "}
+                {skill.proficiency && (
+                  <span class="text-neutral-500 text-xs">
+                    ({skill.proficiency})
+                  </span>
+                )}
+              </span>
+            ))}
+          </div>
+        </section>
+      )
+    }
+  </div>
 </div>

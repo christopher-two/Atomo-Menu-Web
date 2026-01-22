@@ -1,3 +1,5 @@
+import type { BaseEntity, Branding } from "./Shared";
+
 export enum MenuTemplate {
     MINIMALIST = "minimalist",
     ELEGANCE = "elegance",
@@ -6,33 +8,32 @@ export enum MenuTemplate {
     CYBER = "cyber",
 }
 
-export interface Dish {
-    id: string;
+export interface Dish extends BaseEntity {
+    menu_id: string;
     name: string;
-    description: string;
+    description: string | null;
     price: number;
-    image_url: string;
+    image_url: string | null;
     is_visible: boolean;
-    category_id?: string;
+    category_id: string | null;
+    sort_order: number;
 }
 
-export interface MenuCategory {
-    id: string;
+export interface MenuCategory extends BaseEntity {
+    menu_id: string;
     name: string;
     sort_order: number;
     dishes: Dish[];
 }
 
-export interface Menu {
-    id: string;
+export interface Menu extends BaseEntity, Branding {
+    user_id: string;
     name: string;
-    description: string;
-    template_id: MenuTemplate | string;
-    primary_color: string;
-    font_family: string;
-    logo_url?: string;
+    description: string | null;
+    slug: string;
+    is_active: boolean;
+    template_id: MenuTemplate;
+    logo_url: string | null;
     categories: MenuCategory[];
-    // Keep dishes for backward compatibility or uncategorized items if needed, 
-    // but primarily we use categories now.
-    dishes?: Dish[]; 
+    dishes?: Dish[]; // For uncategorized dishes
 }

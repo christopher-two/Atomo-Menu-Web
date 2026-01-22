@@ -1,24 +1,71 @@
 ---
-// import type { Shop } from "../../../domain/models/Shop"; // To be defined
+import type { Shop } from "../../../domain/models/Shop";
+
 interface Props {
-    shop: any;
+  shop: Shop;
 }
 
 const { shop } = Astro.props;
 ---
 
 <div class="max-w-6xl mx-auto px-4 py-8">
-    <header class="flex flex-col items-center justify-center mb-12">
-        <h1 class="text-3xl font-bold mb-2">{shop.name}</h1>
-        <p class="text-neutral-500">{shop.description}</p>
-    </header>
+  <header class="flex flex-col items-center justify-center mb-12">
+    <h1 class="text-3xl font-bold mb-2">{shop.name}</h1>
+    <p class="text-neutral-500">{shop.description}</p>
+  </header>
 
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-        {/* Placeholder products */}
-        <div
-            class="bg-neutral-50 dark:bg-neutral-900 p-4 rounded-lg text-center"
-        >
-            <p class="text-neutral-400">No products yet.</p>
+  {
+    shop.categories?.map((category) => (
+      <div class="mb-12">
+        <h2 class="text-2xl font-bold mb-6 border-b pb-2">{category.name}</h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+          {category.products?.map((product) => (
+            <div class="bg-neutral-50 dark:bg-neutral-900 rounded-lg overflow-hidden group hover:shadow-lg transition-all">
+              {product.image_url ? (
+                <div class="aspect-square bg-neutral-200">
+                  <img
+                    src={product.image_url}
+                    alt={product.name}
+                    class="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                  />
+                </div>
+              ) : (
+                <div class="aspect-square bg-neutral-200 flex items-center justify-center text-neutral-400">
+                  No Image
+                </div>
+              )}
+              <div class="p-4">
+                <h3 class="font-bold mb-1 truncate">{product.name}</h3>
+                <p class="text-neutral-600 dark:text-neutral-400 text-sm mb-3 line-clamp-2">
+                  {product.description}
+                </p>
+                <div class="flex justify-between items-center">
+                  <span class="font-bold">
+                    ${Number(product.price).toFixed(2)}
+                  </span>
+                  {product.stock > 0 ? (
+                    <span class="text-xs text-green-600 bg-green-100 px-2 py-1 rounded-full">
+                      In Stock
+                    </span>
+                  ) : (
+                    <span class="text-xs text-red-600 bg-red-100 px-2 py-1 rounded-full">
+                      Out of Stock
+                    </span>
+                  )}
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
-    </div>
+      </div>
+    ))
+  }
+
+  {
+    (!shop.categories || shop.categories.length === 0) && (
+      <div class="bg-neutral-50 dark:bg-neutral-900 p-12 rounded-lg text-center">
+        <p class="text-neutral-400 text-lg">No products found.</p>
+      </div>
+    )
+  }
 </div>
