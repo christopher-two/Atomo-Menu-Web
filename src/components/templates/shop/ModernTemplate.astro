@@ -1,0 +1,106 @@
+---
+import type { Shop } from "../../../domain/models/Shop";
+
+interface Props {
+  shop: Shop;
+}
+
+const { shop } = Astro.props;
+---
+
+<div
+  class="modern-shop min-h-screen bg-[#f3f3f3] font-sans text-black py-16 px-6 relative"
+>
+  <div class="max-w-[1600px] mx-auto">
+    <header class="mb-20 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <h1
+        class="text-6xl md:text-9xl font-black uppercase tracking-tighter leading-[0.85]"
+      >
+        {shop.name}
+        <span
+          class="block text-xl md:text-2xl font-medium tracking-normal text-gray-400 mt-4 max-w-md leading-normal normal-case"
+        >
+          {shop.description}
+        </span>
+      </h1>
+      <div class="hidden lg:block h-px w-full bg-black"></div>
+    </header>
+
+    {
+      shop.categories?.map((category) => (
+        <section class="mb-32">
+          <div class="flex items-baseline justify-between border-b-4 border-black pb-4 mb-12">
+            <h2 class="text-4xl md:text-6xl font-bold uppercase tracking-tight">
+              {category.name}
+            </h2>
+            <span class="font-mono font-bold text-gray-400">
+              0{category.products.length} ITEMS
+            </span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-16">
+            {category.products?.map((product) => (
+              <div class="group relative">
+                <div class="aspect-[4/5] bg-white mb-6 overflow-hidden relative">
+                  {product.image_url ? (
+                    <img
+                      src={product.image_url}
+                      alt={product.name}
+                      class="w-full h-full object-cover transition-all duration-500 group-hover:scale-105"
+                    />
+                  ) : (
+                    <div class="w-full h-full flex flex-col items-center justify-center bg-gray-200">
+                      <div class="w-20 h-20 bg-gray-300 rounded-full mb-2" />
+                      <span class="font-bold text-gray-400 uppercase">
+                        No Image
+                      </span>
+                    </div>
+                  )}
+
+                  {product.stock > 0 && (
+                    <button class="absolute bottom-0 left-0 right-0 bg-black text-white py-4 font-bold uppercase tracking-widest translate-y-full group-hover:translate-y-0 transition-transform duration-300 hover:bg-gray-800">
+                      Add to Bag - ${Number(product.price).toFixed(2)}
+                    </button>
+                  )}
+                </div>
+
+                <div class="flex justify-between items-start">
+                  <div>
+                    <h3 class="text-xl font-bold uppercase leading-none mb-1">
+                      {product.name}
+                    </h3>
+                    <p class="text-sm font-medium text-gray-500 line-clamp-2">
+                      {product.description}
+                    </p>
+                  </div>
+                  <div class="font-mono font-bold">
+                    ${Number(product.price).toFixed(2)}
+                  </div>
+                </div>
+
+                {product.stock <= 0 && (
+                  <div class="mt-2 text-xs font-bold uppercase text-red-500 tracking-widest">
+                    Out of Stock
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </section>
+      ))
+    }
+  </div>
+
+  <footer
+    class="mt-32 pt-12 border-t border-gray-300 text-center uppercase font-bold text-gray-400 text-sm tracking-widest"
+  >
+    Shop Experience © {new Date().getFullYear()}
+  </footer>
+</div>
+
+<style>
+  @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&display=swap");
+  .modern-shop {
+    font-family: "Inter", sans-serif;
+  }
+</style>

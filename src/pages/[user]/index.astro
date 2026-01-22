@@ -1,0 +1,185 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { ProfileRepository } from "../../data/ProfileRepository";
+import { MenuRepository } from "../../data/MenuRepository";
+import { CVRepository } from "../../data/CVRepository";
+import { PortfolioRepository } from "../../data/PortfolioRepository";
+import { ShopRepository } from "../../data/ShopRepository";
+import { InvitationRepository } from "../../data/InvitationRepository";
+
+const { user } = Astro.params;
+
+const profileRepo = new ProfileRepository();
+const profile = await profileRepo.getByUsername(user || "");
+
+if (!profile) {
+  return Astro.redirect("/404");
+}
+
+const userId = profile.id;
+
+// Fetch availability of services
+const menuRepo = new MenuRepository();
+const menu = await menuRepo.getByUserId(userId);
+
+const cvRepo = new CVRepository();
+const cv = await cvRepo.getByUserId(userId);
+
+const portfolioRepo = new PortfolioRepository();
+const portfolio = await portfolioRepo.getByUserId(userId);
+
+const shopRepo = new ShopRepository();
+const shop = await shopRepo.getByUserId(userId);
+
+const invitationRepo = new InvitationRepository();
+const invitation = await invitationRepo.getByUserId(userId);
+
+const links = [
+  {
+    name: "Digital Menu",
+    url: `/${user}/menu`,
+    active: !!menu,
+    icon: "🍽️",
+  },
+  {
+    name: "CV / Resume",
+    url: `/${user}/cv`,
+    active: !!cv,
+    icon: "📄",
+  },
+  {
+    name: "Portfolio",
+    url: `/${user}/portfolio`,
+    active: !!portfolio,
+    icon: "🎨",
+  },
+  {
+    name: "Shop",
+    url: `/${user}/shop`,
+    active: !!shop,
+    icon: "🛍️",
+  },
+  {
+    name: "Events & Invitations",
+    url: `/${user}/invitation`,
+    active: !!invitation,
+    icon: "💌",
+  },
+].filter((link) => link.active);
+---
+
+<Layout
+  title={`${profile.display_name || user} | Atomo`}
+  description={`Links for ${profile.display_name || user}`}
+>
+  <div
+    class="min-h-screen bg-black text-white flex flex-col items-center py-20 px-4 relative overflow-hidden"
+  >
+    <!-- Background Grid -->
+    <div
+      class="absolute inset-0 bg-[linear-gradient(to_right,#333_1px,transparent_1px),linear-gradient(to_bottom,#333_1px,transparent_1px)] bg-[size:4rem_4rem] opacity-20 pointer-events-none"
+    >
+    </div>
+
+    <!-- Avatar -->
+    <div class="z-10 mb-8 relative">
+      <div
+        class="w-32 h-32 rounded-full overflow-hidden border-2 border-white/20 bg-neutral-900 flex items-center justify-center"
+      >
+        {
+          profile.avatar_url ? (
+            <img
+              src={profile.avatar_url}
+              alt={profile.username}
+              class="w-full h-full object-cover"
+            />
+          ) : (
+            <span class="text-4xl font-bold text-neutral-500">
+              {profile.username[0].toUpperCase()}
+            </span>
+          )
+        }
+      </div>
+      <div
+        class="absolute -bottom-2 -right-2 w-8 h-8 bg-green-500 border-4 border-black rounded-full"
+      >
+      </div>
+    </div>
+
+    <!-- Name & Bio -->
+    <div class="z-10 text-center mb-12">
+      <h1 class="text-2xl font-bold tracking-tight mb-2">
+        {profile.display_name || profile.username}
+      </h1>
+      <p class="text-neutral-400 max-w-sm mx-auto">@{profile.username}</p>
+    </div>
+
+    <!-- Links List -->
+    <div class="z-10 w-full max-w-md space-y-4 mb-16">
+      {
+        links.length > 0 ? (
+          links.map((link) => (
+            <a href={link.url} class="block w-full group">
+              <div
+                class="
+                    relative overflow-hidden
+                    px-6 py-4 
+                    border border-neutral-800 
+                    bg-neutral-900/50 backdrop-blur-sm
+                    hover:bg-white hover:text-black hover:border-white
+                    transition-all duration-300
+                    flex items-center justify-between
+                    rounded-lg
+                "
+              >
+                <span class="font-medium tracking-wide flex items-center gap-3">
+                  <span class="opacity-70 group-hover:opacity-100">
+                    {link.icon}
+                  </span>
+                  {link.name}
+                </span>
+                <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  →
+                </span>
+              </div>
+            </a>
+          ))
+        ) : (
+          <div class="text-center text-neutral-500 py-8 border border-dashed border-neutral-800 rounded-lg">
+            No active services found.
+          </div>
+        )
+      }
+    </div>
+
+    <!-- Social Links -->
+    {
+      profile.social_links && Object.keys(profile.social_links).length > 0 && (
+        <div class="z-10 flex gap-6 mt-auto">
+          {Object.entries(profile.social_links).map(([platform, url]) => (
+            <a
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-neutral-400 hover:text-white transition-colors"
+            >
+              <span class="sr-only">{platform}</span>
+              <span class="uppercase text-xs tracking-widest border-b border-transparent hover:border-white pb-1">
+                {platform}
+              </span>
+            </a>
+          ))}
+        </div>
+      )
+    }
+
+    <footer class="z-10 mt-16 text-center">
+      <a
+        href="/"
+        class="text-xs font-bold tracking-[0.2em] text-neutral-600 hover:text-neutral-400 uppercase"
+      >
+        Powered by Atomo
+      </a>
+    </footer>
+  </div>
+</Layout>

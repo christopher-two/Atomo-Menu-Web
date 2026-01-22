@@ -1,0 +1,100 @@
+---
+import type { Invitation } from "../../../domain/models/Invitation";
+
+interface Props {
+  invitation: Invitation;
+}
+
+const { invitation } = Astro.props;
+---
+
+<div
+  class="modern-invitation min-h-screen bg-[#f3f3f3] text-black flex items-center justify-center py-12 px-6 font-sans"
+>
+  <div
+    class="max-w-5xl w-full grid grid-cols-1 md:grid-cols-2 bg-white shadow-2xl"
+  >
+    <div
+      class="bg-black text-white p-12 md:p-20 flex flex-col justify-between relative overflow-hidden"
+    >
+      <div class="relative z-10">
+        <span
+          class="text-xs font-bold uppercase tracking-widest text-gray-500 mb-2 block"
+          >Event</span
+        >
+        <h1
+          class="text-5xl md:text-7xl font-black uppercase tracking-tighter leading-none mb-4"
+        >
+          {invitation.event_name}
+        </h1>
+      </div>
+
+      <div class="relative z-10">
+        <div
+          class="text-6xl md:text-9xl font-black text-transparent bg-clip-text bg-gradient-to-t from-gray-800 to-white opacity-20 absolute -bottom-10 -left-10 select-none"
+        >
+          INVITE
+        </div>
+      </div>
+    </div>
+
+    <div class="p-12 md:p-20 flex flex-col justify-center">
+      <div class="mb-12">
+        <h2 class="text-3xl font-bold uppercase mb-2">When</h2>
+        <p class="text-xl text-gray-500 font-medium">
+          {
+            invitation.event_date
+              ? new Date(invitation.event_date).toLocaleDateString(undefined, {
+                  weekday: "short",
+                  month: "long",
+                  day: "numeric",
+                })
+              : "Date TBD"
+          }
+        </p>
+        <p class="text-4xl font-black mt-2">
+          {
+            invitation.event_date
+              ? new Date(invitation.event_date).toLocaleTimeString(undefined, {
+                  hour: "numeric",
+                  minute: "2-digit",
+                })
+              : ""
+          }
+        </p>
+      </div>
+
+      <div class="mb-12">
+        <h2 class="text-3xl font-bold uppercase mb-2">Where</h2>
+        <p class="text-xl text-gray-500 font-medium">{invitation.location}</p>
+        <a
+          href={`https://maps.google.com/?q=${invitation.location}`}
+          target="_blank"
+          class="text-sm font-bold uppercase underline mt-2 inline-block hover:text-gray-800"
+          >Get Directions</a
+        >
+      </div>
+
+      {
+        invitation.description && (
+          <div class="mb-12 p-6 bg-gray-100 border-l-4 border-black">
+            <p class="font-medium text-gray-600">{invitation.description}</p>
+          </div>
+        )
+      }
+
+      <button
+        class="bg-black text-white w-full py-5 font-bold uppercase tracking-widest hover:bg-gray-800 transition-colors"
+      >
+        Confirm Attendance
+      </button>
+    </div>
+  </div>
+</div>
+
+<style>
+  @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&display=swap");
+  .modern-invitation {
+    font-family: "Inter", sans-serif;
+  }
+</style>

@@ -1,0 +1,99 @@
+---
+import type { Shop } from "../../../domain/models/Shop";
+
+interface Props {
+  shop: Shop;
+}
+
+const { shop } = Astro.props;
+---
+
+<div
+  class="elegance-shop bg-[#fcfbf9] min-h-screen py-20 px-6 font-serif text-[#2c2c2c] relative"
+>
+  <div
+    class="absolute inset-0 opacity-[0.4] pointer-events-none mix-blend-multiply bg-[url('https://www.transparenttextures.com/patterns/cream-paper.png')]"
+  >
+  </div>
+
+  <div
+    class="max-w-6xl mx-auto relative z-10 border-double border-4 border-[#c5a059]/20 p-8 md:p-16 bg-white/60 backdrop-blur-sm"
+  >
+    <header class="text-center mb-20">
+      <span class="text-[#c5a059] tracking-[0.3em] text-xs uppercase block mb-4"
+        >Maison de</span
+      >
+      <h1
+        class="text-5xl md:text-7xl font-bold tracking-widest uppercase mb-6 text-[#1a1a1a]"
+      >
+        {shop.name}
+      </h1>
+      <div class="flex items-center justify-center gap-4 mb-6">
+        <div class="h-px w-10 bg-[#c5a059]"></div>
+        <span class="text-[#c5a059] italic text-xl">&</span>
+        <div class="h-px w-10 bg-[#c5a059]"></div>
+      </div>
+      <p class="text-lg italic text-[#8a703f] max-w-2xl mx-auto font-light">
+        "{shop.description}"
+      </p>
+    </header>
+
+    {
+      shop.categories?.map((category) => (
+        <div class="mb-24">
+          <div class="text-center mb-12 relative">
+            <h2 class="text-3xl font-bold uppercase tracking-[0.2em] inline-block bg-[#fcfbf9] px-6 relative z-10">
+              {category.name}
+            </h2>
+            <div class="absolute top-1/2 left-0 right-0 h-px bg-[#c5a059]/30 -z-0" />
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-16">
+            {category.products?.map((product) => (
+              <div class="text-center group">
+                <div class="aspect-[3/4] bg-[#f0eee9] mb-6 overflow-hidden relative shadow-md">
+                  {product.image_url ? (
+                    <img
+                      src={product.image_url}
+                      alt={product.name}
+                      class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
+                  ) : (
+                    <div class="w-full h-full flex items-center justify-center text-[#c5a059]/30 italic">
+                      No Visual
+                    </div>
+                  )}
+                </div>
+                <h3 class="text-xl font-bold uppercase tracking-wide mb-2 text-[#1a1a1a]">
+                  {product.name}
+                </h3>
+                <p class="text-[#8a703f] italic text-sm mb-3 font-light leading-relaxed px-4">
+                  {product.description}
+                </p>
+                <div class="text-[#c5a059] font-bold text-lg">
+                  ${Number(product.price).toFixed(2)}
+                </div>
+                {product.stock > 0 ? (
+                  <button class="mt-4 text-xs font-bold uppercase tracking-[0.2em] border-b border-transparent hover:border-[#1a1a1a] transition-all pb-1">
+                    Add to Cart
+                  </button>
+                ) : (
+                  <span class="mt-4 block text-xs font-bold uppercase tracking-[0.2em] text-[#ccc]">
+                    Sold Out
+                  </span>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap");
+  .elegance-shop {
+    font-family: "Playfair Display", serif;
+  }
+</style>

@@ -2,51 +2,64 @@
 import type { Portfolio } from "../../../domain/models/Portfolio";
 
 interface Props {
-    portfolio: Portfolio;
+  portfolio: Portfolio;
 }
 
 const { portfolio } = Astro.props;
 ---
 
-<div class="max-w-4xl mx-auto px-4 py-12">
-    <header class="mb-16 text-center">
-        <h1 class="text-4xl font-bold mb-4">{portfolio.title}</h1>
-        <p class="text-xl text-neutral-600 dark:text-neutral-400">
-            {portfolio.description}
-        </p>
+<div
+  class="minimalist-portfolio bg-white dark:bg-neutral-900 min-h-screen text-neutral-900 dark:text-neutral-50 font-sans py-20 px-6"
+>
+  <div class="max-w-6xl mx-auto">
+    <header class="mb-32 max-w-3xl">
+      <h1 class="text-5xl md:text-7xl font-light tracking-tight mb-8">
+        {portfolio.title}
+      </h1>
+      <p
+        class="text-xl md:text-2xl text-neutral-500 font-light leading-relaxed"
+      >
+        {portfolio.description}
+      </p>
     </header>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {
-            portfolio.items?.map((item) => (
-                <article class="group relative overflow-hidden rounded-lg bg-white dark:bg-neutral-800 shadow-sm transition hover:shadow-md">
-                    {item.image_url && (
-                        <div class="aspect-video overflow-hidden bg-neutral-100">
-                            <img
-                                src={item.image_url}
-                                alt={item.title}
-                                class="h-full w-full object-cover transition duration-300 group-hover:scale-105"
-                            />
-                        </div>
-                    )}
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold mb-2">{item.title}</h3>
-                        <p class="text-neutral-600 dark:text-neutral-400 mb-4 text-sm line-clamp-3">
-                            {item.description}
-                        </p>
-                        {item.project_url && (
-                            <a
-                                href={item.project_url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                class="inline-flex items-center text-sm font-medium text-blue-600 hover:underline"
-                            >
-                                View Project &rarr;
-                            </a>
-                        )}
-                    </div>
-                </article>
-            ))
-        }
+    <div
+      class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 md:gap-y-24"
+    >
+      {
+        portfolio.items?.map((item) => (
+          <article class="group cursor-pointer">
+            <div class="aspect-[4/3] bg-neutral-100 dark:bg-neutral-800 mb-6 overflow-hidden">
+              {item.image_url ? (
+                <img
+                  src={item.image_url}
+                  alt={item.title}
+                  class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+              ) : (
+                <div class="w-full h-full flex items-center justify-center text-neutral-400">
+                  No Image
+                </div>
+              )}
+            </div>
+            <h2 class="text-2xl font-medium mb-2 group-hover:underline decoration-1 underline-offset-4">
+              {item.title}
+            </h2>
+            <p class="text-neutral-500 line-clamp-2 leading-relaxed">
+              {item.description}
+            </p>
+            {item.project_url && (
+              <a
+                href={item.project_url}
+                target="_blank"
+                class="inline-block mt-4 text-sm font-bold uppercase tracking-widest text-neutral-400 hover:text-black dark:hover:text-white transition-colors"
+              >
+                View Project
+              </a>
+            )}
+          </article>
+        ))
+      }
     </div>
+  </div>
 </div>

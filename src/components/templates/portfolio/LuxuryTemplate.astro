@@ -1,0 +1,105 @@
+---
+import type { Portfolio } from "../../../domain/models/Portfolio";
+
+interface Props {
+  portfolio: Portfolio;
+}
+
+const { portfolio } = Astro.props;
+---
+
+<div
+  class="luxury-portfolio min-h-screen bg-[#050505] text-[#e5e5e5] py-20 px-4 md:px-12 relative font-serif"
+>
+  {/* Texture */}
+  <div
+    class="absolute inset-0 opacity-[0.05] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/stardust.png')]"
+  >
+  </div>
+
+  <div class="max-w-[1600px] mx-auto relative z-10">
+    <header class="text-center mb-32">
+      <span
+        class="text-[#D4AF37] tracking-[0.5em] text-xs uppercase border-b border-[#D4AF37]/30 pb-2 mb-6 inline-block"
+        >Artistic Showcase</span
+      >
+      <h1
+        class="text-6xl md:text-9xl font-serif text-white mb-8 uppercase tracking-[0.1em] font-light"
+      >
+        {portfolio.title}
+      </h1>
+      <p class="text-[#D4AF37]/60 text-xl font-light italic max-w-2xl mx-auto">
+        {portfolio.description}
+      </p>
+    </header>
+
+    <section class="space-y-48">
+      {
+        portfolio.items?.map((item, index) => (
+          <article class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
+            <div
+              class={`md:col-span-7 relative ${index % 2 === 1 ? "md:order-last" : ""}`}
+            >
+              <div class="absolute -inset-4 border border-[#D4AF37]/20" />
+              <div class="aspect-[16/10] bg-[#0a0a0a] overflow-hidden shadow-2xl relative group">
+                {item.image_url ? (
+                  <img
+                    src={item.image_url}
+                    alt={item.title}
+                    class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-700"
+                  />
+                ) : (
+                  <div class="w-full h-full flex items-center justify-center text-[#D4AF37]/20 border border-white/5">
+                    Visual Missing
+                  </div>
+                )}
+
+                {/* Overlay */}
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60" />
+              </div>
+            </div>
+
+            <div class="md:col-span-5 text-center md:text-left p-8">
+              <div class="text-[#D4AF37] text-6xl opacity-30 font-serif mb-4 italic">
+                {index + 1}
+              </div>
+              <h2 class="text-4xl md:text-5xl text-white font-serif uppercase tracking-widest mb-6">
+                {item.title}
+              </h2>
+              <div class="h-px w-24 bg-[#D4AF37]/50 mb-8 mx-auto md:mx-0" />
+              <p class="text-neutral-400 font-light leading-relaxed italic text-lg mb-8">
+                {item.description}
+              </p>
+              {item.project_url && (
+                <a
+                  href={item.project_url}
+                  target="_blank"
+                  class="inline-block border border-[#D4AF37] text-[#D4AF37] px-8 py-3 text-sm uppercase tracking-[0.2em] hover:bg-[#D4AF37] hover:text-[#050505] transition-all duration-500"
+                >
+                  View Piece
+                </a>
+              )}
+            </div>
+          </article>
+        ))
+      }
+    </section>
+
+    <footer
+      class="mt-48 text-center text-[#D4AF37]/30 text-xs uppercase tracking-[0.3em] font-light"
+    >
+      Curated by Atomo
+    </footer>
+  </div>
+</div>
+
+<style>
+  @import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap");
+  .luxury-portfolio {
+    font-family: "Cormorant Garamond", serif;
+  }
+  h1,
+  h2 {
+    font-family: "Cinzel", serif;
+  }
+</style>

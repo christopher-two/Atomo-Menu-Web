@@ -1,0 +1,119 @@
+---
+import type { Portfolio } from "../../../domain/models/Portfolio";
+
+interface Props {
+  portfolio: Portfolio;
+}
+
+const { portfolio } = Astro.props;
+---
+
+<div
+  class="cyber-portfolio min-h-screen bg-[#f0f0f0] font-mono text-black overflow-x-hidden relative py-20 px-4 md:px-12"
+>
+  <div
+    class="absolute inset-0 opacity-[0.03] pointer-events-none z-50 bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"
+  >
+  </div>
+
+  <div class="max-w-[1800px] mx-auto relative z-10">
+    <header class="mb-24 flex flex-col md:flex-row items-start gap-8">
+      <div
+        class="bg-white border-[4px] border-black shadow-[10px_10px_0px_0px_#000] p-8 md:p-12 rotate-1 inline-block"
+      >
+        <h1
+          class="text-6xl md:text-9xl font-black uppercase tracking-tighter leading-[0.8]"
+        >
+          {portfolio.title}
+        </h1>
+      </div>
+      <div
+        class="bg-[#ff5f1f] border-[3px] border-black p-6 shadow-[6px_6px_0px_0px_#000] -rotate-2 max-w-xl"
+      >
+        <p class="text-white font-bold text-xl uppercase leading-tight">
+          {portfolio.description}
+        </p>
+      </div>
+    </header>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+      {
+        portfolio.items?.map((item, i) => (
+          <div class="group bg-white border-[4px] border-black shadow-[8px_8px_0px_0px_#000] hover:shadow-[16px_16px_0px_0px_#ff5f1f] hover:translate-x-[-4px] hover:translate-y-[-4px] transition-all duration-200 flex flex-col h-full">
+            <div class="bg-black text-white p-2 font-black text-sm flex justify-between">
+              <span>IMG_FILE_0{i + 1}</span>
+              <span>[READY]</span>
+            </div>
+
+            <div class="aspect-square bg-gray-200 overflow-hidden border-b-[4px] border-black relative">
+              {item.image_url ? (
+                <img
+                  src={item.image_url}
+                  alt={item.title}
+                  class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-300"
+                />
+              ) : (
+                <div class="w-full h-full flex items-center justify-center font-black text-2xl bg-gray-300 text-gray-500">
+                  NO_SIGNAL
+                </div>
+              )}
+
+              {item.project_url && (
+                <a
+                  href={item.project_url}
+                  target="_blank"
+                  class="absolute bottom-4 right-4 bg-[#ff5f1f] text-white p-3 border-[3px] border-black shadow-[4px_4px_0px_0px_#000] hover:bg-white hover:text-black hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all"
+                >
+                  OPEN_LINK
+                </a>
+              )}
+            </div>
+
+            <div class="p-6 flex-grow flex flex-col">
+              <h2 class="text-3xl font-black uppercase tracking-tight mb-4 leading-none">
+                {item.title}
+              </h2>
+              <p class="font-bold text-gray-600 mb-6 flex-grow">
+                {item.description}
+              </p>
+
+              <div class="w-full bg-black h-4 mt-auto repeating-linear-gradient flex items-center overflow-hidden">
+                <div class="text-[10px] text-[#ff5f1f] whitespace-nowrap animate-marquee">
+                  // SYSTEM_VERIFIED // LOADING_ASSETS // RENDER_COMPLETE //
+                </div>
+              </div>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+
+    <footer class="mt-24 border-t-[8px] border-black pt-8">
+      <h2
+        class="text-9xl font-black text-gray-200 uppercase tracking-tighter select-none"
+      >
+        End_Of_Line
+      </h2>
+    </footer>
+  </div>
+</div>
+
+<style>
+  @import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap");
+  .cyber-portfolio {
+    font-family: "Space Grotesk", sans-serif;
+  }
+
+  .animate-marquee {
+    animation: marquee 10s linear infinite;
+  }
+
+  @keyframes marquee {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+</style>

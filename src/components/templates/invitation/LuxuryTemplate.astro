@@ -1,0 +1,113 @@
+---
+import type { Invitation } from "../../../domain/models/Invitation";
+
+interface Props {
+  invitation: Invitation;
+}
+
+const { invitation } = Astro.props;
+---
+
+<div
+  class="luxury-invitation min-h-screen bg-[#050505] text-[#e5e5e5] flex items-center justify-center py-12 px-4 font-serif relative"
+>
+  {/* Background & Textures */}
+  <div
+    class="absolute inset-0 opacity-[0.05] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/stardust.png')]"
+  >
+  </div>
+  <div
+    class="absolute top-0 right-0 w-[600px] h-[600px] bg-[radial-gradient(circle_at_center,_#333_0%,_transparent_70%)] opacity-20 pointer-events-none"
+  >
+  </div>
+
+  <div
+    class="max-w-2xl w-full text-center relative z-10 p-12 md:p-24 border border-white/5 bg-[#0a0a0a]/90 backdrop-blur-md shadow-2xl"
+  >
+    {/* Gold Corners */}
+    <div
+      class="absolute top-6 left-6 w-8 h-8 border-t border-l border-[#D4AF37]"
+    >
+    </div>
+    <div
+      class="absolute top-6 right-6 w-8 h-8 border-t border-r border-[#D4AF37]"
+    >
+    </div>
+    <div
+      class="absolute bottom-6 left-6 w-8 h-8 border-b border-l border-[#D4AF37]"
+    >
+    </div>
+    <div
+      class="absolute bottom-6 right-6 w-8 h-8 border-b border-r border-[#D4AF37]"
+    >
+    </div>
+
+    <header class="mb-16">
+      <h1
+        class="text-5xl md:text-7xl font-serif text-white mb-6 uppercase tracking-[0.1em] font-light"
+      >
+        {invitation.event_name}
+      </h1>
+      <div class="flex items-center justify-center gap-6">
+        <div class="h-px bg-[#D4AF37]/50 w-16"></div>
+        <span class="text-[#D4AF37] tracking-[0.3em] text-xs uppercase"
+          >Cordially Invited</span
+        >
+        <div class="h-px bg-[#D4AF37]/50 w-16"></div>
+      </div>
+    </header>
+
+    <div class="space-y-8 mb-16">
+      <div class="text-2xl text-[#D4AF37] font-light italic">
+        {
+          invitation.event_date
+            ? new Date(invitation.event_date).toLocaleDateString(undefined, {
+                weekday: "long",
+                month: "long",
+                day: "numeric",
+              })
+            : ""
+        }
+      </div>
+      <div class="text-sm uppercase tracking-[0.3em] text-neutral-500">
+        At {
+          invitation.event_date
+            ? new Date(invitation.event_date).toLocaleTimeString(undefined, {
+                hour: "numeric",
+                minute: "2-digit",
+              })
+            : ""
+        }
+      </div>
+      <div
+        class="text-xl md:text-2xl text-white font-light border-y border-white/10 py-4 max-w-sm mx-auto"
+      >
+        {invitation.location}
+      </div>
+    </div>
+
+    {
+      invitation.description && (
+        <p class="text-[#D4AF37]/70 italic font-light text-lg mb-16 max-w-md mx-auto leading-relaxed">
+          "{invitation.description}"
+        </p>
+      )
+    }
+
+    <button
+      class="bg-[#D4AF37] text-black px-12 py-4 text-xs font-bold uppercase tracking-[0.25em] hover:bg-white transition-colors duration-500"
+    >
+      RSVP
+    </button>
+  </div>
+</div>
+
+<style>
+  @import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap");
+  .luxury-invitation {
+    font-family: "Cormorant Garamond", serif;
+  }
+  h1 {
+    font-family: "Cinzel", serif;
+  }
+</style>

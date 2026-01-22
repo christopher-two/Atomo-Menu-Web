@@ -1,0 +1,91 @@
+---
+import type { CV } from "../../../domain/models/CV";
+
+interface Props {
+  cv: CV;
+}
+
+const { cv } = Astro.props;
+---
+
+<div class="cyber-cv min-h-screen bg-[#f0f0f0] font-mono text-black overflow-x-hidden relative py-20 px-4 md:px-12">
+    <div class="absolute inset-0 opacity-[0.03] pointer-events-none z-50 bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
+
+    <div class="max-w-6xl mx-auto relative z-10">
+        <header class="mb-20">
+             <div class="bg-white border-[3px] border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] p-8 md:p-12 mb-8 rotate-[-1deg] inline-block w-full">
+                <h1 class="text-5xl md:text-8xl font-black uppercase tracking-tighter break-words mb-4">{cv.title}</h1>
+                 {cv.professional_summary && (
+                     <p class="text-xl md:text-2xl font-bold text-gray-600 leading-tight border-l-4 border-[#ff5f1f] pl-4">
+                        {cv.professional_summary}
+                     </p>
+                 )}
+             </div>
+        </header>
+
+        <div class="grid lg:grid-cols-[1fr_2fr] gap-12">
+            <aside class="space-y-12">
+                {/* Skills Block */}
+                <div class="bg-black text-white p-6 shadow-[8px_8px_0px_0px_#ff5f1f]">
+                    <h2 class="text-3xl font-black uppercase tracking-tighter mb-6 text-[#ff5f1f]">Skills</h2>
+                    <div class="flex flex-wrap gap-2">
+                        {cv.skills?.map(skill => (
+                            <span class="bg-white text-black px-2 py-1 font-bold text-sm uppercase border border-black hover:bg-[#ff5f1f] hover:text-white transition-colors cursor-default">
+                                {skill.name}
+                            </span>
+                        ))}
+                    </div>
+                </div>
+
+                {/* Education Block */}
+                {cv.education?.map(edu => (
+                     <div class="bg-white border-[3px] border-black p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+                        <h3 class="text-xl font-black uppercase leading-none mb-2">{edu.institution}</h3>
+                        <p class="text-sm font-bold text-[#ff5f1f] uppercase mb-4">{edu.degree}</p>
+                        <div class="bg-gray-200 text-xs font-mono p-2 inline-block font-bold">
+                             {edu.start_date ? new Date(edu.start_date).getFullYear() : ""} - {edu.is_current ? "Present" : edu.end_date ? new Date(edu.end_date).getFullYear() : ""}
+                        </div>
+                    </div>
+                ))}
+            </aside>
+
+            <main class="space-y-8">
+                 <div class="bg-[#ff5f1f] border-[3px] border-black p-4 inline-block shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] -rotate-1 mb-4">
+                    <h2 class="text-3xl font-black uppercase text-white tracking-tighter">Experience_Log</h2>
+                </div>
+
+                {cv.experience?.map((exp, i) => (
+                    <div class={`bg-white border-[3px] border-black p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[10px_10px_0px_0px_#000] transition-all relative overflow-hidden`}> 
+                         <div class="absolute top-0 right-0 bg-black text-white text-xs font-bold px-3 py-1 font-mono">
+                             ID: 0{i+1}
+                         </div>
+
+                        <div class="flex flex-col md:flex-row md:items-end justify-between mb-4 border-b-[3px] border-black pb-4">
+                            <div>
+                                <h3 class="text-3xl font-black uppercase leading-none mb-1">{exp.role}</h3>
+                                <div class="text-xl font-bold bg-[#ff5f1f] text-white inline-block px-2 transform -rotate-1">{exp.company}</div>
+                            </div>
+                            <div class="font-mono font-bold mt-2 md:mt-0 text-gray-500">
+                                 {exp.start_date ? new Date(exp.start_date).getFullYear() : ""} -> {exp.is_current ? "NOW" : exp.end_date ? new Date(exp.end_date).getFullYear() : ""}
+                            </div>
+                        </div>
+                        
+                        <p class="text-lg font-bold text-gray-800 leading-tight">
+                            {exp.description}
+                        </p>
+                    </div>
+                ))}
+            </main>
+        </div>
+        
+        <footer class="mt-20 border-t-[4px] border-black pt-8 flex justify-between items-center font-bold font-mono">
+            <span class="bg-black text-white px-2">SYSTEM_END</span>
+            <span class="text-[#ff5f1f]">/// TERMINATED</span>
+        </footer>
+    </div>
+</div>
+
+<style>
+  @import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap");
+  .cyber-cv { font-family: "Space Grotesk", sans-serif; }
+</style>

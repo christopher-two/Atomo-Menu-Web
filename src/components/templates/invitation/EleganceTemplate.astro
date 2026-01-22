@@ -1,0 +1,108 @@
+---
+import type { Invitation } from "../../../domain/models/Invitation";
+
+interface Props {
+  invitation: Invitation;
+}
+
+const { invitation } = Astro.props;
+---
+
+<div
+  class="elegance-invitation min-h-screen bg-[#fcfbf9] text-[#2c2c2c] flex items-center justify-center py-12 px-4 font-serif relative"
+>
+  <div
+    class="absolute inset-0 opacity-[0.4] pointer-events-none mix-blend-multiply bg-[url('https://www.transparenttextures.com/patterns/cream-paper.png')]"
+  >
+  </div>
+
+  <div
+    class="max-w-2xl w-full text-center relative z-10 p-12 md:p-20 border-double border-4 border-[#c5a059]/20 bg-white/80 backdrop-blur-sm shadow-xl"
+  >
+    <header class="mb-12">
+      <span class="text-[#c5a059] tracking-[0.3em] text-xs uppercase block mb-4"
+        >Please Join Us For</span
+      >
+      <div class="w-full h-px bg-[#c5a059]/30 mb-8"></div>
+      <h1
+        class="text-6xl md:text-8xl font-bold tracking-widest uppercase mb-4 text-[#1a1a1a] leading-none"
+      >
+        {invitation.event_name}
+      </h1>
+      <div class="w-full h-px bg-[#c5a059]/30 mt-8"></div>
+    </header>
+
+    <div class="py-6 space-y-4 mb-8">
+      <div class="text-2xl italic text-[#1a1a1a]">
+        {
+          invitation.event_date
+            ? new Date(invitation.event_date).toLocaleDateString(undefined, {
+                weekday: "long",
+              })
+            : ""
+        }
+      </div>
+      <div
+        class="flex items-center justify-center gap-4 text-[#c5a059] font-bold uppercase tracking-widest"
+      >
+        <span
+          >{
+            invitation.event_date
+              ? new Date(invitation.event_date).toLocaleDateString(undefined, {
+                  month: "long",
+                })
+              : ""
+          }</span
+        >
+        <span class="text-4xl text-[#1a1a1a] font-normal mx-2"
+          >{
+            invitation.event_date
+              ? new Date(invitation.event_date).getDate()
+              : ""
+          }</span
+        >
+        <span
+          >{
+            invitation.event_date
+              ? new Date(invitation.event_date).getFullYear()
+              : ""
+          }</span
+        >
+      </div>
+      <div class="text-xl italic text-[#8a703f]">
+        at {
+          invitation.event_date
+            ? new Date(invitation.event_date).toLocaleTimeString(undefined, {
+                hour: "numeric",
+                minute: "2-digit",
+              })
+            : ""
+        }
+      </div>
+    </div>
+
+    <div class="text-[#555] font-light italic text-lg mb-12 max-w-sm mx-auto">
+      {invitation.location}
+      {
+        invitation.description && (
+          <p class="mt-8 text-sm leading-loose border-t border-[#c5a059]/20 pt-8">
+            {invitation.description}
+          </p>
+        )
+      }
+    </div>
+
+    <button
+      class="border border-[#c5a059] text-[#c5a059] px-10 py-3 text-xs uppercase tracking-[0.2em] hover:bg-[#c5a059] hover:text-white transition-all duration-500"
+    >
+      Kindly Reply
+    </button>
+  </div>
+</div>
+
+<style>
+  @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap");
+  .elegance-invitation {
+    font-family: "Playfair Display", serif;
+  }
+</style>

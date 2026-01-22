@@ -1,0 +1,126 @@
+---
+import type { CV } from "../../../domain/models/CV";
+
+interface Props {
+  cv: CV;
+}
+
+const { cv } = Astro.props;
+---
+
+<div
+  class="elegance-cv bg-[#fcfbf9] min-h-screen py-20 px-6 md:px-12 font-serif text-[#2c2c2c] relative"
+>
+  <div
+    class="absolute inset-0 opacity-[0.4] pointer-events-none mix-blend-multiply bg-[url('https://www.transparenttextures.com/patterns/cream-paper.png')]"
+  >
+  </div>
+
+  <div
+    class="max-w-5xl mx-auto relative z-10 border border-[#c5a059]/30 p-8 md:p-16 bg-white/80 backdrop-blur-sm shadow-xl"
+  >
+    <header class="text-center mb-16 border-b border-[#c5a059]/30 pb-16">
+      <h1
+        class="text-5xl md:text-7xl font-bold tracking-widest uppercase mb-6 text-[#1a1a1a]"
+      >
+        {cv.title}
+      </h1>
+      {
+        cv.professional_summary && (
+          <p class="text-xl italic text-[#8a703f] max-w-3xl mx-auto leading-relaxed">
+            "{cv.professional_summary}"
+          </p>
+        )
+      }
+    </header>
+
+    <section class="mb-16">
+      <h2
+        class="text-center text-sm font-bold uppercase tracking-[0.3em] text-[#c5a059] mb-12 flex items-center justify-center gap-4"
+      >
+        <span class="w-8 h-px bg-[#c5a059]"></span> Experience <span
+          class="w-8 h-px bg-[#c5a059]"></span>
+      </h2>
+      <div class="space-y-12">
+        {
+          cv.experience?.map((exp) => (
+            <article class="flex flex-col md:flex-row gap-6 md:gap-12">
+              <div class="md:w-1/4 text-right md:border-r border-[#c5a059]/20 md:pr-12 pt-1">
+                <span class="block font-bold text-[#1a1a1a]">
+                  {exp.company}
+                </span>
+                <span class="block text-sm italic text-[#8a703f] mt-1">
+                  {exp.start_date ? new Date(exp.start_date).getFullYear() : ""}{" "}
+                  —{" "}
+                  {exp.is_current
+                    ? "Present"
+                    : exp.end_date
+                      ? new Date(exp.end_date).getFullYear()
+                      : ""}
+                </span>
+              </div>
+              <div class="md:w-3/4">
+                <h3 class="text-2xl font-bold mb-3 text-[#1a1a1a]">
+                  {exp.role}
+                </h3>
+                <p class="text-[#555] leading-relaxed">{exp.description}</p>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="mb-16">
+      <h2
+        class="text-center text-sm font-bold uppercase tracking-[0.3em] text-[#c5a059] mb-12 flex items-center justify-center gap-4"
+      >
+        <span class="w-8 h-px bg-[#c5a059]"></span> Education <span
+          class="w-8 h-px bg-[#c5a059]"></span>
+      </h2>
+      <div class="grid md:grid-cols-2 gap-8">
+        {
+          cv.education?.map((edu) => (
+            <div class="text-center p-6 border border-[#c5a059]/10 bg-[#fbf9f4]">
+              <h3 class="text-xl font-bold mb-2 text-[#1a1a1a]">
+                {edu.institution}
+              </h3>
+              <p class="text-[#8a703f] italic mb-2">{edu.degree}</p>
+              <span class="text-xs tracking-widest uppercase text-[#c5a059]">
+                {edu.start_date ? new Date(edu.start_date).getFullYear() : ""} —{" "}
+                {edu.is_current
+                  ? "Present"
+                  : edu.end_date
+                    ? new Date(edu.end_date).getFullYear()
+                    : ""}
+              </span>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    {
+      cv.skills && cv.skills.length > 0 && (
+        <section>
+          <h2 class="text-center text-sm font-bold uppercase tracking-[0.3em] text-[#c5a059] mb-8 flex items-center justify-center gap-4">
+            <span class="w-8 h-px bg-[#c5a059]" /> Skills{" "}
+            <span class="w-8 h-px bg-[#c5a059]" />
+          </h2>
+          <div class="flex flex-wrap justify-center gap-x-8 gap-y-4">
+            {cv.skills.map((skill) => (
+              <span class="text-lg italic text-[#555]">• {skill.name}</span>
+            ))}
+          </div>
+        </section>
+      )
+    }
+  </div>
+</div>
+
+<style>
+  @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap");
+  .elegance-cv {
+    font-family: "Playfair Display", serif;
+  }
+</style>

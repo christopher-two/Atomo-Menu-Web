@@ -9,36 +9,53 @@ const { invitation } = Astro.props;
 ---
 
 <div
-  class="min-h-screen flex items-center justify-center bg-neutral-100 dark:bg-neutral-900 p-4"
+  class="minimalist-invitation min-h-screen bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-50 flex items-center justify-center py-12 px-4 font-sans"
 >
-  <div
-    class="max-w-lg w-full bg-white dark:bg-black border border-neutral-200 dark:border-neutral-800 p-12 text-center shadow-2xl"
-  >
-    <div class="uppercase tracking-widest text-sm text-neutral-500 mb-8">
-      You are invited
+  <div class="max-w-xl w-full text-center">
+    <div class="mb-12">
+      <span
+        class="text-xs font-bold uppercase tracking-[0.3em] text-neutral-400"
+        >You are invited to</span
+      >
     </div>
 
-    <h1 class="text-4xl md:text-5xl font-serif mb-6">
+    <h1
+      class="text-5xl md:text-7xl font-light tracking-tight mb-8 leading-tight"
+    >
       {invitation.event_name}
     </h1>
 
-    <p
-      class="text-lg mb-8 leading-relaxed text-neutral-600 dark:text-neutral-300"
-    >
-      {invitation.description}
-    </p>
+    <div class="w-12 h-px bg-neutral-200 dark:bg-neutral-700 mx-auto mb-12">
+    </div>
 
-    <div
-      class="border-t border-b border-neutral-200 dark:border-neutral-800 py-6 my-8 space-y-2"
-    >
-      <p class="font-medium text-lg">
-        {new Date(invitation.event_date).toLocaleString()}
+    <div class="space-y-2 mb-12 text-lg md:text-xl font-light">
+      <p class="font-medium text-neutral-900 dark:text-white">
+        {
+          invitation.event_date
+            ? new Date(invitation.event_date).toLocaleDateString(undefined, {
+                weekday: "long",
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+                hour: "numeric",
+                minute: "numeric",
+              })
+            : "Date TBD"
+        }
       </p>
       <p class="text-neutral-500">{invitation.location}</p>
     </div>
 
+    {
+      invitation.description && (
+        <p class="text-neutral-500 max-w-sm mx-auto mb-16 leading-relaxed">
+          {invitation.description}
+        </p>
+      )
+    }
+
     <button
-      class="bg-black dark:bg-white text-white dark:text-black px-8 py-3 uppercase tracking-wider text-sm font-medium hover:opacity-80 transition"
+      class="bg-black dark:bg-white text-white dark:text-black px-12 py-4 text-xs font-bold uppercase tracking-[0.2em] hover:opacity-80 transition-opacity"
     >
       RSVP Now
     </button>

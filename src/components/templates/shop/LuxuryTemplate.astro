@@ -1,0 +1,108 @@
+---
+import type { Shop } from "../../../domain/models/Shop";
+
+interface Props {
+  shop: Shop;
+}
+
+const { shop } = Astro.props;
+---
+
+<div
+  class="luxury-shop min-h-screen bg-[#050505] text-[#e5e5e5] py-20 px-4 md:px-12 relative font-serif"
+>
+  {/* Texture */}
+  <div
+    class="absolute inset-0 opacity-[0.05] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/stardust.png')]"
+  >
+  </div>
+
+  <div class="max-w-7xl mx-auto relative z-10">
+    <header class="text-center mb-32">
+      <span
+        class="text-[#D4AF37] tracking-[0.5em] text-xs uppercase border-b border-[#D4AF37]/30 pb-2 mb-6 inline-block"
+        >Exclusive Collection</span
+      >
+      <h1
+        class="text-6xl md:text-8xl font-serif text-white mb-8 uppercase tracking-[0.1em] font-light"
+      >
+        {shop.name}
+      </h1>
+      <p
+        class="text-[#D4AF37]/60 text-xl font-light italic max-w-2xl mx-auto leading-relaxed"
+      >
+        "{shop.description}"
+      </p>
+    </header>
+
+    {
+      shop.categories?.map((category) => (
+        <section class="mb-32">
+          <div class="flex items-center gap-8 mb-16">
+            <div class="h-px bg-[#D4AF37]/30 flex-grow" />
+            <h2 class="text-3xl text-[#D4AF37] uppercase tracking-[0.25em] font-light">
+              {category.name}
+            </h2>
+            <div class="h-px bg-[#D4AF37]/30 flex-grow" />
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16">
+            {category.products?.map((product) => (
+              <div class="group">
+                <div class="aspect-[4/5] bg-[#0a0a0a] border border-[#D4AF37]/10 mb-8 overflow-hidden relative shadow-2xl">
+                  {product.image_url ? (
+                    <img
+                      src={product.image_url}
+                      alt={product.name}
+                      class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-700"
+                    />
+                  ) : (
+                    <div class="w-full h-full flex items-center justify-center text-[#D4AF37]/20 border inset-4 border-[#D4AF37]/5 absolute m-4">
+                      Image Unavailable
+                    </div>
+                  )}
+
+                  {product.stock > 0 ? (
+                    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                      <button class="bg-[#D4AF37] text-black px-8 py-3 text-xs uppercase tracking-[0.2em] hover:bg-white transition-colors font-bold">
+                        Acquire
+                      </button>
+                    </div>
+                  ) : (
+                    <div class="absolute inset-0 flex items-center justify-center bg-black/40">
+                      <div class="text-white border border-white px-6 py-2 uppercase tracking-[0.2em] text-xs">
+                        Unvailable
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                <div class="text-center">
+                  <h3 class="text-xl text-white font-serif uppercase tracking-widest mb-2">
+                    {product.name}
+                  </h3>
+                  <p class="text-[#D4AF37] font-light italic text-xl">
+                    ${Number(product.price).toFixed(2)}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  @import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap");
+  .luxury-shop {
+    font-family: "Cormorant Garamond", serif;
+  }
+  h1,
+  h2,
+  h3,
+  button {
+    font-family: "Cinzel", serif;
+  }
+</style>

@@ -10,5 +10,5 @@ export interface Profile {
     display_name: string | null;
     avatar_url: string | null;
     created_at: string;
-    social_links: SocialLink[] | null; // JSONB
+    social_links: Record<string, string> | null; // JSONB
 }

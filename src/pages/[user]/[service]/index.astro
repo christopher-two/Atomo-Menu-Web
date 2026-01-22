@@ -10,19 +10,82 @@ import type { Shop } from "../../../domain/models/Shop";
 import type { Invitation } from "../../../domain/models/Invitation";
 
 // Template Imports
-import MinimalistTemplate from "../../../components/templates/menu/MinimalistTemplate.astro";
-import EleganceTemplate from "../../../components/templates/menu/EleganceTemplate.astro";
-import ModernTemplate from "../../../components/templates/menu/ModernTemplate.astro";
-import LuxuryTemplate from "../../../components/templates/menu/LuxuryTemplate.astro";
-import CyberTemplate from "../../../components/templates/menu/CyberTemplate.astro";
+import MinimalistMenu from "../../../components/templates/menu/MinimalistTemplate.astro";
+import EleganceMenu from "../../../components/templates/menu/EleganceTemplate.astro";
+import ModernMenu from "../../../components/templates/menu/ModernTemplate.astro";
+import LuxuryMenu from "../../../components/templates/menu/LuxuryTemplate.astro";
+import CyberMenu from "../../../components/templates/menu/CyberTemplate.astro";
 
-const TEMPLATE_MAP: Record<string, any> = {
-  [MenuTemplate.MINIMALIST]: MinimalistTemplate,
-  [MenuTemplate.ELEGANCE]: EleganceTemplate,
-  [MenuTemplate.MODERN]: ModernTemplate,
-  [MenuTemplate.LUXURY]: LuxuryTemplate,
-  [MenuTemplate.CYBER]: CyberTemplate,
-  // Add Portfolio templates here if they differ or share
+import MinimalistCV from "../../../components/templates/cv/MinimalistTemplate.astro";
+import EleganceCV from "../../../components/templates/cv/EleganceTemplate.astro";
+import ModernCV from "../../../components/templates/cv/ModernTemplate.astro";
+import LuxuryCV from "../../../components/templates/cv/LuxuryTemplate.astro";
+import CyberCV from "../../../components/templates/cv/CyberTemplate.astro";
+
+import MinimalistPortfolio from "../../../components/templates/portfolio/MinimalistTemplate.astro";
+import ElegancePortfolio from "../../../components/templates/portfolio/EleganceTemplate.astro";
+import ModernPortfolio from "../../../components/templates/portfolio/ModernTemplate.astro";
+import LuxuryPortfolio from "../../../components/templates/portfolio/LuxuryTemplate.astro";
+import CyberPortfolio from "../../../components/templates/portfolio/CyberTemplate.astro";
+
+import MinimalistShop from "../../../components/templates/shop/MinimalistTemplate.astro";
+import EleganceShop from "../../../components/templates/shop/EleganceTemplate.astro";
+import ModernShop from "../../../components/templates/shop/ModernTemplate.astro";
+import LuxuryShop from "../../../components/templates/shop/LuxuryTemplate.astro";
+import CyberShop from "../../../components/templates/shop/CyberTemplate.astro";
+
+import MinimalistInvitation from "../../../components/templates/invitation/MinimalistTemplate.astro";
+import EleganceInvitation from "../../../components/templates/invitation/EleganceTemplate.astro";
+import ModernInvitation from "../../../components/templates/invitation/ModernTemplate.astro";
+import LuxuryInvitation from "../../../components/templates/invitation/LuxuryTemplate.astro";
+import CyberInvitation from "../../../components/templates/invitation/CyberTemplate.astro";
+
+const TEMPLATE_KEYS = {
+  MINIMALIST: "minimalist",
+  ELEGANCE: "elegance",
+  MODERN: "modern",
+  LUXURY: "luxury",
+  CYBER: "cyber",
+};
+
+const MENU_TEMPLATES: Record<string, any> = {
+  [TEMPLATE_KEYS.MINIMALIST]: MinimalistMenu,
+  [TEMPLATE_KEYS.ELEGANCE]: EleganceMenu,
+  [TEMPLATE_KEYS.MODERN]: ModernMenu,
+  [TEMPLATE_KEYS.LUXURY]: LuxuryMenu,
+  [TEMPLATE_KEYS.CYBER]: CyberMenu,
+};
+
+const CV_TEMPLATES: Record<string, any> = {
+  [TEMPLATE_KEYS.MINIMALIST]: MinimalistCV,
+  [TEMPLATE_KEYS.ELEGANCE]: EleganceCV,
+  [TEMPLATE_KEYS.MODERN]: ModernCV,
+  [TEMPLATE_KEYS.LUXURY]: LuxuryCV,
+  [TEMPLATE_KEYS.CYBER]: CyberCV,
+};
+
+const PORTFOLIO_TEMPLATES: Record<string, any> = {
+  [TEMPLATE_KEYS.MINIMALIST]: MinimalistPortfolio,
+  [TEMPLATE_KEYS.ELEGANCE]: ElegancePortfolio,
+  [TEMPLATE_KEYS.MODERN]: ModernPortfolio,
+  [TEMPLATE_KEYS.LUXURY]: LuxuryPortfolio,
+  [TEMPLATE_KEYS.CYBER]: CyberPortfolio,
+};
+
+const SHOP_TEMPLATES: Record<string, any> = {
+  [TEMPLATE_KEYS.MINIMALIST]: MinimalistShop,
+  [TEMPLATE_KEYS.ELEGANCE]: EleganceShop,
+  [TEMPLATE_KEYS.MODERN]: ModernShop,
+  [TEMPLATE_KEYS.LUXURY]: LuxuryShop,
+  [TEMPLATE_KEYS.CYBER]: CyberShop,
+};
+
+const INVITATION_TEMPLATES: Record<string, any> = {
+  [TEMPLATE_KEYS.MINIMALIST]: MinimalistInvitation,
+  [TEMPLATE_KEYS.ELEGANCE]: EleganceInvitation,
+  [TEMPLATE_KEYS.MODERN]: ModernInvitation,
+  [TEMPLATE_KEYS.LUXURY]: LuxuryInvitation,
+  [TEMPLATE_KEYS.CYBER]: CyberInvitation,
 };
 
 const { user, service } = Astro.params;
@@ -35,54 +98,75 @@ if (!profile) {
   return Astro.redirect("/404");
 }
 
-let contentComponent = null;
 let data: any = null;
-let TemplateComponent = null;
+let TemplateComponent: any = null;
 let title = "Atomo";
+let serviceType: "menu" | "cv" | "portfolio" | "shop" | "invitation" | null =
+  null;
 
 // 2. Route Service
 switch (service) {
   case "menu":
+    serviceType = "menu";
     const menuRepo = new MenuRepository();
     data = await menuRepo.getByUserId(profile.id);
     if (data) {
       const templateId = (data as Menu).template_id || "minimalist";
-      TemplateComponent = TEMPLATE_MAP[templateId] || MinimalistTemplate;
+      TemplateComponent = MENU_TEMPLATES[templateId] || MinimalistMenu;
       title = (data as Menu).name || "Menu";
     }
     break;
+
   case "portfolio":
+    serviceType = "portfolio";
     const portfolioRepo = new PortfolioRepository();
     data = await portfolioRepo.getByUserId(profile.id);
     if (data) {
       const templateId = (data as Portfolio).template_id || "minimalist";
-      // Using simple map for now, assuming similar templates exist or fallback
-      TemplateComponent = MinimalistTemplate;
+      TemplateComponent =
+        PORTFOLIO_TEMPLATES[templateId] || MinimalistPortfolio;
       title = (data as Portfolio).title;
     }
     break;
+
   case "cv":
+    serviceType = "cv";
     const { CVRepository } = await import("../../../data/CVRepository");
     const cvRepo = new CVRepository();
     data = await cvRepo.getByUserId(profile.id);
     if (data) {
-      TemplateComponent = MinimalistTemplate;
+      const templateId = (data as CV).template_id || "minimalist";
+      TemplateComponent = CV_TEMPLATES[templateId] || MinimalistCV;
       title = (data as CV).title || "CV";
     }
     break;
+
   case "shop":
+    serviceType = "shop";
     const { ShopRepository } = await import("../../../data/ShopRepository");
     const shopRepo = new ShopRepository();
     data = await shopRepo.getByUserId(profile.id);
     if (data) {
-      TemplateComponent = MinimalistTemplate;
+      const templateId = (data as any).template_id || "minimalist";
+      TemplateComponent = SHOP_TEMPLATES[templateId] || MinimalistShop;
       title = (data as Shop).name;
     }
     break;
+
   case "invitation":
-    // Invitations are usually strictly by slug, but if accessed via /user/invitation, maybe list them?
-    // Or maybe this route isn't used for invitation listing.
+    serviceType = "invitation";
+    const { InvitationRepository } =
+      await import("../../../data/InvitationRepository");
+    const invitationRepo = new InvitationRepository();
+    data = await invitationRepo.getByUserId(profile.id);
+    if (data) {
+      const templateId = (data as Invitation).template_id || "minimalist";
+      TemplateComponent =
+        INVITATION_TEMPLATES[templateId] || MinimalistInvitation;
+      title = (data as Invitation).event_name || "Invitation";
+    }
     break;
+
   default:
     return Astro.redirect("/404");
 }
@@ -91,8 +175,9 @@ switch (service) {
 const placeholders = {
   menu: "No active menu found for this user.",
   portfolio: "No portfolio found for this user.",
-  cv: "CV Service coming soon",
-  shop: "Shop Service coming soon",
+  cv: "No CV found for this user.",
+  shop: "No shop found for this user.",
+  invitation: "No invitation found for this user.",
 };
 
 let description = `Service ${service} for ${profile.username}`;
@@ -119,11 +204,13 @@ if (data) {
           "--font-main": data.font_family || "Inter",
         }}
       >
-        {service === "menu" && <TemplateComponent menu={data} />}
-        {service === "portfolio" && <TemplateComponent portfolio={data} />}
-        {service === "cv" && <TemplateComponent cv={data} />}
-        {service === "shop" && <TemplateComponent shop={data} />}
-        {service === "invitation" && <TemplateComponent invitation={data} />}
+        {serviceType === "menu" && <TemplateComponent menu={data} />}
+        {serviceType === "portfolio" && <TemplateComponent portfolio={data} />}
+        {serviceType === "cv" && <TemplateComponent cv={data} />}
+        {serviceType === "shop" && <TemplateComponent shop={data} />}
+        {serviceType === "invitation" && (
+          <TemplateComponent invitation={data} />
+        )}
       </div>
     ) : (
       <div class="min-h-screen flex flex-col items-center justify-center bg-neutral-900 text-white">

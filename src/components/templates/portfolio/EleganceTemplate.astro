@@ -1,0 +1,95 @@
+---
+import type { Portfolio } from "../../../domain/models/Portfolio";
+
+interface Props {
+  portfolio: Portfolio;
+}
+
+const { portfolio } = Astro.props;
+---
+
+<div
+  class="elegance-portfolio bg-[#fcfbf9] min-h-screen py-20 px-6 md:px-12 font-serif text-[#2c2c2c] relative"
+>
+  <div
+    class="absolute inset-0 opacity-[0.4] pointer-events-none mix-blend-multiply bg-[url('https://www.transparenttextures.com/patterns/cream-paper.png')]"
+  >
+  </div>
+
+  <div class="max-w-7xl mx-auto relative z-10">
+    <header
+      class="text-center mb-24 md:mb-32 border-b border-[#c5a059]/30 pb-16"
+    >
+      <span class="text-[#c5a059] tracking-[0.4em] text-xs uppercase block mb-6"
+        >Selected Works</span
+      >
+      <h1
+        class="text-6xl md:text-8xl font-bold tracking-widest uppercase mb-8 text-[#1a1a1a]"
+      >
+        {portfolio.title}
+      </h1>
+      <div class="w-16 h-px bg-[#c5a059] mx-auto mb-8"></div>
+      <p
+        class="text-xl italic text-[#8a703f] max-w-2xl mx-auto leading-relaxed"
+      >
+        "{portfolio.description}"
+      </p>
+    </header>
+
+    <div class="space-y-32">
+      {
+        portfolio.items?.map((item, index) => (
+          <article
+            class={`flex flex-col md:flex-row gap-12 md:gap-24 items-center ${index % 2 === 1 ? "md:flex-row-reverse" : ""}`}
+          >
+            <div class="md:w-1/2 relative group">
+              <div class="absolute -inset-4 border border-[#c5a059]/20 transition-all duration-500 group-hover:inset-0" />
+              <div class="aspect-[3/4] md:aspect-square bg-[#f0eee9] overflow-hidden relative shadow-lg">
+                {item.image_url ? (
+                  <img
+                    src={item.image_url}
+                    alt={item.title}
+                    class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 grayscale group-hover:grayscale-0"
+                  />
+                ) : (
+                  <div class="w-full h-full flex items-center justify-center text-[#c5a059]/40 italic">
+                    Image Unavailable
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div class="md:w-1/2 text-center md:text-left">
+              <span class="text-[#c5a059] font-bold text-5xl md:text-7xl opacity-20 block mb-4 -ml-4 font-sans">
+                0{index + 1}
+              </span>
+              <h2 class="text-4xl md:text-5xl font-bold mb-6 text-[#1a1a1a]">
+                {item.title}
+              </h2>
+              <div class="w-12 h-px bg-[#c5a059] mb-6 mx-auto md:mx-0" />
+              <p class="text-[#555] text-lg leading-relaxed mb-8 italic">
+                {item.description}
+              </p>
+              {item.project_url && (
+                <a
+                  href={item.project_url}
+                  target="_blank"
+                  class="text-[#c5a059] uppercase tracking-[0.2em] text-sm border-b border-[#c5a059] pb-1 hover:text-[#1a1a1a] hover:border-[#1a1a1a] transition-colors"
+                >
+                  Discover Project
+                </a>
+              )}
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</div>
+
+<style>
+  @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap");
+  .elegance-portfolio {
+    font-family: "Playfair Display", serif;
+  }
+</style>
