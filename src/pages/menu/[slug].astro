@@ -30,14 +30,13 @@ let menu: Menu | null = null;
 let dishes: Dish[] = [];
 
 if (slug) {
-  if (error) {
-    console.error("Error fetching menu:", error);
-  }
+  const repository = new MenuRepository();
+  menu = await repository.getBySlug(slug);
 
   if (menu) {
     dishes = menu.dishes || [];
   } else {
-    console.warn("No menu found for slug:", slug);
+    // console.warn("No menu found for slug:", slug);
   }
 }
 
