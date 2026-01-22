@@ -13,6 +13,14 @@ export interface Dish {
     price: number;
     image_url: string;
     is_visible: boolean;
+    category_id?: string;
+}
+
+export interface MenuCategory {
+    id: string;
+    name: string;
+    sort_order: number;
+    dishes: Dish[];
 }
 
 export interface Menu {
@@ -23,5 +31,8 @@ export interface Menu {
     primary_color: string;
     font_family: string;
     logo_url?: string;
-    dishes: Dish[];
+    categories: MenuCategory[];
+    // Keep dishes for backward compatibility or uncategorized items if needed, 
+    // but primarily we use categories now.
+    dishes?: Dish[]; 
 }

@@ -2,96 +2,125 @@
 import type { Menu } from "../../../domain/models/DigitalMenu";
 
 interface Props {
-    menu: Menu;
+  menu: Menu;
 }
 
 const { menu } = Astro.props;
 ---
 
 <div
-    class="elegance-template bg-[#fcfbf9] min-h-screen py-16 px-6 md:px-12 font-serif text-[#2c2c2c] relative"
+  class="elegance-template bg-[#fcfbf9] min-h-screen py-16 px-6 md:px-12 font-serif text-[#2c2c2c] relative"
 >
-    <!-- Paper Texture -->
-    <div
-        class="absolute inset-0 opacity-[0.4] pointer-events-none mix-blend-multiply bg-[url('https://www.transparenttextures.com/patterns/cream-paper.png')]"
-    >
-    </div>
+  <!-- Paper Texture -->
+  <div
+    class="absolute inset-0 opacity-[0.4] pointer-events-none mix-blend-multiply bg-[url('https://www.transparenttextures.com/patterns/cream-paper.png')]"
+  >
+  </div>
 
-    <div
-        class="max-w-4xl mx-auto relative z-10 border-double border-4 border-[#c5a059]/20 p-6 md:p-12 bg-white/50 backdrop-blur-[2px]"
-    >
-        <header class="text-center mb-16 md:mb-24">
-            <span
-                class="text-[#c5a059] text-xs md:text-sm tracking-[0.4em] uppercase mb-4 block"
-                >Fine Dining Experience</span
-            >
-            <h1
-                class="text-5xl md:text-7xl lg:text-8xl font-bold tracking-widest uppercase mb-6 leading-tight"
-            >
-                {menu.name}
-            </h1>
-            <div class="flex items-center justify-center gap-4 mb-8">
-                <div class="h-px w-16 bg-[#c5a059]"></div>
-                <div class="w-2 h-2 rotate-45 bg-[#c5a059]"></div>
-                <div class="h-px w-16 bg-[#c5a059]"></div>
-            </div>
-            {
-                menu.description && (
-                    <p class="text-[#8a703f] italic text-lg md:text-xl font-light max-w-2xl mx-auto">
-                        "{menu.description}"
-                    </p>
-                )
-            }
-        </header>
+  <div
+    class="max-w-4xl mx-auto relative z-10 border-double border-4 border-[#c5a059]/20 p-6 md:p-12 bg-white/50 backdrop-blur-[2px]"
+  >
+    <header class="text-center mb-16 md:mb-24">
+      <span
+        class="text-[#c5a059] text-xs md:text-sm tracking-[0.4em] uppercase mb-4 block"
+        >Fine Dining Experience</span
+      >
+      <h1
+        class="text-5xl md:text-7xl lg:text-8xl font-bold tracking-widest uppercase mb-6 leading-tight"
+      >
+        {menu.name}
+      </h1>
+      <div class="flex items-center justify-center gap-4 mb-8">
+        <div class="h-px w-16 bg-[#c5a059]"></div>
+        <div class="w-2 h-2 rotate-45 bg-[#c5a059]"></div>
+        <div class="h-px w-16 bg-[#c5a059]"></div>
+      </div>
+      {
+        menu.description && (
+          <p class="text-[#8a703f] italic text-lg md:text-xl font-light max-w-2xl mx-auto">
+            "{menu.description}"
+          </p>
+        )
+      }
+    </header>
 
-        <section class="mb-12">
-            <h2
-                class="text-2xl md:text-3xl text-center uppercase tracking-[0.3em] font-medium mb-16 text-[#1a1a1a]"
-            >
-                ~ Selection ~
+    <section class="mb-12">
+      {
+        menu.categories?.map((category) => (
+          <div class="mb-16">
+            <h2 class="text-2xl md:text-3xl text-center uppercase tracking-[0.3em] font-medium mb-12 text-[#1a1a1a] border-b border-[#c5a059]/30 pb-4 mx-auto max-w-xs">
+              ~ {category.name} ~
             </h2>
-
-            <div
-                class="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-12 md:gap-y-16"
-            >
-                {
-                    menu.dishes?.map((dish: any) => (
-                        <div class="dish-item relative group">
-                            <div class="flex justify-between items-baseline mb-3">
-                                <h3 class="text-lg md:text-xl font-bold uppercase tracking-wider pr-4 bg-[#fcfbf9]/0 group-hover:text-[#c5a059] transition-colors duration-300">
-                                    {dish.name}
-                                </h3>
-                                <div class="flex-grow border-b border-[#c5a059]/30 border-dotted mx-2" />
-                                <span class="text-[#c5a059] font-medium text-lg whitespace-nowrap">
-                                    ${Number(dish.price).toFixed(2)}
-                                </span>
-                            </div>
-                            <p class="text-sm md:text-base text-[#666] italic leading-relaxed font-light pl-2 border-l-2 border-[#c5a059]/0 group-hover:border-[#c5a059]/30 transition-all duration-300">
-                                {dish.description}
-                            </p>
-                        </div>
-                    ))
-                }
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-12 md:gap-y-16">
+              {category.dishes?.map((dish: any) => (
+                <div class="dish-item relative group">
+                  <div class="flex justify-between items-baseline mb-3">
+                    <h3 class="text-lg md:text-xl font-bold uppercase tracking-wider pr-4 bg-[#fcfbf9]/0 group-hover:text-[#c5a059] transition-colors duration-300">
+                      {dish.name}
+                    </h3>
+                    <div class="flex-grow border-b border-[#c5a059]/30 border-dotted mx-2" />
+                    <span class="text-[#c5a059] font-medium text-lg whitespace-nowrap">
+                      ${Number(dish.price).toFixed(2)}
+                    </span>
+                  </div>
+                  <p class="text-sm md:text-base text-[#666] italic leading-relaxed font-light pl-2 border-l-2 border-[#c5a059]/0 group-hover:border-[#c5a059]/30 transition-all duration-300">
+                    {dish.description}
+                  </p>
+                </div>
+              ))}
             </div>
-        </section>
+          </div>
+        ))
+      }
 
-        <footer class="mt-24 text-center">
-            <div class="w-8 h-8 mx-auto mb-6 opacity-30">
-                <svg viewBox="0 0 100 100" fill="currentColor">
-                    <path d="M50 0 L100 50 L50 100 L0 50 Z"></path>
-                </svg>
+      {
+        menu.dishes?.filter((d: any) => !d.category_id).length > 0 && (
+          <div class="mb-16">
+            <h2 class="text-2xl md:text-3xl text-center uppercase tracking-[0.3em] font-medium mb-12 text-[#1a1a1a] border-b border-[#c5a059]/30 pb-4 mx-auto max-w-xs">
+              ~ Selection ~
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-12 md:gap-y-16">
+              {menu.dishes
+                ?.filter((d: any) => !d.category_id)
+                .map((dish: any) => (
+                  <div class="dish-item relative group">
+                    <div class="flex justify-between items-baseline mb-3">
+                      <h3 class="text-lg md:text-xl font-bold uppercase tracking-wider pr-4 bg-[#fcfbf9]/0 group-hover:text-[#c5a059] transition-colors duration-300">
+                        {dish.name}
+                      </h3>
+                      <div class="flex-grow border-b border-[#c5a059]/30 border-dotted mx-2" />
+                      <span class="text-[#c5a059] font-medium text-lg whitespace-nowrap">
+                        ${Number(dish.price).toFixed(2)}
+                      </span>
+                    </div>
+                    <p class="text-sm md:text-base text-[#666] italic leading-relaxed font-light pl-2 border-l-2 border-[#c5a059]/0 group-hover:border-[#c5a059]/30 transition-all duration-300">
+                      {dish.description}
+                    </p>
+                  </div>
+                ))}
             </div>
-            <p class="text-[10px] uppercase tracking-[0.3em] text-[#c5a059]">
-                Override
-            </p>
-        </footer>
-    </div>
+          </div>
+        )
+      }
+    </section>
+
+    <footer class="mt-24 text-center">
+      <div class="w-8 h-8 mx-auto mb-6 opacity-30">
+        <svg viewBox="0 0 100 100" fill="currentColor">
+          <path d="M50 0 L100 50 L50 100 L0 50 Z"></path>
+        </svg>
+      </div>
+      <p class="text-[10px] uppercase tracking-[0.3em] text-[#c5a059]">
+        Override
+      </p>
+    </footer>
+  </div>
 </div>
 
 <style>
-    @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap");
+  @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap");
 
-    .elegance-template {
-        font-family: "Playfair Display", serif;
-    }
+  .elegance-template {
+    font-family: "Playfair Display", serif;
+  }
 </style>
