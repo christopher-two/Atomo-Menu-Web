@@ -151,7 +151,10 @@ CREATE POLICY "Users can manage own menu." ON public.menus FOR ALL USING (auth.u
 
 -- RLS for Dishes
 ALTER TABLE public.dishes ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "Public dishes are viewable by everyone." ON public.dishes FOR SELECT USING (is_visible = true);
+CREATE POLICY "Public dishes are viewable by everyone." ON public.dishes FOR SELECT USING (
+  is_visible = true AND
+  EXISTS (SELECT 1 FROM public.menus WHERE id = menu_id AND is_active = true)
+);
 CREATE POLICY "Users can manage own dishes." ON public.dishes FOR ALL USING (
   EXISTS (SELECT 1 FROM public.menus WHERE id = menu_id AND user_id = auth.uid())
 );
@@ -303,7 +306,7 @@ CREATE TABLE IF NOT EXISTS public.plans (
 -- Subscriptions Table
 CREATE TABLE IF NOT EXISTS public.subscriptions (
   id uuid NOT NULL DEFAULT gen_random_uuid(),
-  user_id uuid NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  user_id uuid NOT NULL UNIQUE REFERENCES auth.users(id) ON DELETE CASCADE,
   plan_id uuid NOT NULL REFERENCES public.plans(id),
   status text NOT NULL DEFAULT 'active', -- 'active', 'canceled', 'past_due', 'trialing'
   current_period_start timestamp with time zone DEFAULT now(),
