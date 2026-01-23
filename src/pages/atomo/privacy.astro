@@ -1,0 +1,93 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { Content as PrivacyContent } from "../../assets/docs/Aviso de Privacidad_ Atomo.md";
+---
+
+<Layout title="Privacy Policy | Atomo">
+  <main class="bg-black text-white min-h-screen w-full">
+    <!-- Header Section -->
+    <section class="w-full px-4 md:px-12 py-24 border-b border-neutral-800">
+      <h1
+        class="text-6xl md:text-8xl font-black tracking-tighter uppercase mb-6"
+      >
+        Privacy<br />Policy
+      </h1>
+      <p class="text-xl text-neutral-400 font-light tracking-wide max-w-2xl">
+        Transparent and responsible handling of your data.
+      </p>
+    </section>
+
+    <!-- Content Section -->
+    <section class="w-full px-4 md:px-12 py-20">
+      <div class="max-w-4xl mx-auto markdown-content">
+        <PrivacyContent />
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer
+      class="w-full px-4 md:px-12 py-12 border-t border-neutral-900 text-neutral-500 flex justify-between items-center text-xs uppercase tracking-widest"
+    >
+      <div>
+        © {new Date().getFullYear()} Atomo.
+      </div>
+      <div class="flex gap-6">
+        <a href="/" class="hover:text-white transition-colors">Home</a>
+        <a href="#" class="hover:text-white transition-colors">Contact</a>
+      </div>
+    </footer>
+  </main>
+</Layout>
+
+<style is:global>
+  @reference "../../styles/global.css";
+
+  .markdown-content {
+    @apply text-neutral-300 leading-relaxed;
+  }
+
+  .markdown-content h1 {
+    @apply text-3xl md:text-4xl font-bold text-white mt-16 mb-8 uppercase tracking-wide;
+  }
+
+  .markdown-content h1:first-child {
+    @apply mt-0;
+  }
+
+  .markdown-content h2 {
+    @apply text-2xl md:text-3xl font-bold text-white mt-12 mb-6 uppercase tracking-widest text-neutral-200 border-b border-neutral-800 pb-4;
+  }
+
+  .markdown-content h3 {
+    @apply text-xl font-bold text-white mt-10 mb-4 tracking-wide;
+  }
+
+  .markdown-content p {
+    @apply mb-6 text-lg;
+  }
+
+  .markdown-content ul,
+  .markdown-content ol {
+    @apply mb-8 pl-6 space-y-2;
+  }
+
+  .markdown-content ul {
+    @apply list-disc marker:text-neutral-500;
+  }
+
+  .markdown-content ol {
+    @apply list-decimal marker:text-neutral-500;
+  }
+
+  .markdown-content li {
+    @apply pl-2;
+  }
+
+  .markdown-content strong {
+    @apply text-white font-bold;
+  }
+
+  .markdown-content a {
+    @apply text-white underline underline-offset-4 decoration-neutral-700 hover:decoration-white transition-colors;
+  }
+</style>
