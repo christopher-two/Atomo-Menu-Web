@@ -1,6 +1,6 @@
-# Atomo Menu - Digital Menu Solution
+# Atomo - Digital Services Platform
 
-Atomo Menu es una plataforma de menú digital diseñada para ofrecer una experiencia elegante, profesional y altamente personalizable para restaurantes y negocios gastronómicos.
+Atomo es una plataforma de servicios digitales diseñada para ofrecer una experiencia elegante, profesional y altamente personalizable para restaurantes y negocios gastronómicos.
 
 ## 🚀 Características Principales
 
@@ -97,4 +97,4 @@ Este proyecto está preconfigurado para desplegarse en **Cloudflare Pages**.
 
 ---
 
-Desarrollado con ❤️ por el equipo de **Atomo Menu**.
+Desarrollado con ❤️ por el equipo de **Atomo**.
