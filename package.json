@@ -17,6 +17,7 @@
     "tailwindcss": "^4.1.18"
   },
   "devDependencies": {
+    "@cloudflare/workers-types": "^4.20260123.0",
     "wrangler": "^4.59.3"
   }
 }

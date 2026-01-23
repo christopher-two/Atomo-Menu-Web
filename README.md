@@ -16,16 +16,17 @@ Atomo es una plataforma de servicios digitales diseñada para ofrecer una experi
   - **Modern**: Innovador y dinámico.
   - **Luxury**: Exclusivo y de alta gama.
   - **Cyber**: Futurista y tecnológico.
-- **Gestión Intuitiva**: Integración con Supabase para una gestión de datos en tiempo real.
-- **Optimización de Rendimiento**: Construido con Astro para tiempos de carga ultrarrápidos y excelente SEO.
-- **Diseño Responsivo**: Experiencia de usuario impecable en dispositivos móviles y escritorio.
+- **Optimización de Rendimiento**:
+  - **ISR (Incremental Static Regeneration)**: Caché inteligente en el borde (Cloudflare Global Network) con revalidación en segundo plano.
+  - **Astro Server-Side Rendering (SSR)**: Generación dinámica ultrarrápida.
+- **Diseño Responsivo**: Experiencia de usuario impecable en dispositivos móviles y escritorios.
 
 ## 🛠️ Stack Tecnológico
 
-- **Frontend**: [Astro](https://astro.build/) (v5)
+- **Frontend**: [Astro](https://astro.build/) (v5) - Adaptador Cloudflare
 - **Estilos**: [Tailwind CSS](https://tailwindcss.com/) (v4)
 - **Base de Datos y Autenticación**: [Supabase](https://supabase.com/)
-- **Despliegue**: [Cloudflare](https://www.cloudflare.com/)
+- **Infraestructura**: [Cloudflare Pages](https://pages.cloudflare.com/)
 
 ## 📁 Estructura del Proyecto
 
