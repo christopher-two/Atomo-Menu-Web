@@ -39,7 +39,10 @@ const { menu } = Astro.props;
       </div>
       {
         menu.description && (
-          <p class="text-[#8a703f] italic text-lg md:text-xl font-light max-w-2xl mx-auto">
+          <p
+            data-preview="description"
+            class="text-[#8a703f] italic text-lg md:text-xl font-light max-w-2xl mx-auto"
+          >
             "{menu.description}"
           </p>
         )

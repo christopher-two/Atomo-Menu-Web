@@ -34,7 +34,10 @@ const { menu } = Astro.props;
         menu.description && (
           <div class="mt-6 md:mt-8 block md:inline-block md:ml-4">
             <div class="bg-[#ff5f1f] border-[3px] border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] p-4 rotate-[1deg] hover:rotate-0 transition-transform duration-300">
-              <p class="text-white font-bold uppercase text-base md:text-xl leading-tight">
+              <p
+                data-preview="description"
+                class="text-white font-bold uppercase text-base md:text-xl leading-tight"
+              >
                 {menu.description}
               </p>
             </div>

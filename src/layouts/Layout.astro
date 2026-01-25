@@ -65,6 +65,12 @@ import "../styles/global.css";
               if (h1) h1.innerText = data.name;
             }
           }
+          if (data.description) {
+            const descEls = document.querySelectorAll(
+              '[data-preview="description"]',
+            );
+            descEls.forEach((el) => (el.innerText = data.description));
+          }
           if (data.color) {
             const rootEls = document.querySelectorAll('[data-preview="root"]');
             if (rootEls.length > 0) {
