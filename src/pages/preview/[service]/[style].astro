@@ -1,0 +1,404 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import ModernMenu from "../../../components/templates/menu/ModernTemplate.astro";
+import CyberMenu from "../../../components/templates/menu/CyberTemplate.astro";
+import MinimalistMenu from "../../../components/templates/menu/MinimalistTemplate.astro";
+import EleganceMenu from "../../../components/templates/menu/EleganceTemplate.astro";
+import LuxuryMenu from "../../../components/templates/menu/LuxuryTemplate.astro";
+
+import ModernCV from "../../../components/templates/cv/ModernTemplate.astro";
+import CyberCV from "../../../components/templates/cv/CyberTemplate.astro";
+import MinimalistCV from "../../../components/templates/cv/MinimalistTemplate.astro";
+import EleganceCV from "../../../components/templates/cv/EleganceTemplate.astro";
+import LuxuryCV from "../../../components/templates/cv/LuxuryTemplate.astro";
+
+import ModernPortfolio from "../../../components/templates/portfolio/ModernTemplate.astro";
+import CyberPortfolio from "../../../components/templates/portfolio/CyberTemplate.astro";
+import MinimalistPortfolio from "../../../components/templates/portfolio/MinimalistTemplate.astro";
+import ElegancePortfolio from "../../../components/templates/portfolio/EleganceTemplate.astro";
+import LuxuryPortfolio from "../../../components/templates/portfolio/LuxuryTemplate.astro";
+
+import ModernShop from "../../../components/templates/shop/ModernTemplate.astro";
+import CyberShop from "../../../components/templates/shop/CyberTemplate.astro";
+import MinimalistShop from "../../../components/templates/shop/MinimalistTemplate.astro";
+import EleganceShop from "../../../components/templates/shop/EleganceTemplate.astro";
+import LuxuryShop from "../../../components/templates/shop/LuxuryTemplate.astro";
+
+import ModernInvitation from "../../../components/templates/invitation/ModernTemplate.astro";
+import CyberInvitation from "../../../components/templates/invitation/CyberTemplate.astro";
+import MinimalistInvitation from "../../../components/templates/invitation/MinimalistTemplate.astro";
+import EleganceInvitation from "../../../components/templates/invitation/EleganceTemplate.astro";
+import LuxuryInvitation from "../../../components/templates/invitation/LuxuryTemplate.astro";
+
+import {
+  MenuTemplate,
+  type Menu,
+  type MenuCategory,
+  type Dish,
+} from "../../../domain/models/DigitalMenu";
+import type {
+  CV,
+  CVEducation,
+  CVExperience,
+  CVSkill,
+} from "../../../domain/models/CV";
+import type {
+  Portfolio,
+  PortfolioItem,
+} from "../../../domain/models/Portfolio";
+import type {
+  Shop,
+  Product,
+  ProductCategory,
+} from "../../../domain/models/Shop";
+import type { Invitation } from "../../../domain/models/Invitation";
+
+// SSR mode enabled, no getStaticPaths needed for dynamic routes
+
+const { service, style } = Astro.params;
+
+// --- Mappings ---
+
+const serviceMap: Record<string, string> = {
+  menu: "menu",
+  cv: "cv",
+  curriculum: "cv",
+  "carta-digital": "menu",
+  portfolio: "portfolio",
+  portafolio: "portfolio",
+  shop: "shop",
+  tienda: "shop",
+  invitation: "invitation",
+  invitacion: "invitation",
+};
+
+const styleMap: Record<string, string> = {
+  modern: "modern",
+  moderno: "modern",
+  cyber: "cyber",
+  cyberpunk: "cyber",
+  minimalist: "minimalist",
+  minimalista: "minimalist",
+  elegance: "elegance",
+  elegante: "elegance",
+  luxury: "luxury",
+  lujo: "luxury",
+};
+
+const internalService = serviceMap[service?.toLowerCase() || ""] || "menu";
+const internalStyle = styleMap[style?.toLowerCase() || ""] || "modern";
+
+// --- Dummy Data Generators ---
+
+const createDummyDish = (
+  name: string,
+  price: number,
+  category: string | null = null,
+): Dish => ({
+  id: crypto.randomUUID(),
+  menu_id: "preview-menu",
+  name,
+  description: `Delicious ${name} made with fresh ingredients.`,
+  price,
+  image_url: null,
+  is_visible: true,
+  category_id: category,
+  sort_order: 0,
+  created_at: new Date().toISOString(),
+});
+
+const getDummyMenu = (styleArg: string): Menu => {
+  const dummyCategories: MenuCategory[] = [
+    {
+      id: "cat-1",
+      menu_id: "preview-menu",
+      name: "Starters",
+      sort_order: 1,
+      dishes: [
+        createDummyDish("Bruschetta", 12.0, "cat-1"),
+        createDummyDish("Calamari", 15.5, "cat-1"),
+      ],
+      created_at: new Date().toISOString(),
+    },
+    {
+      id: "cat-2",
+      menu_id: "preview-menu",
+      name: "Main Course",
+      sort_order: 2,
+      dishes: [
+        createDummyDish("Steak Au Poivre", 45.0, "cat-2"),
+        createDummyDish("Lobster Risotto", 38.0, "cat-2"),
+      ],
+      created_at: new Date().toISOString(),
+    },
+  ];
+
+  return {
+    id: "preview-menu",
+    user_id: "preview-user",
+    name: "Gourmet Experience",
+    description: "A preview of your digital menu.",
+    slug: "preview-menu",
+    is_active: true,
+    template_id: styleArg as MenuTemplate,
+    logo_url: null,
+    categories: dummyCategories,
+    dishes: [],
+    primary_color: "#000000",
+    font_family: "sans-serif",
+    created_at: new Date().toISOString(),
+  };
+};
+
+const getDummyCV = (styleArg: string): CV => {
+  return {
+    id: "preview-cv",
+    user_id: "preview-user",
+    title: "Jane Doe",
+    professional_summary:
+      "Experienced software engineer with a passion for building scalable web applications.",
+    is_visible: true,
+    template_id: styleArg,
+    primary_color: "#000000",
+    font_family: "sans-serif",
+    created_at: new Date().toISOString(),
+
+    education: [
+      {
+        id: "edu-1",
+        cv_id: "preview-cv",
+        degree: "Bachelor of Science in Computer Science",
+        institution: "Tech University",
+        start_date: "2015-09-01",
+        end_date: "2019-05-01",
+        is_current: false,
+        description: "Graduated with honors.",
+        sort_order: 1,
+        created_at: new Date().toISOString(),
+      },
+    ],
+    experience: [
+      {
+        id: "exp-1",
+        cv_id: "preview-cv",
+        role: "Senior Developer",
+        company: "Innovate Corp",
+        start_date: "2021-06-01",
+        end_date: null,
+        is_current: true,
+        description: "Leading the frontend team.",
+        sort_order: 1,
+        created_at: new Date().toISOString(),
+      },
+      {
+        id: "exp-2",
+        cv_id: "preview-cv",
+        role: "Junior Developer",
+        company: "StartUp Inc",
+        start_date: "2019-06-01",
+        end_date: "2021-05-01",
+        is_current: false,
+        description: "Full stack development.",
+        sort_order: 2,
+        created_at: new Date().toISOString(),
+      },
+    ],
+    skills: [
+      {
+        id: "skill-1",
+        cv_id: "preview-cv",
+        name: "JavaScript",
+        proficiency: "Expert",
+        sort_order: 1,
+        created_at: new Date().toISOString(),
+      },
+      {
+        id: "skill-2",
+        cv_id: "preview-cv",
+        name: "React",
+        proficiency: "Advanced",
+        sort_order: 2,
+        created_at: new Date().toISOString(),
+      },
+      {
+        id: "skill-3",
+        cv_id: "preview-cv",
+        name: "Node.js",
+        proficiency: "Intermediate",
+        sort_order: 3,
+        created_at: new Date().toISOString(),
+      },
+    ],
+  };
+};
+
+const getDummyPortfolio = (styleArg: string): Portfolio => {
+  return {
+    id: "preview-portfolio",
+    user_id: "preview-user",
+    title: "Creative Portfolio",
+    description: "Showcasing my best work.",
+    slug: "preview-portfolio",
+    is_visible: true,
+    template_id: styleArg,
+    primary_color: "#000000",
+    font_family: "sans-serif",
+    created_at: new Date().toISOString(),
+
+    items: [
+      {
+        id: "item-1",
+        portfolio_id: "preview-portfolio",
+        title: "Project Alpha",
+        description: "A revolutionary app.",
+        image_url: "https://via.placeholder.com/600x400",
+        project_url: "https://example.com",
+        sort_order: 1,
+        created_at: new Date().toISOString(),
+      },
+      {
+        id: "item-2",
+        portfolio_id: "preview-portfolio",
+        title: "Design Beta",
+        description: "Modern branding package.",
+        image_url: "https://via.placeholder.com/600x400",
+        project_url: "https://example.com",
+        sort_order: 2,
+        created_at: new Date().toISOString(),
+      },
+    ],
+  };
+};
+
+const getDummyShop = (styleArg: string): Shop => {
+  return {
+    id: "preview-shop",
+    user_id: "preview-user",
+    name: "My Boutique",
+    description: "Curated goods for you.",
+    slug: "preview-shop",
+    is_active: true,
+    primary_color: "#000000",
+    font_family: "sans-serif",
+    created_at: new Date().toISOString(),
+
+    categories: [
+      {
+        id: "cat-1",
+        shop_id: "preview-shop",
+        name: "Clothing",
+        sort_order: 1,
+        created_at: new Date().toISOString(),
+        products: [
+          {
+            id: "prod-1",
+            shop_id: "preview-shop",
+            category_id: "cat-1",
+            name: "Classic T-Shirt",
+            description: "100% Cotton.",
+            price: 25.0,
+            image_url: "https://via.placeholder.com/300",
+            is_available: true,
+            stock: 100,
+            created_at: new Date().toISOString(),
+          },
+        ],
+      },
+      {
+        id: "cat-2",
+        shop_id: "preview-shop",
+        name: "Accessories",
+        sort_order: 2,
+        created_at: new Date().toISOString(),
+        products: [
+          {
+            id: "prod-2",
+            shop_id: "preview-shop",
+            category_id: "cat-2",
+            name: "Leather Wallet",
+            description: "Genuine leather.",
+            price: 50.0,
+            image_url: "https://via.placeholder.com/300",
+            is_available: true,
+            stock: 50,
+            created_at: new Date().toISOString(),
+          },
+        ],
+      },
+    ],
+  };
+};
+
+const getDummyInvitation = (styleArg: string): Invitation => {
+  return {
+    id: "preview-invitation",
+    user_id: "preview-user",
+    event_name: "John & Jane's Wedding",
+    event_date: "2026-06-15T16:00:00",
+    location: "Grand Ballroom, City Hotel",
+    description: "Join us in celebrating our special day.",
+    slug: "preview-invitation",
+    is_active: true,
+    template_id: styleArg,
+    primary_color: "#000000",
+    font_family: "serif",
+    created_at: new Date().toISOString(),
+  };
+};
+
+// --- Template Registry ---
+
+const templates: Record<string, Record<string, any>> = {
+  menu: {
+    modern: ModernMenu,
+    cyber: CyberMenu,
+    minimalist: MinimalistMenu,
+    elegance: EleganceMenu,
+    luxury: LuxuryMenu,
+  },
+  cv: {
+    modern: ModernCV,
+    cyber: CyberCV,
+    minimalist: MinimalistCV,
+    elegance: EleganceCV,
+    luxury: LuxuryCV,
+  },
+  portfolio: {
+    modern: ModernPortfolio,
+    cyber: CyberPortfolio,
+    minimalist: MinimalistPortfolio,
+    elegance: ElegancePortfolio,
+    luxury: LuxuryPortfolio,
+  },
+  shop: {
+    modern: ModernShop,
+    cyber: CyberShop,
+    minimalist: MinimalistShop,
+    elegance: EleganceShop,
+    luxury: LuxuryShop,
+  },
+  invitation: {
+    modern: ModernInvitation,
+    cyber: CyberInvitation,
+    minimalist: MinimalistInvitation,
+    elegance: EleganceInvitation,
+    luxury: LuxuryInvitation,
+  },
+};
+
+const TemplateComponent =
+  templates[internalService]?.[internalStyle] || ModernMenu;
+
+let dummyData = null;
+if (internalService === "menu") dummyData = getDummyMenu(internalStyle);
+else if (internalService === "cv") dummyData = getDummyCV(internalStyle);
+else if (internalService === "portfolio")
+  dummyData = getDummyPortfolio(internalStyle);
+else if (internalService === "shop") dummyData = getDummyShop(internalStyle);
+else if (internalService === "invitation")
+  dummyData = getDummyInvitation(internalStyle);
+---
+
+<Layout title={`Preview - ${service} - ${style}`}>
+  {dummyData && <TemplateComponent {...{ [internalService]: dummyData }} />}
+</Layout>
