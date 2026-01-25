@@ -1,0 +1,17 @@
+---
+import Layout from "../../layouts/Layout.astro";
+
+const { template_id } = Astro.params;
+---
+
+<Layout title={`Preview - ${template_id}`}>
+  <div
+    class="flex flex-col items-center justify-center min-h-screen transition-colors duration-300"
+  >
+    <h1 class="text-4xl font-bold mb-4">Negocio de Ejemplo</h1>
+    <p class="text-xl opacity-80">Vista previa del template: {template_id}</p>
+    <div class="mt-8 p-4 border border-white/20 rounded-lg">
+      <p>Escribe en la app Android para ver cambios aquí.</p>
+    </div>
+  </div>
+</Layout>

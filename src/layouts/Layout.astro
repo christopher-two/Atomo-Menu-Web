@@ -1,18 +1,18 @@
 ---
 interface Props {
-	title?: string;
-	description?: string;
-	image?: string;
-	canonicalURL?: string | URL;
-	type?: string;
+  title?: string;
+  description?: string;
+  image?: string;
+  canonicalURL?: string | URL;
+  type?: string;
 }
 
 const {
-	title = "Atomo",
-	description = "La plataforma de menús digitales más elegante y funcional para tu negocio.",
-	image = "/og-image.jpg", // Default OG image path
-	canonicalURL = Astro.url,
-	type = "website",
+  title = "Atomo",
+  description = "La plataforma de menús digitales más elegante y funcional para tu negocio.",
+  image = "/og-image.jpg", // Default OG image path
+  canonicalURL = Astro.url,
+  type = "website",
 } = Astro.props;
 
 const siteTitle = title.includes("Atomo") ? title : `${title} | Atomo`;
@@ -22,33 +22,51 @@ import "../styles/global.css";
 
 <!doctype html>
 <html lang="es">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="canonical" href={canonicalURL} />
-		<meta name="generator" content={Astro.generator} />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonicalURL} />
+    <meta name="generator" content={Astro.generator} />
 
-		<!-- Primary Meta Tags -->
-		<title>{siteTitle}</title>
-		<meta name="title" content={siteTitle} />
-		<meta name="description" content={description} />
+    <!-- Primary Meta Tags -->
+    <title>{siteTitle}</title>
+    <meta name="title" content={siteTitle} />
+    <meta name="description" content={description} />
 
-		<!-- Open Graph / Facebook -->
-		<meta property="og:type" content={type} />
-		<meta property="og:url" content={Astro.url} />
-		<meta property="og:title" content={siteTitle} />
-		<meta property="og:description" content={description} />
-		<meta property="og:image" content={new URL(image, Astro.url)} />
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content={type} />
+    <meta property="og:url" content={Astro.url} />
+    <meta property="og:title" content={siteTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={new URL(image, Astro.url)} />
 
-		<!-- Twitter -->
-		<meta property="twitter:card" content="summary_large_image" />
-		<meta property="twitter:url" content={Astro.url} />
-		<meta property="twitter:title" content={siteTitle} />
-		<meta property="twitter:description" content={description} />
-		<meta property="twitter:image" content={new URL(image, Astro.url)} />
-	</head>
-	<body class="bg-black text-white antialiased">
-		<slot />
-	</body>
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={Astro.url} />
+    <meta property="twitter:title" content={siteTitle} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content={new URL(image, Astro.url)} />
+  </head>
+  <body class="bg-black text-white antialiased">
+    <slot />
+    <script is:inline>
+      window.updatePreview = function (data) {
+        try {
+          if (typeof data === "string") {
+            data = JSON.parse(data);
+          }
+          if (data.name) {
+            const h1 = document.querySelector("h1");
+            if (h1) h1.innerText = data.name;
+          }
+          if (data.color) {
+            document.body.style.backgroundColor = data.color;
+          }
+        } catch (e) {
+          console.error("Error updating preview:", e);
+        }
+      };
+    </script>
+  </body>
 </html>
