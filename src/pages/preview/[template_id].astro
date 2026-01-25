@@ -1,17 +1,92 @@
 ---
 import Layout from "../../layouts/Layout.astro";
+import ModernTemplate from "../../components/templates/menu/ModernTemplate.astro";
+import CyberTemplate from "../../components/templates/menu/CyberTemplate.astro";
+import MinimalistTemplate from "../../components/templates/menu/MinimalistTemplate.astro";
+import EleganceTemplate from "../../components/templates/menu/EleganceTemplate.astro";
+import LuxuryTemplate from "../../components/templates/menu/LuxuryTemplate.astro";
+import {
+  MenuTemplate,
+  type Menu,
+  type MenuCategory,
+  type Dish,
+} from "../../domain/models/DigitalMenu";
 
 const { template_id } = Astro.params;
+
+// Dummy Data Helper
+const createDummyDish = (
+  name: string,
+  price: number,
+  category: string | null = null,
+): Dish => ({
+  id: crypto.randomUUID(),
+  menu_id: "preview-menu",
+  name,
+  description: `Delicious ${name} made with fresh ingredients.`,
+  price,
+  image_url: null,
+  is_visible: true,
+  category_id: category, // Using string ID directly or null
+  sort_order: 0,
+  created_at: new Date().toISOString(),
+});
+
+const dummyCategories: MenuCategory[] = [
+  {
+    id: "cat-1",
+    menu_id: "preview-menu",
+    name: "Starters",
+    sort_order: 1,
+    dishes: [
+      createDummyDish("Bruschetta", 12.0, "cat-1"),
+      createDummyDish("Calamari", 15.5, "cat-1"),
+    ],
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: "cat-2",
+    menu_id: "preview-menu",
+    name: "Main Course",
+    sort_order: 2,
+    dishes: [
+      createDummyDish("Steak Au Poivre", 45.0, "cat-2"),
+      createDummyDish("Lobster Risotto", 38.0, "cat-2"),
+    ],
+    created_at: new Date().toISOString(),
+  },
+];
+
+const dummyMenu: Menu = {
+  id: "preview-menu",
+  user_id: "preview-user",
+  name: "Business Name",
+  description: "A preview of your digital menu.",
+  slug: "preview-slug",
+  is_active: true,
+  template_id: (template_id as MenuTemplate) || MenuTemplate.MODERN,
+  logo_url: null,
+  categories: dummyCategories,
+  dishes: [], // Uncategorized dishes
+  primary_color: "#000000",
+  font_family: "sans-serif",
+  created_at: new Date().toISOString(),
+};
+
+// Map template IDs to components
+const templates: Record<string, any> = {
+  modern: ModernTemplate,
+  cyber: CyberTemplate,
+  minimalist: MinimalistTemplate,
+  elegance: EleganceTemplate,
+  luxury: LuxuryTemplate,
+};
+
+const TemplateComponent =
+  templates[template_id?.toLowerCase() || "modern"] || ModernTemplate;
 ---
 
 <Layout title={`Preview - ${template_id}`}>
-  <div
-    class="flex flex-col items-center justify-center min-h-screen transition-colors duration-300"
-  >
-    <h1 class="text-4xl font-bold mb-4">Negocio de Ejemplo</h1>
-    <p class="text-xl opacity-80">Vista previa del template: {template_id}</p>
-    <div class="mt-8 p-4 border border-white/20 rounded-lg">
-      <p>Escribe en la app Android para ver cambios aquí.</p>
-    </div>
-  </div>
+  <!-- Render the selected template with dummy data -->
+  <TemplateComponent menu={dummyMenu} />
 </Layout>

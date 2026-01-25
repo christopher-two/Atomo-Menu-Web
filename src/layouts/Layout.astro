@@ -57,11 +57,23 @@ import "../styles/global.css";
             data = JSON.parse(data);
           }
           if (data.name) {
-            const h1 = document.querySelector("h1");
-            if (h1) h1.innerText = data.name;
+            const nameEls = document.querySelectorAll('[data-preview="name"]');
+            nameEls.forEach((el) => (el.innerText = data.name));
+
+            if (nameEls.length === 0) {
+              const h1 = document.querySelector("h1");
+              if (h1) h1.innerText = data.name;
+            }
           }
           if (data.color) {
-            document.body.style.backgroundColor = data.color;
+            const rootEls = document.querySelectorAll('[data-preview="root"]');
+            if (rootEls.length > 0) {
+              rootEls.forEach((el) => {
+                el.style.backgroundColor = data.color;
+              });
+            } else {
+              document.body.style.backgroundColor = data.color;
+            }
           }
         } catch (e) {
           console.error("Error updating preview:", e);

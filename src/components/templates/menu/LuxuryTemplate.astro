@@ -9,6 +9,7 @@ const { menu } = Astro.props;
 ---
 
 <div
+  data-preview="root"
   class="luxury-template min-h-screen bg-[#050505] text-[#e5e5e5] py-12 md:py-20 px-4 relative overflow-hidden font-serif"
 >
   <!-- Ambient Background Effects -->
@@ -57,6 +58,7 @@ const { menu } = Astro.props;
           >
         </div>
         <h1
+          data-preview="name"
           class="text-4xl md:text-6xl lg:text-7xl font-serif text-white mb-8 uppercase tracking-[0.15em] font-light leading-tight"
         >
           {menu.name}
@@ -123,7 +125,8 @@ const { menu } = Astro.props;
 
         {/* Orphans */}
         {
-          menu.dishes?.filter((d: any) => !d.category_id).length > 0 && (
+          (menu.dishes ?? [])?.filter((d: any) => !d.category_id).length >
+            0 && (
             <div class="mb-20">
               <div class="flex items-center gap-4 mb-12">
                 <div class="h-px bg-gradient-to-r from-transparent via-[#D4AF37]/50 to-transparent flex-grow" />
@@ -134,7 +137,7 @@ const { menu } = Astro.props;
               </div>
 
               <div class="grid grid-cols-1 md:grid-cols-2 gap-x-20 gap-y-12">
-                {menu.dishes
+                {(menu.dishes ?? [])
                   ?.filter((d: any) => !d.category_id)
                   .map((dish: any) => (
                     <div class="luxury-item group relative pl-6 transition-all duration-500 hover:pl-8">

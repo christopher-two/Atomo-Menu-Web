@@ -9,11 +9,13 @@ const { menu } = Astro.props;
 ---
 
 <div
+  data-preview="root"
   class="modern-template bg-[#f3f3f3] min-h-screen font-sans text-black relative"
 >
   <div class="container mx-auto px-6 py-12 md:py-20 max-w-5xl">
     <header class="mb-16 md:mb-24">
       <h1
+        data-preview="name"
         class="text-2xl md:text-3xl font-medium mb-6 md:mb-10 tracking-tight text-gray-500 uppercase"
       >
         {menu.name}
@@ -59,14 +61,14 @@ const { menu } = Astro.props;
       }
 
       {
-        menu.dishes?.filter((d: any) => !d.category_id).length > 0 && (
+        (menu.dishes ?? [])?.filter((d: any) => !d.category_id).length > 0 && (
           <div class="mb-16">
             <h3 class="text-xl md:text-2xl font-bold uppercase mb-10 tracking-wide border-b-2 border-black pb-4 inline-block">
               Curated List
             </h3>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-12">
-              {menu.dishes
+              {(menu.dishes ?? [])
                 ?.filter((d: any) => !d.category_id)
                 .map((dish: any) => (
                   <div class="dish-item group relative">
