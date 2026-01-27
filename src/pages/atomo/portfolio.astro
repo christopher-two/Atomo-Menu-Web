@@ -37,12 +37,13 @@ const grouped = servicesOrder.reduce((acc, s) => { acc[s] = (items || []).filter
       /* Copiado y adaptado del HTML proporcionado: estilo horizontal monocromo */
       .portfolio-viewport { width: 100%; height: 100vh; overflow: hidden; position: relative; }
       .horizontal-wrapper { display: flex; height: 100vh; width: max-content; will-change: transform; }
-      .panel { width: 100vw; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; flex-shrink: 0; border-right: 1px solid #111; overflow: hidden; }
-      @media (min-width: 768px) { .panel { width: 80vw; } }
+      /* Panels occupy exactly the viewport */
+      .panel { width: 100vw; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; flex-shrink: 0; overflow: hidden; }
+      @media (min-width: 768px) { .panel { width: 100vw; } }
       .panel-products { width: 300vw; display: flex; position: relative; flex-shrink: 0; border-right: 1px solid #111; }
       .product-section { width: 100vw; height: 100vh; flex-shrink: 0; display: flex; justify-content: center; align-items: center; position: relative; border-right: 1px solid #111; overflow: hidden; }
 
-      body, html { overscroll-behavior: none; }
+      body, html { overscroll-behavior: none; background: #0b0b0b; color: #fff; }
 
       .title-huge { font-size: 18vw; line-height: 0.8; font-weight: 900; letter-spacing: -0.05em; white-space: nowrap; }
       @media (min-width: 768px) { .title-huge { font-size: 15vw; } }
@@ -50,7 +51,7 @@ const grouped = servicesOrder.reduce((acc, s) => { acc[s] = (items || []).filter
       @media (min-width: 768px) { .outline-text { -webkit-text-stroke: 2px white; } }
       .outline-text:hover { color: white; -webkit-text-stroke: 0px transparent; }
 
-      .parallax-element { position: absolute; will-change: transform; }
+      .parallax-element { position: absolute; will-change: transform; pointer-events: none; }
       .parallax-element.relative-pos { position: relative; }
 
       .nav-link { position: relative; cursor: pointer; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.1em; padding: 0.5rem; mix-blend-mode: difference; }
@@ -61,7 +62,8 @@ const grouped = servicesOrder.reduce((acc, s) => { acc[s] = (items || []).filter
       .drag-indicator { position: fixed; bottom: 30px; right: 20px; mix-blend-mode: difference; z-index: 50; animation: pulse 2s infinite; pointer-events: none; }
       @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
 
-      .stagger-item { opacity: 0.2; transform: scale(0.95); filter: blur(3px); transition: opacity 0.8s ease-out, transform 0.8s ease-out, filter 0.8s ease-out; will-change: opacity, transform, filter; }
+      /* Stagger focus effect: inactive vs active */
+      .stagger-item { opacity: 0.2; transform: scale(0.95); filter: blur(3px); transition: opacity 0.6s cubic-bezier(.2,.9,.2,1), transform 0.6s cubic-bezier(.2,.9,.2,1), filter 0.6s cubic-bezier(.2,.9,.2,1); will-change: opacity, transform, filter; }
       .stagger-item.is-active { opacity: 1; transform: scale(1); filter: blur(0px); }
       .product-img { box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); transition: transform 1.2s ease; }
       @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0px); } }
@@ -165,6 +167,8 @@ const grouped = servicesOrder.reduce((acc, s) => { acc[s] = (items || []).filter
         const wrapper = document.getElementById('wrapper');
         const progressBar = document.getElementById('progressBar');
         const panels = Array.from(document.querySelectorAll('.panel'));
+        // Parallax elements
+        const parallaxElements = Array.from(document.querySelectorAll('[data-speed]'));
         const leftNavButtons = Array.from(document.querySelectorAll('.left-nav-btn'));
 
         // Attach click handlers to SSR left-nav buttons
@@ -203,12 +207,29 @@ const grouped = servicesOrder.reduce((acc, s) => { acc[s] = (items || []).filter
         const ease = 0.08;
         let maxScroll = Math.max(0, wrapper.scrollWidth - window.innerWidth);
 
+        // touch support
+        let touchStartX = 0;
+        let isTouching = false;
+
         window.addEventListener('resize', () => { maxScroll = Math.max(0, wrapper.scrollWidth - window.innerWidth); targetScroll = Math.min(targetScroll, maxScroll); });
 
         function goToPanel(i) { const panel = panels[i]; if (!panel) return; targetScroll = panel.offsetLeft; targetScroll = Math.max(0, Math.min(targetScroll, maxScroll)); }
         window.goToPanel = goToPanel;
 
+        // Wheel -> horizontal scroll mapping
         window.addEventListener('wheel', (e) => { targetScroll += e.deltaY; targetScroll = Math.max(0, Math.min(targetScroll, maxScroll)); });
+
+        // Touch gestures
+        window.addEventListener('touchstart', (e) => { isTouching = true; touchStartX = e.touches[0].clientX; }, { passive: true });
+        window.addEventListener('touchmove', (e) => {
+          if (!isTouching) return;
+          const x = e.touches[0].clientX;
+          const diff = touchStartX - x;
+          targetScroll += diff * 1.2; // sensitivity
+          targetScroll = Math.max(0, Math.min(targetScroll, maxScroll));
+          touchStartX = x;
+        }, { passive: true });
+        window.addEventListener('touchend', () => { isTouching = false; });
 
         let touchStart = 0; let dragging = false;
         window.addEventListener('touchstart', (e) => { touchStart = e.touches[0].clientX; dragging = true; }, { passive: true });
@@ -243,6 +264,14 @@ const grouped = servicesOrder.reduce((acc, s) => { acc[s] = (items || []).filter
               // fill title when active
               const title = p.querySelector('.title-huge');
               if (title) title.classList.add('title-filled');
+              // focus detection for stagger items: find center and mark nearest
+              const centerX = window.innerWidth / 2;
+              imgs.forEach((img) => {
+                const r = img.getBoundingClientRect();
+                const imgCenter = r.left + r.width / 2;
+                const dist = Math.abs(imgCenter - centerX);
+                img.classList.toggle('is-active', dist < r.width * 0.35);
+              });
             } else {
               btn.classList.remove('is-active'); btn.setAttribute('aria-current', 'false');
               const imgs = Array.from(p.querySelectorAll('.stagger-item'));
@@ -262,6 +291,14 @@ const grouped = servicesOrder.reduce((acc, s) => { acc[s] = (items || []).filter
         function animate() {
           currentScroll += (targetScroll - currentScroll) * ease;
           wrapper.style.transform = `translate3d(-${currentScroll}px, 0, 0)`;
+
+          // parallax: move elements based on data-speed (x axis)
+          parallaxElements.forEach((el) => {
+            const speed = parseFloat(el.getAttribute('data-speed') || '0');
+            const px = -currentScroll * speed;
+            el.style.transform = `translate3d(${px}px, 0, 0)`;
+          });
+
           const progress = currentScroll / Math.max(1, maxScroll);
           if (progressBar) progressBar.style.width = `${progress * 100}%`;
           updateActiveNav();
