@@ -239,15 +239,22 @@
   100% { transform: rotate(360deg) translateX(30px) rotate(-360deg); }
 }
 
+.panel-inner {
+  position: relative;
+  z-index: 10;
+}
+
 /* Títulos distribuidos audazmente */
 .features-title {
   font-size: 6vw;
   color: rgba(255,255,255,0.8);
   text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+  z-index: 11;
 }
 
 .pricing-title {
   font-size: 8vw;
   color: rgba(255,255,255,0.9);
   text-shadow: 3px 3px 6px rgba(0,0,0,0.7);
+  z-index: 11;
 }
