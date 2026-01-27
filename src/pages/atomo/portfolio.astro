@@ -1,0 +1,149 @@
+---
+import Layout from "../../layouts/Layout.astro";
+
+const services = [
+  { id: "all", label: "Todas" },
+  { id: "menu", label: "Menú" },
+  { id: "cv", label: "CV" },
+  { id: "portfolio", label: "Portfolio" },
+  { id: "shop", label: "Tienda" },
+  { id: "invitation", label: "Invitación" },
+];
+
+const styles = ["modern", "cyber", "minimalist", "elegance", "luxury"];
+
+const items = services
+  .filter((s) => s.id !== "all")
+  .flatMap((s) =>
+    styles.map((style) => ({
+      id: `${s.id}-${style}`,
+      service: s.id,
+      serviceLabel: s.label,
+      style,
+      title: `${style.charAt(0).toUpperCase() + style.slice(1)} — ${s.label}`,
+      description: `Vista previa del template "${style}" para ${s.label}.`,
+      href: `/preview/${s.id}/${style}`,
+    })),
+  );
+---
+
+<Layout title="Atomo — Portfolio de plantillas" description="Explora las plantillas de Atomo.">
+  <main class="min-h-screen bg-white text-black antialiased py-12 px-6 md:px-12">
+    <div class="max-w-6xl mx-auto">
+      <header class="mb-8">
+        <h1 class="text-3xl md:text-4xl font-semibold tracking-tight">Portfolio de plantillas</h1>
+        <p class="mt-2 text-gray-600">Explora y filtra por tipo. Haz clic en una tarjeta para ver la demo.</p>
+      </header>
+
+      <div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div class="flex flex-wrap gap-2" role="tablist" aria-label="Filtrar por servicio">
+          {services.map((s) => (
+            <button
+              type="button"
+              class={`filter-btn px-3 py-1 rounded-md text-sm uppercase tracking-wider ${
+                s.id === "all" ? "bg-black text-white" : "bg-gray-100 text-gray-900"
+              }`}
+              data-service={s.id}
+              aria-pressed={s.id === "all"}
+            >
+              {s.label}
+            </button>
+          ))}
+        </div>
+
+        <div class="flex items-center gap-2">
+          <label for="search" class="sr-only">Buscar</label>
+          <input
+            id="search"
+            type="search"
+            placeholder="Buscar estilo o servicio..."
+            class="px-3 py-2 border border-gray-200 rounded-md text-sm w-60 focus:ring-2 focus:ring-gray-200"
+            aria-label="Buscar plantillas"
+          />
+        </div>
+      </div>
+
+      <section id="portfolio-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {items.map((it) => (
+          <article
+            class="card bg-white border border-gray-100 shadow-sm hover:shadow-md transition-shadow duration-200 p-5 rounded-md"
+            data-service={it.service}
+            data-style={it.style}
+            data-title={it.title.toLowerCase()}
+            aria-labelledby={`title-${it.id}`}
+          >
+            <a href={it.href} class="block focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-gray-300">
+              <div class="h-36 flex items-center justify-center bg-gray-50 rounded-md mb-4">
+                <svg width="120" height="60" viewBox="0 0 120 60" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <rect x="0.5" y="0.5" width="119" height="59" stroke="#111827" stroke-opacity="0.08" fill="#f9fafb"/>
+                  <path d="M12 44H108" stroke="#111827" stroke-opacity="0.12" stroke-width="1.5"/>
+                  <rect x="14" y="14" width="92" height="12" fill="#111827" fill-opacity="0.06" rx="2"/>
+                </svg>
+              </div>
+
+              <h3 id={`title-${it.id}`} class="text-base font-semibold mb-1">{it.title}</h3>
+              <p class="text-sm text-gray-600 mb-3">{it.description}</p>
+
+              <div class="flex items-center justify-between text-xs uppercase tracking-wider">
+                <span class="text-gray-500">{it.serviceLabel}</span>
+                <span class="text-gray-400">{it.style}</span>
+              </div>
+            </a>
+          </article>
+        ))}
+      </section>
+    </div>
+  </main>
+
+  <script is:inline>
+    (function () {
+      const grid = document.getElementById("portfolio-grid");
+      const buttons = Array.from(document.querySelectorAll(".filter-btn"));
+      const search = document.getElementById("search");
+
+      function setActiveButton(activeId) {
+        buttons.forEach((btn) => {
+          const isActive = btn.dataset.service === activeId;
+          btn.classList.toggle("bg-black", isActive);
+          btn.classList.toggle("text-white", isActive);
+          btn.classList.toggle("bg-gray-100", !isActive);
+          btn.classList.toggle("text-gray-900", !isActive);
+          btn.setAttribute("aria-pressed", String(isActive));
+        });
+      }
+
+      function applyFilter(serviceId, query) {
+        const cards = Array.from(grid.querySelectorAll(".card"));
+        const q = (query || "").trim().toLowerCase();
+        cards.forEach((card) => {
+          const matchesService = serviceId === "all" || card.dataset.service === serviceId;
+          const title = (card.dataset.title || "").toLowerCase();
+          const matchesQuery = q === "" || title.includes(q) || card.dataset.style.includes(q) || card.dataset.service.includes(q);
+          if (matchesService && matchesQuery) card.style.display = "";
+          else card.style.display = "none";
+        });
+      }
+
+      buttons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const svc = btn.dataset.service;
+          setActiveButton(svc);
+          applyFilter(svc, search.value);
+        });
+      });
+
+      let timeout;
+      search.addEventListener("input", (e) => {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => {
+          const active = buttons.find((b) => b.getAttribute("aria-pressed") === "true");
+          const activeId = active ? active.dataset.service : "all";
+          applyFilter(activeId, e.target.value);
+        }, 150);
+      });
+
+      setActiveButton("all");
+      applyFilter("all", "");
+    })();
+  </script>
+</Layout>

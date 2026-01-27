@@ -1,11 +1,12 @@
 ---
 import type { Menu } from "../../../domain/models/DigitalMenu";
+import MenuDish from "../../../components/MenuDish.astro";
 
 interface Props {
   menu: Menu;
 }
 
-const { menu } = Astro.props;
+const { menu } = Astro.props as Props;
 ---
 
 <div
@@ -56,24 +57,11 @@ const { menu } = Astro.props;
             <h2 class="text-2xl md:text-3xl text-center uppercase tracking-[0.3em] font-medium mb-12 text-[#1a1a1a] border-b border-[#c5a059]/30 pb-4 mx-auto max-w-xs">
               ~ {category.name} ~
             </h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-12 md:gap-y-16">
-              {category.dishes?.map((dish: any) => (
-                <div class="dish-item relative group">
-                  <div class="flex justify-between items-baseline mb-3">
-                    <h3 class="text-lg md:text-xl font-bold uppercase tracking-wider pr-4 bg-[#fcfbf9]/0 group-hover:text-[#c5a059] transition-colors duration-300">
-                      {dish.name}
-                    </h3>
-                    <div class="flex-grow border-b border-[#c5a059]/30 border-dotted mx-2" />
-                    <span class="text-[#c5a059] font-medium text-lg whitespace-nowrap">
-                      ${Number(dish.price).toFixed(2)}
-                    </span>
-                  </div>
-                  <p class="text-sm md:text-base text-[#666] italic leading-relaxed font-light pl-2 border-l-2 border-[#c5a059]/0 group-hover:border-[#c5a059]/30 transition-all duration-300">
-                    {dish.description}
-                  </p>
-                </div>
-              ))}
-            </div>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-12 md:gap-y-16">
+                {category.dishes?.map((dish) => (
+                  <MenuDish dish={dish} />
+                ))}
+              </div>
           </div>
         ))
       }

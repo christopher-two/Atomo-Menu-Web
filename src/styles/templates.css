@@ -1,0 +1,19 @@
+/* Shared variables and utilities for templates */
+:root{
+  --accent-gold: #D4AF37;
+  --muted: #6b7280;
+  --bg-default: #ffffff;
+  --text-default: #111827;
+  --heading-font: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+  --serif-heading: 'Playfair Display', Georgia, serif;
+  --radius-sm: 6px;
+}
+
+/* Reduce motion support */
+@media (prefers-reduced-motion: reduce) {
+  * { transition-duration: 0.001ms !important; animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; }
+}
+
+:focus-visible { outline: 3px solid rgba(37,99,235,0.35); outline-offset: 2px; }
+
+.template-container { max-width: 90ch; margin-inline: auto; padding: 1.5rem; }

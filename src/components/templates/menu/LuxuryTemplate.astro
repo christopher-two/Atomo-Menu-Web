@@ -1,11 +1,12 @@
 ---
 import type { Menu } from "../../../domain/models/DigitalMenu";
+import MenuDish from "../../../components/MenuDish.astro";
 
 interface Props {
   menu: Menu;
 }
 
-const { menu } = Astro.props;
+const { menu } = Astro.props as Props;
 ---
 
 <div
@@ -100,26 +101,8 @@ const { menu } = Astro.props;
               </div>
 
               <div class="grid grid-cols-1 md:grid-cols-2 gap-x-20 gap-y-12">
-                {category.dishes?.map((dish: any) => (
-                  <div class="luxury-item group relative pl-6 transition-all duration-500 hover:pl-8">
-                    <div class="absolute left-0 top-2 w-[2px] h-0 bg-[#D4AF37] transition-all duration-500 group-hover:h-full" />
-
-                    <div class="flex justify-between items-baseline mb-3">
-                      <h3 class="text-white text-lg md:text-xl font-serif tracking-widest uppercase group-hover:text-[#D4AF37] transition-colors duration-300">
-                        {dish.name}
-                      </h3>
-                    </div>
-
-                    <p class="text-neutral-400 text-sm italic font-light leading-relaxed mb-3 group-hover:text-neutral-300 transition-colors">
-                      {dish.description}
-                    </p>
-
-                    <div class="flex items-center justify-end mt-2">
-                      <span class="text-[#D4AF37] font-mono text-lg tracking-wider">
-                        ${Number(dish.price).toFixed(2)}
-                      </span>
-                    </div>
-                  </div>
+                {category.dishes?.map((dish) => (
+                  <MenuDish dish={dish} />
                 ))}
               </div>
             </div>
@@ -141,27 +124,9 @@ const { menu } = Astro.props;
 
               <div class="grid grid-cols-1 md:grid-cols-2 gap-x-20 gap-y-12">
                 {(menu.dishes ?? [])
-                  ?.filter((d: any) => !d.category_id)
-                  .map((dish: any) => (
-                    <div class="luxury-item group relative pl-6 transition-all duration-500 hover:pl-8">
-                      <div class="absolute left-0 top-2 w-[2px] h-0 bg-[#D4AF37] transition-all duration-500 group-hover:h-full" />
-
-                      <div class="flex justify-between items-baseline mb-3">
-                        <h3 class="text-white text-lg md:text-xl font-serif tracking-widest uppercase group-hover:text-[#D4AF37] transition-colors duration-300">
-                          {dish.name}
-                        </h3>
-                      </div>
-
-                      <p class="text-neutral-400 text-sm italic font-light leading-relaxed mb-3 group-hover:text-neutral-300 transition-colors">
-                        {dish.description}
-                      </p>
-
-                      <div class="flex items-center justify-end mt-2">
-                        <span class="text-[#D4AF37] font-mono text-lg tracking-wider">
-                          ${Number(dish.price).toFixed(2)}
-                        </span>
-                      </div>
-                    </div>
+                  ?.filter((d) => !d.category_id)
+                  .map((dish) => (
+                    <MenuDish dish={dish} />
                   ))}
               </div>
             </div>
