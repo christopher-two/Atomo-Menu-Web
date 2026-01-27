@@ -1,0 +1,41 @@
+{
+  "id": "sample-portfolio",
+  "user_id": "sample-user",
+  "title": "Override — Showcase",
+  "description": "Selección de proyectos representativos.",
+  "slug": "sample-portfolio",
+  "is_visible": true,
+  "template_id": "modern",
+  "items": [
+    {
+      "id": "item-1",
+      "portfolio_id": "sample-portfolio",
+      "title": "NEO BANK",
+      "description": "Reinvención completa de la banca móvil. Interfaz líquida y pagos biométricos.",
+      "image_url": "https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=1000&auto=format&fit=crop",
+      "project_url": "#",
+      "service": "menu",
+      "sort_order": 1
+    },
+    {
+      "id": "item-2",
+      "portfolio_id": "sample-portfolio",
+      "title": "FUTURE OS",
+      "description": "Arquitectura Web3: privacidad por defecto y módulos escalables.",
+      "image_url": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=1000&auto=format&fit=crop",
+      "project_url": "#",
+      "service": "portfolio",
+      "sort_order": 2
+    },
+    {
+      "id": "item-3",
+      "portfolio_id": "sample-portfolio",
+      "title": "AI ENGINE",
+      "description": "Motor de generación procedural para entornos 3D con optimización automática.",
+      "image_url": "https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?q=80&w=1000&auto=format&fit=crop",
+      "project_url": "#",
+      "service": "cv",
+      "sort_order": 3
+    }
+  ]
+}

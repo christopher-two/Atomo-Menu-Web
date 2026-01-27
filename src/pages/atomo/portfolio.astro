@@ -25,125 +25,268 @@ const items = services
       href: `/preview/${s.id}/${style}`,
     })),
   );
+
+// Prepare services and grouped data for panels (use local `items` array, not external JSON)
+const servicesOrder = ['menu','portfolio','cv','shop','invitation'];
+const grouped = servicesOrder.reduce((acc, s) => { acc[s] = (items || []).filter(i => i.service === s) || []; return acc; }, {});
 ---
 
 <Layout title="Atomo — Portfolio de plantillas" description="Explora las plantillas de Atomo.">
-  <main class="min-h-screen bg-white text-black antialiased py-12 px-6 md:px-12">
-    <div class="max-w-6xl mx-auto">
-      <header class="mb-8">
-        <h1 class="text-3xl md:text-4xl font-semibold tracking-tight">Portfolio de plantillas</h1>
-        <p class="mt-2 text-gray-600">Explora y filtra por tipo. Haz clic en una tarjeta para ver la demo.</p>
-      </header>
+  <div class="portfolio-viewport">
+      <style>
+      /* Copiado y adaptado del HTML proporcionado: estilo horizontal monocromo */
+      .portfolio-viewport { width: 100%; height: 100vh; overflow: hidden; position: relative; }
+      .horizontal-wrapper { display: flex; height: 100vh; width: max-content; will-change: transform; }
+      .panel { width: 100vw; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; flex-shrink: 0; border-right: 1px solid #111; overflow: hidden; }
+      @media (min-width: 768px) { .panel { width: 80vw; } }
+      .panel-products { width: 300vw; display: flex; position: relative; flex-shrink: 0; border-right: 1px solid #111; }
+      .product-section { width: 100vw; height: 100vh; flex-shrink: 0; display: flex; justify-content: center; align-items: center; position: relative; border-right: 1px solid #111; overflow: hidden; }
 
-      <div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div class="flex flex-wrap gap-2" role="tablist" aria-label="Filtrar por servicio">
-          {services.map((s) => (
-            <button
-              type="button"
-              class={`filter-btn px-3 py-1 rounded-md text-sm uppercase tracking-wider ${
-                s.id === "all" ? "bg-black text-white" : "bg-gray-100 text-gray-900"
-              }`}
-              data-service={s.id}
-              aria-pressed={s.id === "all"}
-            >
-              {s.label}
+      body, html { overscroll-behavior: none; }
+
+      .title-huge { font-size: 18vw; line-height: 0.8; font-weight: 900; letter-spacing: -0.05em; white-space: nowrap; }
+      @media (min-width: 768px) { .title-huge { font-size: 15vw; } }
+      .outline-text { color: transparent; -webkit-text-stroke: 1px white; transition: color 0.3s ease, -webkit-text-stroke 0.3s ease; }
+      @media (min-width: 768px) { .outline-text { -webkit-text-stroke: 2px white; } }
+      .outline-text:hover { color: white; -webkit-text-stroke: 0px transparent; }
+
+      .parallax-element { position: absolute; will-change: transform; }
+      .parallax-element.relative-pos { position: relative; }
+
+      .nav-link { position: relative; cursor: pointer; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.1em; padding: 0.5rem; mix-blend-mode: difference; }
+      .nav-link::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0%; height: 1px; background: white; transition: width 0.3s; }
+      .nav-link:hover::after { width: 100%; }
+
+      .progress-bar { position: fixed; bottom: 0; left: 0; height: 4px; background: #fff; width: 0%; z-index: 100; transition: width 0.1s; }
+      .drag-indicator { position: fixed; bottom: 30px; right: 20px; mix-blend-mode: difference; z-index: 50; animation: pulse 2s infinite; pointer-events: none; }
+      @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
+
+      .stagger-item { opacity: 0.2; transform: scale(0.95); filter: blur(3px); transition: opacity 0.8s ease-out, transform 0.8s ease-out, filter 0.8s ease-out; will-change: opacity, transform, filter; }
+      .stagger-item.is-active { opacity: 1; transform: scale(1); filter: blur(0px); }
+      .product-img { box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); transition: transform 1.2s ease; }
+      @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0px); } }
+      .floating-img { animation: float 6s ease-in-out infinite; }
+
+      /* Minor utility styles to match project look */
+      .no-pointer { pointer-events: none; }
+      .panel .content { max-width: 72rem; padding: 1.5rem; }
+      /* Left navigation - vertical block */
+      .left-nav { position: fixed; left: 0; top: 50%; transform: translateY(-50%); width: 140px; background: rgba(0,0,0,0.65); padding: 1rem; display: flex; flex-direction: column; gap: 0.5rem; z-index: 99999; border-right: 1px solid rgba(255,255,255,0.04); pointer-events: auto; }
+      .left-nav-btn { background: transparent; color: #ddd; border: none; text-align: left; padding: 0.7rem 0.9rem; cursor: pointer; text-transform: uppercase; letter-spacing: 0.12em; font-size: 0.875rem; border-radius: 6px; transition: background 0.18s, color 0.18s, transform 0.12s; position: relative; z-index: 100000; }
+      .left-nav-btn:hover { background: rgba(255,255,255,0.04); color: white; transform: translateX(4px); }
+      .left-nav-btn.is-active { background: #111; color: white; box-shadow: 0 6px 20px rgba(0,0,0,0.6) inset; }
+      .left-nav-btn[aria-expanded="true"] { background: rgba(255,255,255,0.06); }
+
+      /* Panel grid when a section is opened (overlay inside panel) */
+      .horizontal-wrapper { z-index: 1; }
+      .panel { pointer-events: auto; }
+      .panel.show-grid { pointer-events: auto; }
+      .panel-grid { display: none; position: absolute; inset: 0; z-index: 5000; width: 100%; height: 100%; align-items: start; justify-content: center; padding: 4rem; box-sizing: border-box; background: rgba(0,0,0,0.6); backdrop-filter: blur(2px); }
+      .panel.show-grid .panel-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.25rem; align-content: start; overflow-y: auto; }
+      .panel.show-grid .panel-images { display: none; }
+      .panel-grid-item { background: rgba(0,0,0,0.45); border-radius: 8px; overflow: hidden; padding: 0.5rem; display: flex; flex-direction: column; gap: 0.5rem; cursor: pointer; }
+      .panel-grid-item img { width: 100%; height: 140px; object-fit: cover; filter: blur(2px) brightness(0.7); transition: filter 0.25s, transform 0.25s; }
+      .panel-grid-item:hover img { filter: blur(1px) brightness(0.9); transform: scale(1.02); }
+      .panel-grid-item .meta { color: #fff; font-size: 0.85rem; padding: 0.25rem 0.5rem; }
+
+      /* Title outline -> fill behaviour */
+      .title-huge { color: transparent; -webkit-text-stroke: 3px white; text-shadow: 0 1px 0 rgba(255,255,255,0.02); transition: color 0.35s ease, -webkit-text-stroke 0.35s ease; }
+      @media (min-width: 768px) { .title-huge { -webkit-text-stroke: 6px white; } }
+      .title-huge.title-filled { color: white; -webkit-text-stroke: 0px transparent; }
+      /* Title button styling */
+      .panel-title-button { background: transparent; border: none; cursor: pointer; display: inline-flex; flex-direction: column; align-items: center; gap: 0.5rem; padding: 0; color: inherit; }
+      .panel-title-button:focus { outline: 2px solid rgba(255,255,255,0.12); outline-offset: 6px; }
+
+      /* Responsive: move nav to top on small screens */
+      @media (max-width: 768px) {
+        .left-nav { left: 0; top: 0; transform: none; width: 100%; height: auto; flex-direction: row; padding: 0.5rem; justify-content: space-around; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.06); }
+        .left-nav-btn { padding: 0.5rem 0.6rem; font-size: 0.78rem; }
+        .panel { width: 100vw; }
+        .panel-grid { padding: 1rem; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+      }
+    </style>
+
+    <!-- Removed top navigation as requested -->
+
+    <div class="progress-bar" id="progressBar"></div>
+
+    <div class="drag-indicator text-xs uppercase tracking-widest md:block hidden">Scroll / Drag →</div>
+    <div class="drag-indicator text-xs uppercase tracking-widest md:hidden block">← Swipe →</div>
+
+    <!-- Server-rendered left navigation for accessibility and SEO -->
+    <aside class="left-nav" role="navigation" aria-label="Filtros de portfolio">
+      {servicesOrder.map((svc, i) => (
+        <button class="left-nav-btn" data-index={i} data-service={svc} aria-current={i === 0 ? 'true' : 'false'} aria-expanded={false}>{svc.toUpperCase()}</button>
+      ))}
+    </aside>
+
+    <div class="horizontal-wrapper" id="wrapper">
+
+      <!-- Panels per service (one panel per serviceOrder) -->
+      {servicesOrder.map((svc) => (
+        <div class="panel" id={`section-${svc}`} data-service={svc} tabindex="0">
+          <div class="absolute inset-0 flex items-center justify-center z-0 panel-images">
+            {grouped[svc] && grouped[svc].length ? (
+                grouped[svc].map((item, idx) => (
+                <img src={item.image_url} alt={item.title} loading="lazy" class="stagger-item w-[90vw] md:w-[60vw] h-[80vh] object-cover grayscale opacity-40 product-img floating-img" data-index={idx} style="filter: blur(3px) brightness(0.7);" />
+              ))
+            ) : (
+              <div class="w-[90vw] md:w-[60vw] h-[80vh] bg-gray-900" />
+            )}
+          </div>
+
+          <div class="relative z-10 flex flex-col items-center justify-center h-full pointer-events-auto">
+            <button class="panel-title-button" data-index={servicesOrder.indexOf(svc)} aria-label={`Abrir ${svc}`}>
+              <h2 class="title-huge mix-blend-difference">{svc.toUpperCase()}</h2>
+              <p class="text-xs text-gray-400 uppercase tracking-widest mt-4">Portfolio — ATOMO</p>
             </button>
-          ))}
+          </div>
+
+          <div class="panel-grid" aria-hidden="true">
+            {grouped[svc] && grouped[svc].length ? (
+              grouped[svc].map((item) => (
+                <article class="panel-grid-item" role="button" tabIndex={0} data-href={item.href}>
+                  <img src={item.image_url} alt={item.title} loading="lazy" />
+                  <div class="meta">{item.title}</div>
+                </article>
+              ))
+            ) : null}
+          </div>
         </div>
+      ))}
 
-        <div class="flex items-center gap-2">
-          <label for="search" class="sr-only">Buscar</label>
-          <input
-            id="search"
-            type="search"
-            placeholder="Buscar estilo o servicio..."
-            class="px-3 py-2 border border-gray-200 rounded-md text-sm w-60 focus:ring-2 focus:ring-gray-200"
-            aria-label="Buscar plantillas"
-          />
-        </div>
-      </div>
-
-      <section id="portfolio-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {items.map((it) => (
-          <article
-            class="card bg-white border border-gray-100 shadow-sm hover:shadow-md transition-shadow duration-200 p-5 rounded-md"
-            data-service={it.service}
-            data-style={it.style}
-            data-title={it.title.toLowerCase()}
-            aria-labelledby={`title-${it.id}`}
-          >
-            <a href={it.href} class="block focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-gray-300">
-              <div class="h-36 flex items-center justify-center bg-gray-50 rounded-md mb-4">
-                <svg width="120" height="60" viewBox="0 0 120 60" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                  <rect x="0.5" y="0.5" width="119" height="59" stroke="#111827" stroke-opacity="0.08" fill="#f9fafb"/>
-                  <path d="M12 44H108" stroke="#111827" stroke-opacity="0.12" stroke-width="1.5"/>
-                  <rect x="14" y="14" width="92" height="12" fill="#111827" fill-opacity="0.06" rx="2"/>
-                </svg>
-              </div>
-
-              <h3 id={`title-${it.id}`} class="text-base font-semibold mb-1">{it.title}</h3>
-              <p class="text-sm text-gray-600 mb-3">{it.description}</p>
-
-              <div class="flex items-center justify-between text-xs uppercase tracking-wider">
-                <span class="text-gray-500">{it.serviceLabel}</span>
-                <span class="text-gray-400">{it.style}</span>
-              </div>
-            </a>
-          </article>
-        ))}
-      </section>
+      <!-- decorative elements removed (OVERRIDE / Digital Studio) -->
     </div>
-  </main>
 
-  <script is:inline>
-    (function () {
-      const grid = document.getElementById("portfolio-grid");
-      const buttons = Array.from(document.querySelectorAll(".filter-btn"));
-      const search = document.getElementById("search");
+    <script is:inline>
+      (function () {
+        const wrapper = document.getElementById('wrapper');
+        const progressBar = document.getElementById('progressBar');
+        const panels = Array.from(document.querySelectorAll('.panel'));
+        const leftNavButtons = Array.from(document.querySelectorAll('.left-nav-btn'));
 
-      function setActiveButton(activeId) {
-        buttons.forEach((btn) => {
-          const isActive = btn.dataset.service === activeId;
-          btn.classList.toggle("bg-black", isActive);
-          btn.classList.toggle("text-white", isActive);
-          btn.classList.toggle("bg-gray-100", !isActive);
-          btn.classList.toggle("text-gray-900", !isActive);
-          btn.setAttribute("aria-pressed", String(isActive));
+        // Attach click handlers to SSR left-nav buttons
+        leftNavButtons.forEach((btn, i) => btn.addEventListener('click', (e) => {
+          // Toggle grid view for the selected panel
+          const panel = panels[i];
+          const expanded = btn.getAttribute('aria-expanded') === 'true';
+          // close other panels but keep current panel's show-grid toggled
+          panels.forEach((p, idx) => {
+            if (idx === i) {
+              p.classList.toggle('show-grid', !expanded);
+            } else {
+              p.classList.remove('show-grid');
+            }
+            const grid = p.querySelector('.panel-grid');
+            if (grid) grid.setAttribute('aria-hidden', String(!p.classList.contains('show-grid')));
+          });
+          leftNavButtons.forEach((b, idx) => b.setAttribute('aria-expanded', String(idx === i && !expanded)));
+          // if opening, jump to the panel
+          if (!expanded) goToPanel(i);
+          // prevent default focus side-effects
+          e.preventDefault();
+        }));
+
+        // Make panel title buttons open the grid as well
+        const titleButtons = Array.from(document.querySelectorAll('.panel-title-button'));
+        titleButtons.forEach((tb) => tb.addEventListener('click', (e) => {
+          const i = Number(tb.getAttribute('data-index')) || 0;
+          const btn = leftNavButtons[i];
+          if (btn) btn.click();
+          e.preventDefault();
+        }));
+
+        let currentScroll = 0;
+        let targetScroll = 0;
+        const ease = 0.08;
+        let maxScroll = Math.max(0, wrapper.scrollWidth - window.innerWidth);
+
+        window.addEventListener('resize', () => { maxScroll = Math.max(0, wrapper.scrollWidth - window.innerWidth); targetScroll = Math.min(targetScroll, maxScroll); });
+
+        function goToPanel(i) { const panel = panels[i]; if (!panel) return; targetScroll = panel.offsetLeft; targetScroll = Math.max(0, Math.min(targetScroll, maxScroll)); }
+        window.goToPanel = goToPanel;
+
+        window.addEventListener('wheel', (e) => { targetScroll += e.deltaY; targetScroll = Math.max(0, Math.min(targetScroll, maxScroll)); });
+
+        let touchStart = 0; let dragging = false;
+        window.addEventListener('touchstart', (e) => { touchStart = e.touches[0].clientX; dragging = true; }, { passive: true });
+        window.addEventListener('touchmove', (e) => { if (!dragging) return; const diff = touchStart - e.touches[0].clientX; targetScroll += diff * 1.5; targetScroll = Math.max(0, Math.min(targetScroll, maxScroll)); touchStart = e.touches[0].clientX; }, { passive: true });
+        window.addEventListener('touchend', () => { dragging = false; });
+
+        function getActiveIndex() {
+          const center = window.innerWidth / 2;
+          for (let i = 0; i < panels.length; i++) {
+            const rect = panels[i].getBoundingClientRect();
+            const mid = rect.left + rect.width / 2;
+            if (mid > center - rect.width * 0.35 && mid < center + rect.width * 0.35) return i;
+          }
+          return 0;
+        }
+
+        function updateActiveNav() {
+          const activeIndex = getActiveIndex();
+          panels.forEach((p, i) => {
+            const btn = leftNavButtons[i];
+            if (!btn) return;
+            const grid = p.querySelector('.panel-grid');
+            const gridOpen = p.classList.contains('show-grid');
+            // set aria-hidden based on whether grid is open
+            if (grid) grid.setAttribute('aria-hidden', String(!gridOpen));
+
+            if (i === activeIndex) {
+              btn.classList.add('is-active'); btn.setAttribute('aria-current', 'true');
+              // activate first image in the panel (visual)
+              const imgs = Array.from(p.querySelectorAll('.stagger-item'));
+              imgs.forEach((img, idx) => img.classList.toggle('is-active', idx === 0));
+              // fill title when active
+              const title = p.querySelector('.title-huge');
+              if (title) title.classList.add('title-filled');
+            } else {
+              btn.classList.remove('is-active'); btn.setAttribute('aria-current', 'false');
+              const imgs = Array.from(p.querySelectorAll('.stagger-item'));
+              imgs.forEach((img) => img.classList.remove('is-active'));
+              const title = p.querySelector('.title-huge');
+              if (title) title.classList.remove('title-filled');
+            }
+          });
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'ArrowRight') { const next = Math.min(panels.length - 1, getActiveIndex() + 1); goToPanel(next); }
+          if (e.key === 'ArrowLeft') { const prev = Math.max(0, getActiveIndex() - 1); goToPanel(prev); }
         });
-      }
 
-      function applyFilter(serviceId, query) {
-        const cards = Array.from(grid.querySelectorAll(".card"));
-        const q = (query || "").trim().toLowerCase();
-        cards.forEach((card) => {
-          const matchesService = serviceId === "all" || card.dataset.service === serviceId;
-          const title = (card.dataset.title || "").toLowerCase();
-          const matchesQuery = q === "" || title.includes(q) || card.dataset.style.includes(q) || card.dataset.service.includes(q);
-          if (matchesService && matchesQuery) card.style.display = "";
-          else card.style.display = "none";
+        function animate() {
+          currentScroll += (targetScroll - currentScroll) * ease;
+          wrapper.style.transform = `translate3d(-${currentScroll}px, 0, 0)`;
+          const progress = currentScroll / Math.max(1, maxScroll);
+          if (progressBar) progressBar.style.width = `${progress * 100}%`;
+          updateActiveNav();
+          requestAnimationFrame(animate);
+        }
+        animate();
+
+        // Make grid items clickable (navigate to data-href)
+        document.addEventListener('click', (e) => {
+          const target = e.target.closest && e.target.closest('.panel-grid-item');
+          if (target && target.dataset && target.dataset.href) {
+            const href = target.dataset.href;
+            if (href) window.location.href = href;
+          }
         });
-      }
 
-      buttons.forEach((btn) => {
-        btn.addEventListener("click", () => {
-          const svc = btn.dataset.service;
-          setActiveButton(svc);
-          applyFilter(svc, search.value);
+        // keyboard activation for grid items
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') {
+            const active = document.activeElement;
+            if (active && active.classList.contains && active.classList.contains('panel-grid-item')) {
+              const href = active.dataset.href;
+              if (href) window.location.href = href;
+            }
+          }
         });
-      });
-
-      let timeout;
-      search.addEventListener("input", (e) => {
-        clearTimeout(timeout);
-        timeout = setTimeout(() => {
-          const active = buttons.find((b) => b.getAttribute("aria-pressed") === "true");
-          const activeId = active ? active.dataset.service : "all";
-          applyFilter(activeId, e.target.value);
-        }, 150);
-      });
-
-      setActiveButton("all");
-      applyFilter("all", "");
-    })();
-  </script>
+      })();
+    </script>
+  </div>
 </Layout>

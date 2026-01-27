@@ -397,8 +397,18 @@ else if (internalService === "portfolio")
 else if (internalService === "shop") dummyData = getDummyShop(internalStyle);
 else if (internalService === "invitation")
   dummyData = getDummyInvitation(internalStyle);
+
+// Detect embed mode for iframe previews. When ?embed=1 is present we render
+// only the template content (no site chrome) so it can be safely embedded in an iframe.
+const url = new URL(Astro.request.url);
+const embed = url.searchParams.get("embed") === "1";
 ---
 
-<Layout title={`Preview - ${service} - ${style}`}>
-  {dummyData && <TemplateComponent {...{ [internalService]: dummyData }} />}
-</Layout>
+{embed ? (
+  // Embed-only output (no Layout)
+  dummyData && <TemplateComponent {...{ [internalService]: dummyData }} />
+) : (
+  <Layout title={`Preview - ${service} - ${style}`}>
+    {dummyData && <TemplateComponent {...{ [internalService]: dummyData }} />}
+  </Layout>
+)}
