@@ -140,3 +140,114 @@
   background: rgba(255,255,255,0.1);
   border-color: #fff;
 }
+
+/* Features panel con fondo diferente */
+.features-panel {
+  background: linear-gradient(135deg, rgba(10,10,10,0.9), rgba(30,30,30,0.9));
+  position: relative;
+}
+
+/* Pricing panel con video de fondo */
+.pricing-panel {
+  background: rgba(0,0,0,0.7);
+  position: relative;
+  color: #fff;
+}
+
+.panel-video-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+}
+
+.panel-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, rgba(0,0,0,0.6), rgba(50,50,50,0.4));
+  z-index: 0;
+}
+
+.pricing-panel .panel-inner {
+  position: relative;
+  z-index: 1;
+}
+
+/* Elementos de fondo estilo átomos */
+.panel-bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+}
+
+.atom-elements {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.atom {
+  position: absolute;
+  width: var(--size);
+  height: var(--size);
+  data-speed: var(--speed);
+}
+
+.nucleus {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  background: rgba(255,255,255,0.3);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 10px rgba(255,255,255,0.5);
+}
+
+.electron {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: rgba(255,255,255,0.6);
+  border-radius: 50%;
+  animation: orbit 4s linear infinite;
+}
+
+.electron.e1 {
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation-duration: 3s;
+}
+
+.electron.e2 {
+  top: 50%;
+  right: 10%;
+  transform: translate(50%, -50%);
+  animation-duration: 5s;
+}
+
+@keyframes orbit {
+  0% { transform: rotate(0deg) translateX(30px) rotate(0deg); }
+  100% { transform: rotate(360deg) translateX(30px) rotate(-360deg); }
+}
+
+/* Títulos distribuidos audazmente */
+.features-title {
+  font-size: 6vw;
+  color: rgba(255,255,255,0.8);
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+.pricing-title {
+  font-size: 8vw;
+  color: rgba(255,255,255,0.9);
+  text-shadow: 3px 3px 6px rgba(0,0,0,0.7);
+}
