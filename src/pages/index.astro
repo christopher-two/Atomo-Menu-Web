@@ -22,90 +22,96 @@ import Layout from "../layouts/Layout.astro";
       @media (max-width:768px) { .landing-panel { padding:1rem; } .pricing-cards { grid-template-columns: 1fr; } }
     </style>
 
-    <section class="panel landing-panel" id="landing-root" tabindex="0">
-      <div class="landing-bg" aria-hidden="true"></div>
+    <div class="horizontal-wrapper" id="wrapper">
+      <!-- Panel 1: Intro / Hero -->
+      <section class="panel landing-panel" id="landing-root" tabindex="0">
+        <div class="landing-bg" aria-hidden="true" data-speed="0.02"></div>
 
-      <div class="landing-content">
-        <h1 class="landing-title">ATOMO — Tu sitio, en minutos</h1>
-        <p class="lead">Plataforma para crear perfiles, menús y tiendas con plantillas profesionales. Escala desde pruebas gratuitas hasta hosting con dominio propio.</p>
+        <div class="landing-content" data-speed="-0.02">
+          <h1 class="landing-title stagger-item">ATOMO — Tu sitio, en minutos</h1>
+          <p class="lead stagger-item">Plataforma para crear perfiles, menús y tiendas con plantillas profesionales. Escala desde pruebas gratuitas hasta hosting con dominio propio.</p>
 
-        <div class="landing-actions" style="display:flex;gap:.75rem;flex-wrap:wrap">
-          <button id="cta-get-started" class="btn-primary">Comenzar</button>
-          <a href="/atomo/portfolio" class="btn-ghost" style="align-self:center">Ver plantillas</a>
-        </div>
-
-        <div class="pricing-block" style="margin-top:1.5rem">
-          <div class="pricing-toggle" role="tablist" aria-label="Modo de facturación">
-            <button class="toggle-btn active" data-mode="monthly">Mensual</button>
-            <button class="toggle-btn" data-mode="annual">Anual</button>
+          <div class="landing-actions" style="display:flex;gap:.75rem;flex-wrap:wrap">
+            <button id="cta-get-started" class="btn-primary stagger-item" data-speed="-0.04">Comenzar</button>
+            <a href="/atomo/portfolio" class="btn-ghost stagger-item" style="align-self:center">Ver plantillas</a>
           </div>
+        </section>
 
-          <div class="pricing-cards" id="pricing-cards">
-            <article class="plan-card" data-plan="free" role="region" aria-labelledby="plan-free-title">
-              <h3 id="plan-free-title">PLAN ATOMO FREE</h3>
-              <div class="price">0.00 MXN <span class="period">/mes</span></div>
-              <ul>
-                <li>Licencia limitada: plantillas básicas</li>
-                <li>Perfil Link‑in‑bio</li>
-                <li>Subdominio: www.atomo.click/usuario</li>
-                <li>Publicidad insertada por ATOMO</li>
-                <li>No soporte personalizado</li>
-              </ul>
-              <button class="plan-choose btn-primary" data-plan="free">Elegir GRATIS</button>
+      <!-- Panel 2: Features -->
+      <section class="panel" id="features" data-service="features" tabindex="0">
+        <div class="panel-inner max-w-5xl px-6" data-speed="-0.01">
+          <h2 class="title-huge stagger-item">Características</h2>
+          <div class="grid features-grid stagger-item" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin-top:1.5rem;">
+            <div class="feature-card">Flexible templates</div>
+            <div class="feature-card">Hosting opcional</div>
+            <div class="feature-card">Link in bio</div>
+            <div class="feature-card">Integraciones</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Panel 3: Pricing -->
+      <section class="panel" id="pricing" data-service="pricing" tabindex="0">
+        <div class="panel-inner max-w-5xl px-6" data-speed="-0.02">
+          <h2 class="title-huge stagger-item">Precios</h2>
+          <div class="pricing-cards mt-4 stagger-item">
+            <article class="plan-card" data-plan="free">
+              <h4>FREE</h4>
+              <div class="price">0 MXN</div>
             </article>
-
-            <article class="plan-card" data-plan="core" role="region" aria-labelledby="plan-core-title">
-              <h3 id="plan-core-title">PLAN ATOMO CORE</h3>
-              <div class="price" data-price-month="59" data-price-year="600">59 MXN <span class="period">/mes</span></div>
-              <ul>
-                <li>Plantillas Core + Free</li>
-                <li>Hasta 2 servicios simultáneos</li>
-                <li>Ruta personalizada en el dominio Atomo</li>
-                <li>Reducción de anuncios de terceros</li>
-              </ul>
-              <button class="plan-choose btn-primary" data-plan="core">Contratar</button>
+            <article class="plan-card" data-plan="core">
+              <h4>CORE</h4>
+              <div class="price">59 MXN / mes</div>
             </article>
-
-            <article class="plan-card" data-plan="quantum" role="region" aria-labelledby="plan-quantum-title">
-              <h3 id="plan-quantum-title">PLAN ATOMO QUANTUM</h3>
-              <div class="price" data-price-month="159" data-price-year="1000">159 MXN <span class="period">/mes</span></div>
-              <ul>
-                <li>Acceso ilimitado a plantillas y servicios</li>
-                <li>Conectar dominio propio</li>
-                <li>Páginas libres de anuncios de terceros</li>
-                <li>Personalización avanzada</li>
-              </ul>
-              <button class="plan-choose btn-primary" data-plan="quantum">Contratar</button>
+            <article class="plan-card" data-plan="quantum">
+              <h4>QUANTUM</h4>
+              <div class="price">159 MXN / mes</div>
             </article>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+
+    </div>
 
     <script is:inline>
       (function () {
-        const toggles = Array.from(document.querySelectorAll('.toggle-btn'));
-        const prices = Array.from(document.querySelectorAll('.plan-card .price'));
-        function setMode(mode) {
-          toggles.forEach(t => t.classList.toggle('active', t.dataset.mode === mode || (t.dataset.mode === undefined && t.textContent.toLowerCase().includes(mode === 'monthly' ? 'mens' : 'anual')));
-          prices.forEach(p => {
-            const m = p.getAttribute('data-price-month');
-            const y = p.getAttribute('data-price-year');
-            if (!m || !y) return;
-            if (mode === 'monthly') p.innerHTML = `${m} MXN <span class="period">/mes</span>`;
-            else p.innerHTML = `${y} MXN <span class="period">/año</span>`;
+        // horizontal scroll mapping + parallax + stagger focus for landing
+        const wrapper = document.getElementById('wrapper');
+        const panels = Array.from(document.querySelectorAll('.panel'));
+        const staggerItems = Array.from(document.querySelectorAll('.stagger-item'));
+        const parallaxElements = Array.from(document.querySelectorAll('[data-speed]'));
+
+        let current = 0; let target = 0; const ease = 0.08;
+        let max = Math.max(0, wrapper.scrollWidth - window.innerWidth);
+
+        window.addEventListener('resize', () => { max = Math.max(0, wrapper.scrollWidth - window.innerWidth); target = Math.min(target, max); });
+
+        window.addEventListener('wheel', (e) => { target += e.deltaY; target = Math.max(0, Math.min(target, max)); });
+
+        // touch
+        let touchStartX = 0; let touching = false;
+        window.addEventListener('touchstart', (e) => { touching = true; touchStartX = e.touches[0].clientX; }, { passive: true });
+        window.addEventListener('touchmove', (e) => { if (!touching) return; const x = e.touches[0].clientX; const diff = touchStartX - x; target += diff * 1.2; target = Math.max(0, Math.min(target, max)); touchStartX = x; }, { passive: true });
+        window.addEventListener('touchend', () => { touching = false; });
+
+        function updateStagger() {
+          const center = window.innerWidth / 2;
+          staggerItems.forEach((el) => {
+            const r = el.getBoundingClientRect();
+            const mid = r.left + r.width / 2;
+            const dist = Math.abs(mid - center);
+            el.classList.toggle('is-active', dist < r.width * 0.35);
           });
         }
-        toggles.forEach(t => t.addEventListener('click', () => setMode(t.dataset.mode || (t.textContent.toLowerCase().includes('mens') ? 'monthly' : 'annual'))));
-        setMode('monthly');
 
-        const cta = document.getElementById('cta-get-started');
-        if (cta) cta.addEventListener('click', () => { window.location.href = '/atomo/portfolio'; });
-
-        Array.from(document.querySelectorAll('.plan-choose')).forEach(btn => btn.addEventListener('click', () => {
-          const plan = btn.dataset.plan;
-          window.location.href = `/signup?plan=${plan}`;
-        }));
+        function animate() {
+          current += (target - current) * ease;
+          wrapper.style.transform = `translate3d(-${current}px, 0, 0)`;
+          parallaxElements.forEach((el) => { const s = parseFloat(el.getAttribute('data-speed') || '0'); el.style.transform = `translate3d(${ -current * s }px,0,0)`; });
+          updateStagger();
+          requestAnimationFrame(animate);
+        }
+        animate();
       })();
     </script>
   </div>
