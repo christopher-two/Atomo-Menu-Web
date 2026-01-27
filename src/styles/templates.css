@@ -170,8 +170,139 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(45deg, rgba(0,0,0,0.6), rgba(50,50,50,0.4));
+  background: linear-gradient(45deg, rgba(0,0,0,0.8), rgba(20,20,20,0.6));
   z-index: 0;
+}
+
+.pricing-panel .panel-inner {
+  position: relative;
+  z-index: 1;
+}
+
+/* Elementos de fondo estilo átomos */
+.panel-bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+}
+
+.atom-elements {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.atom {
+  position: absolute;
+  width: var(--size);
+  height: var(--size);
+  data-speed: var(--speed);
+}
+
+.nucleus {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  background: rgba(255,255,255,0.3);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 10px rgba(255,255,255,0.5);
+}
+
+.electron {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: rgba(255,255,255,0.6);
+  border-radius: 50%;
+  animation: orbit 4s linear infinite;
+}
+
+.electron.e1 {
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation-duration: 3s;
+}
+
+.electron.e2 {
+  top: 50%;
+  right: 10%;
+  transform: translate(50%, -50%);
+  animation-duration: 5s;
+}
+
+@keyframes orbit {
+  0% { transform: rotate(0deg) translateX(30px) rotate(0deg); }
+  100% { transform: rotate(360deg) translateX(30px) rotate(-360deg); }
+}
+
+/* Features content integrado */
+.features-content {
+  position: relative;
+  height: 100%;
+}
+
+.feature-item {
+  position: absolute;
+  color: #fff;
+  font-weight: 600;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+  z-index: 11;
+}
+
+/* Pricing content integrado */
+.pricing-content {
+  position: relative;
+  height: 100%;
+}
+
+.price-item {
+  background: rgba(255,255,255,0.1);
+  padding: 1rem;
+  border-radius: 8px;
+  text-align: center;
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.2);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  z-index: 11;
+}
+
+.price-item h4 {
+  margin: 0 0 0.5rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.price-item .price {
+  font-size: 1.1rem;
+  font-weight: 800;
+}
+
+/* Títulos distribuidos audazmente */
+.features-title {
+  font-size: 6vw;
+  color: rgba(255,255,255,0.8);
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+  z-index: 11;
+  position: absolute;
+  top: 10%;
+  left: 10%;
+  transform: rotate(-5deg);
+}
+
+.pricing-title {
+  font-size: 8vw;
+  color: rgba(255,255,255,0.9);
+  text-shadow: 3px 3px 6px rgba(0,0,0,0.7);
+  z-index: 11;
+  position: absolute;
+  bottom: 20%;
+  right: 10%;
+  transform: rotate(10deg);
+  text-align: right;
 }
 
 .pricing-panel .panel-inner {
