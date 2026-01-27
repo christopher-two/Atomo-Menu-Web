@@ -122,6 +122,8 @@ const grouped = servicesOrder.reduce((acc, s) => { acc[s] = (items || []).filter
 
     <div class="horizontal-wrapper" id="wrapper">
 
+      <!-- landing removed from here; moved to root / -->
+
       <!-- Panels per service (one panel per serviceOrder) -->
       {servicesOrder.map((svc) => (
         <div class="panel" id={`section-${svc}`} data-service={svc} tabindex="0">

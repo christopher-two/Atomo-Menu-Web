@@ -2,192 +2,111 @@
 import Layout from "../layouts/Layout.astro";
 ---
 
-<Layout
-  title="Atomo - The Fundamental Unit of Your Digital Presence"
-  description="All your digital services in one place. Menus, CVs, Portfolios, and Shops."
->
-  <main class="bg-black text-white overflow-hidden">
-    <!-- Hero Section -->
-    <section
-      class="min-h-screen relative flex items-center justify-center overflow-hidden"
-    >
-      <div
-        class="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-neutral-800 via-black to-black opacity-40 pointer-events-none"
-      >
-      </div>
+<Layout title="Atomo — Plataforma" description="Crea perfiles, menús y tiendas con plantillas.">
+  <div class="portfolio-viewport">
+    <style>
+      /* landing styles (keeps visual language from portfolio) */
+      .landing-panel { display:flex; align-items:center; min-height:100vh; padding:2rem; box-sizing:border-box; color: #fff; position: relative; overflow: hidden; }
+      .landing-bg { position:absolute; inset:0; background:linear-gradient(90deg, rgba(0,0,0,0.55), rgba(0,0,0,0.65)); backdrop-filter: blur(3px); z-index:0; }
+      .landing-content { position:relative; z-index:10; max-width:1100px; }
+      .landing-title { font-size: clamp(2.4rem, 10vw, 6rem); line-height:0.9; font-weight:900; margin:0 0 1rem; }
+      .lead { color: #d1d5db; margin-bottom:1rem; max-width: 60ch; }
+      .pricing-cards { display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:1rem; margin-top:1rem; }
+      .plan-card { background: rgba(255,255,255,0.03); padding:1rem; border-radius:8px; }
+      .price { font-weight:800; font-size:1.4rem; margin:0.5rem 0; color:#fff; }
+      .pricing-toggle { display:inline-flex; background:rgba(255,255,255,0.04); padding:0.25rem; border-radius:999px; }
+      .toggle-btn { border:none; background:transparent; color:#ddd; padding:0.35rem 0.75rem; cursor:pointer; }
+      .toggle-btn.active { background:#111; color:#fff; border-radius:999px; }
+      .btn-primary { background: #fff; color:#000; padding:0.6rem 1rem; border-radius:6px; border:none; cursor:pointer; }
+      .btn-ghost { color:#fff; text-decoration:underline; background:transparent; border:none; padding:0.5rem; }
+      @media (max-width:768px) { .landing-panel { padding:1rem; } .pricing-cards { grid-template-columns: 1fr; } }
+    </style>
 
-      <!-- Atomic Animation Background -->
-      <div
-        class="absolute inset-0 flex items-center justify-center opacity-30 pointer-events-none"
-      >
-        <div
-          class="w-[800px] h-[800px] border border-neutral-800 rounded-full animate-[spin_20s_linear_infinite]"
-        >
-        </div>
-        <div
-          class="w-[600px] h-[600px] border border-neutral-800 rounded-full animate-[spin_15s_linear_infinite_reverse] absolute"
-        >
-        </div>
-        <div
-          class="w-[400px] h-[400px] border border-neutral-800 rounded-full animate-[spin_10s_linear_infinite] absolute"
-        >
-        </div>
-      </div>
+    <section class="panel landing-panel" id="landing-root" tabindex="0">
+      <div class="landing-bg" aria-hidden="true"></div>
 
-      <div class="z-10 text-center px-4 max-w-4xl">
-        <h1
-          class="text-6xl md:text-9xl font-black tracking-tighter mb-8 animate-in fade-in slide-in-from-bottom-10 duration-1000"
-        >
-          ATOMO
-        </h1>
-        <p
-          class="text-xl md:text-2xl text-neutral-400 font-light tracking-wide max-w-2xl mx-auto mb-12 animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-200"
-        >
-          The fundamental unit of your digital presence.
-        </p>
-        <div
-          class="flex flex-col md:flex-row gap-4 justify-center animate-in fade-in slide-in-from-bottom-6 duration-1000 delay-500"
-        >
-          <a
-            href="#"
-            class="px-8 py-4 bg-white text-black font-bold uppercase tracking-widest hover:bg-neutral-200 transition"
-          >
-            Get Started
-          </a>
-          <a
-            href="#services"
-            class="px-8 py-4 border border-white/20 hover:border-white text-white font-bold uppercase tracking-widest transition"
-          >
-            Explore Services
-          </a>
+      <div class="landing-content">
+        <h1 class="landing-title">ATOMO — Tu sitio, en minutos</h1>
+        <p class="lead">Plataforma para crear perfiles, menús y tiendas con plantillas profesionales. Escala desde pruebas gratuitas hasta hosting con dominio propio.</p>
+
+        <div class="landing-actions" style="display:flex;gap:.75rem;flex-wrap:wrap">
+          <button id="cta-get-started" class="btn-primary">Comenzar</button>
+          <a href="/atomo/portfolio" class="btn-ghost" style="align-self:center">Ver plantillas</a>
         </div>
-      </div>
-    </section>
 
-    <!-- Services Section -->
-    <section id="services" class="py-32 px-4 md:px-12 relative">
-      <div class="max-w-7xl mx-auto">
-        <h2
-          class="text-neutral-500 text-sm font-bold tracking-[0.3em] uppercase mb-20"
-        >
-          Services
-        </h2>
-
-        <div class="space-y-32">
-          <!-- Digital Menu -->
-          <div class="group grid md:grid-cols-2 gap-12 items-center">
-            <div class="order-2 md:order-1">
-              <h3
-                class="text-5xl md:text-7xl font-bold mb-6 group-hover:text-neutral-200 transition-colors"
-              >
-                Menu
-              </h3>
-              <p class="text-xl text-neutral-400 leading-relaxed mb-8">
-                Taste the future. Present your culinary creations with elegance
-                and precision. Seamless updates, categorized dishes, and a
-                premium visual experience.
-              </p>
-              <div
-                class="h-px w-20 bg-white/50 group-hover:w-full transition-all duration-700"
-              >
-              </div>
-            </div>
-            <div
-              class="order-1 md:order-2 asphalt-pattern h-[400px] bg-neutral-900 rounded-lg flex items-center justify-center border border-white/5 group-hover:border-white/20 transition-colors"
-            >
-              <span class="text-6xl">🍽️</span>
-            </div>
+        <div class="pricing-block" style="margin-top:1.5rem">
+          <div class="pricing-toggle" role="tablist" aria-label="Modo de facturación">
+            <button class="toggle-btn active" data-mode="monthly">Mensual</button>
+            <button class="toggle-btn" data-mode="annual">Anual</button>
           </div>
 
-          <!-- CV -->
-          <div class="group grid md:grid-cols-2 gap-12 items-center">
-            <div class="order-2">
-              <h3
-                class="text-5xl md:text-7xl font-bold mb-6 group-hover:text-neutral-200 transition-colors"
-              >
-                CV
-              </h3>
-              <p class="text-xl text-neutral-400 leading-relaxed mb-8">
-                Professionalize your path. A modern resume that opens doors.
-                Showcase experience, education, and skills in a minimalist,
-                readable format.
-              </p>
-              <div
-                class="h-px w-20 bg-white/50 group-hover:w-full transition-all duration-700"
-              >
-              </div>
-            </div>
-            <div
-              class="order-1 asphalt-pattern h-[400px] bg-neutral-900 rounded-lg flex items-center justify-center border border-white/5 group-hover:border-white/20 transition-colors"
-            >
-              <span class="text-6xl">📄</span>
-            </div>
-          </div>
+          <div class="pricing-cards" id="pricing-cards">
+            <article class="plan-card" data-plan="free" role="region" aria-labelledby="plan-free-title">
+              <h3 id="plan-free-title">PLAN ATOMO FREE</h3>
+              <div class="price">0.00 MXN <span class="period">/mes</span></div>
+              <ul>
+                <li>Licencia limitada: plantillas básicas</li>
+                <li>Perfil Link‑in‑bio</li>
+                <li>Subdominio: www.atomo.click/usuario</li>
+                <li>Publicidad insertada por ATOMO</li>
+                <li>No soporte personalizado</li>
+              </ul>
+              <button class="plan-choose btn-primary" data-plan="free">Elegir GRATIS</button>
+            </article>
 
-          <!-- Portfolio -->
-          <div class="group grid md:grid-cols-2 gap-12 items-center">
-            <div class="order-2 md:order-1">
-              <h3
-                class="text-5xl md:text-7xl font-bold mb-6 group-hover:text-neutral-200 transition-colors"
-              >
-                Portfolio
-              </h3>
-              <p class="text-xl text-neutral-400 leading-relaxed mb-8">
-                Showcase your matter. Let your work speak for itself with
-                high-impact grids and focused project views.
-              </p>
-              <div
-                class="h-px w-20 bg-white/50 group-hover:w-full transition-all duration-700"
-              >
-              </div>
-            </div>
-            <div
-              class="order-1 md:order-2 asphalt-pattern h-[400px] bg-neutral-900 rounded-lg flex items-center justify-center border border-white/5 group-hover:border-white/20 transition-colors"
-            >
-              <span class="text-6xl">🎨</span>
-            </div>
-          </div>
+            <article class="plan-card" data-plan="core" role="region" aria-labelledby="plan-core-title">
+              <h3 id="plan-core-title">PLAN ATOMO CORE</h3>
+              <div class="price" data-price-month="59" data-price-year="600">59 MXN <span class="period">/mes</span></div>
+              <ul>
+                <li>Plantillas Core + Free</li>
+                <li>Hasta 2 servicios simultáneos</li>
+                <li>Ruta personalizada en el dominio Atomo</li>
+                <li>Reducción de anuncios de terceros</li>
+              </ul>
+              <button class="plan-choose btn-primary" data-plan="core">Contratar</button>
+            </article>
 
-          <!-- Shop -->
-          <div class="group grid md:grid-cols-2 gap-12 items-center">
-            <div class="order-2">
-              <h3
-                class="text-5xl md:text-7xl font-bold mb-6 group-hover:text-neutral-200 transition-colors"
-              >
-                Shop
-              </h3>
-              <p class="text-xl text-neutral-400 leading-relaxed mb-8">
-                Commerce refined. Sell your products in a clean,
-                distraction-free environment that puts your brand first.
-              </p>
-              <div
-                class="h-px w-20 bg-white/50 group-hover:w-full transition-all duration-700"
-              >
-              </div>
-            </div>
-            <div
-              class="order-1 asphalt-pattern h-[400px] bg-neutral-900 rounded-lg flex items-center justify-center border border-white/5 group-hover:border-white/20 transition-colors"
-            >
-              <span class="text-6xl">🛍️</span>
-            </div>
+            <article class="plan-card" data-plan="quantum" role="region" aria-labelledby="plan-quantum-title">
+              <h3 id="plan-quantum-title">PLAN ATOMO QUANTUM</h3>
+              <div class="price" data-price-month="159" data-price-year="1000">159 MXN <span class="period">/mes</span></div>
+              <ul>
+                <li>Acceso ilimitado a plantillas y servicios</li>
+                <li>Conectar dominio propio</li>
+                <li>Páginas libres de anuncios de terceros</li>
+                <li>Personalización avanzada</li>
+              </ul>
+              <button class="plan-choose btn-primary" data-plan="quantum">Contratar</button>
+            </article>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="border-t border-white/10 py-20 bg-neutral-950 text-center">
-      <h4 class="text-2xl font-bold tracking-widest mb-8">ATOMO</h4>
-      <div
-        class="flex justify-center gap-8 mb-12 text-sm text-neutral-500 uppercase tracking-wider"
-      >
-        <a href="/atomo/privacy" class="hover:text-white transition">Privacy</a>
-        <a href="/atomo/terms" class="hover:text-white transition">Terms</a>
-        <a href="#" class="hover:text-white transition">Contact</a>
-      </div>
-      <p class="text-neutral-700 text-xs">
-        © {new Date().getFullYear()} Atomo Platform. All rights reserved.
-      </p>
-    </footer>
-  </main>
+    <script is:inline>
+      (function () {
+        const toggles = Array.from(document.querySelectorAll('.toggle-btn'));
+        const prices = Array.from(document.querySelectorAll('.plan-card .price'));
+        function setMode(mode) {
+          toggles.forEach(t => t.classList.toggle('active', t.dataset.mode === mode || (t.dataset.mode === undefined && t.textContent.toLowerCase().includes(mode === 'monthly' ? 'mens' : 'anual')));
+          prices.forEach(p => {
+            const m = p.getAttribute('data-price-month');
+            const y = p.getAttribute('data-price-year');
+            if (!m || !y) return;
+            if (mode === 'monthly') p.innerHTML = `${m} MXN <span class="period">/mes</span>`;
+            else p.innerHTML = `${y} MXN <span class="period">/año</span>`;
+          });
+        }
+        toggles.forEach(t => t.addEventListener('click', () => setMode(t.dataset.mode || (t.textContent.toLowerCase().includes('mens') ? 'monthly' : 'annual'))));
+        setMode('monthly');
+
+        const cta = document.getElementById('cta-get-started');
+        if (cta) cta.addEventListener('click', () => { window.location.href = '/atomo/portfolio'; });
+
+        Array.from(document.querySelectorAll('.plan-choose')).forEach(btn => btn.addEventListener('click', () => {
+          const plan = btn.dataset.plan;
+          window.location.href = `/signup?plan=${plan}`;
+        }));
+      })();
+    </script>
+  </div>
 </Layout>
