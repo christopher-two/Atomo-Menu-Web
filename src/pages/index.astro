@@ -31,10 +31,10 @@ import Layout from "../layouts/Layout.astro";
           <h1 class="landing-title stagger-item">ATOMO — Tu sitio, en minutos</h1>
           <p class="lead stagger-item">Plataforma para crear perfiles, menús y tiendas con plantillas profesionales. Escala desde pruebas gratuitas hasta hosting con dominio propio.</p>
 
-          <div class="landing-actions" style="display:flex;gap:.75rem;flex-wrap:wrap">
-            <button id="cta-get-started" class="btn-primary stagger-item" data-speed="-0.04">Comenzar</button>
-            <a href="/atomo/portfolio" class="btn-ghost stagger-item" style="align-self:center">Ver plantillas</a>
-          </div>
+           <div class="landing-actions" style="display:flex;gap:.75rem;flex-wrap:wrap">
+             <button id="cta-get-started" class="btn-primary" data-speed="-0.04">Comenzar</button>
+             <a href="/atomo/portfolio" class="btn-ghost" style="align-self:center">Ver plantillas</a>
+           </div>
         </section>
 
       <!-- Panel 2: Features -->
@@ -80,6 +80,12 @@ import Layout from "../layouts/Layout.astro";
         const panels = Array.from(document.querySelectorAll('.panel'));
         const staggerItems = Array.from(document.querySelectorAll('.stagger-item'));
         const parallaxElements = Array.from(document.querySelectorAll('[data-speed]'));
+
+        // marcar elementos visibles al primer render
+        staggerItems.forEach(el => {
+          // si el elemento está dentro de .landing-content lo dejamos visible inicialmente
+          if (el.closest && el.closest('.landing-content')) el.classList.add('is-active');
+        });
 
         let current = 0; let target = 0; const ease = 0.08;
         let max = Math.max(0, wrapper.scrollWidth - window.innerWidth);

@@ -99,3 +99,28 @@
 .feature-card { background: rgba(255,255,255,0.03); padding: 1rem; border-radius: 8px; color: #fff; }
 
 @media (max-width:768px) { .landing-panel { padding:1rem; } .pricing-cards { grid-template-columns: 1fr; } }
+
+/* Evitar scrollbars no deseadas en layouts horizontales */
+.portfolio-viewport {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  overflow: hidden; /* oculta barras de scroll generadas por wrappers largos */
+}
+
+/* Aplicar también al wrapper horizontal por si acaso */
+.horizontal-wrapper {
+  height: 100vh;
+  will-change: transform;
+  /* width: max-content; keep it so JS can compute scrollWidth, but prevent native page scrolling */
+  overflow: visible;
+}
+
+/* Asegura que acciones en la hero estén siempre visibles */
+.landing-actions .stagger-item {
+  opacity: 1 !important;
+  transform: none !important;
+  filter: none !important;
+  transition: none !important;
+  will-change: auto !important;
+}
