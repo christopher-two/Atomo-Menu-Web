@@ -99,3 +99,23 @@ Este proyecto está preconfigurado para desplegarse en **Cloudflare Pages**.
 ---
 
 Desarrollado con ❤️ por el equipo de **Atomo**.
+
+## Rutas principales
+
+La aplicación ofrece varias rutas útiles para previsualizar y explorar las plantillas. A continuación la lista completa:
+
+- `/` — Página principal (home).
+- `/atomo/portfolio` — Portfolio de plantillas (filtrado por servicio y búsqueda).
+- `/preview/[service]/[style]` — Vista previa de una plantilla para un servicio y estilo concreto. Ejemplos:
+  - `/preview/menu/modern`
+  - `/preview/menu/minimalist`
+  - `/preview/cv/elegance`
+  - `/preview/portfolio/luxury`
+  - `/preview/shop/cyber`
+  - `/preview/invitation/modern`
+- `/menu/[slug]` — Rutas de menú dinámicas (renderizado de carta por slug).
+- `/[user]` y `/[user]/[service]` — Páginas de usuario y lista de servicios del usuario.
+- `/atomo/privacy` — Aviso de privacidad.
+- `/atomo/terms` — Términos y condiciones.
+
+Nota: Las rutas `preview` usan generadores de datos de demostración cuando no hay datos reales. Las rutas dinámicas dependen de los datos en la base (Supabase) en producción.
