@@ -147,6 +147,116 @@
   position: relative;
 }
 
+/* Pricing panel con fondo diferente */
+.pricing-panel {
+  background: linear-gradient(45deg, rgba(0,0,0,0.8), rgba(20,20,20,0.9));
+  position: relative;
+}
+
+/* Scattered layouts */
+.features-scattered {
+  display: grid;
+  grid-template-areas:
+    ". a ."
+    "b . c"
+    ". d .";
+  grid-template-columns: 1fr 2fr 1fr;
+  grid-template-rows: 1fr 2fr 1fr;
+  height: 80vh;
+  align-items: center;
+  justify-items: center;
+}
+
+.feature-block {
+  background: rgba(255,255,255,0.1);
+  padding: 1rem;
+  border-radius: 8px;
+  text-align: center;
+  color: #fff;
+  transform: rotate(var(--rot));
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.feature-block:nth-child(1) { --rot: -5deg; }
+.feature-block:nth-child(2) { --rot: 3deg; }
+.feature-block:nth-child(3) { --rot: -7deg; }
+.feature-block:nth-child(4) { --rot: 4deg; }
+
+.pricing-scattered {
+  display: grid;
+  grid-template-areas:
+    "x . y"
+    ". z .";
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  height: 80vh;
+  align-items: center;
+  justify-items: center;
+}
+
+.price-block {
+  background: rgba(255,255,255,0.1);
+  padding: 1.5rem;
+  border-radius: 12px;
+  text-align: center;
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.2);
+  transform: rotate(var(--rot));
+  box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+}
+
+.price-block.free { --rot: -2deg; }
+.price-block.core { --rot: 3deg; }
+.price-block.quantum { --rot: -4deg; }
+
+.price-block h4 {
+  margin: 0 0 0.5rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.price-block .price {
+  font-size: 1.1rem;
+  font-weight: 800;
+}
+
+/* Títulos */
+.features-title {
+  position: absolute;
+  top: 5%;
+  left: 5%;
+  font-size: 6vw;
+  color: rgba(255,255,255,0.8);
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+  transform: rotate(-5deg);
+}
+
+.pricing-title {
+  position: absolute;
+  bottom: 5%;
+  right: 5%;
+  font-size: 8vw;
+  color: rgba(255,255,255,0.9);
+  text-shadow: 3px 3px 6px rgba(0,0,0,0.7);
+  transform: rotate(10deg);
+  text-align: right;
+}
+
+@media (max-width: 768px) {
+  .features-scattered, .pricing-scattered {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    grid-template-areas: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    height: auto;
+  }
+  .feature-block, .price-block {
+    transform: none;
+  }
+}
+
 /* Pricing panel con video de fondo */
 .pricing-panel {
   background: rgba(0,0,0,0.7);

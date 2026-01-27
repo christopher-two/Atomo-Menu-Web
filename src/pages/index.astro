@@ -39,43 +39,39 @@ import Layout from "../layouts/Layout.astro";
 
        <!-- Panel 2: Features -->
        <section class="panel features-panel" id="features" data-service="features" tabindex="0">
-         <div class="panel-bg" aria-hidden="true" data-speed="0.01">
-           <!-- Elementos de fondo estilo átomos -->
-           <div class="atom-elements">
-             <div class="atom" data-speed="-0.02" style="top: 20%; left: 30%; --size: 80px;"><div class="nucleus"></div><div class="electron e1"></div><div class="electron e2"></div></div>
-             <div class="atom" data-speed="0.03" style="top: 60%; left: 70%; --size: 60px;"><div class="nucleus"></div><div class="electron e1"></div><div class="electron e2"></div></div>
-             <div class="atom" data-speed="-0.04" style="top: 40%; left: 80%; --size: 100px;"><div class="nucleus"></div><div class="electron e1"></div><div class="electron e2"></div></div>
-           </div>
-         </div>
          <div class="panel-inner max-w-5xl px-6" data-speed="-0.01">
            <h2 class="title-huge features-title">Características</h2>
-           <div class="features-content">
-             <p class="feature-item" style="position: absolute; top: 30%; left: 10%; transform: rotate(-3deg); font-size: 1.5rem;">Plantillas flexibles que se adaptan a tu estilo</p>
-             <p class="feature-item" style="position: absolute; top: 50%; right: 15%; transform: rotate(5deg); font-size: 1.8rem; color: rgba(255,255,255,0.9);">Hosting opcional para dominio propio</p>
-             <p class="feature-item" style="position: absolute; bottom: 40%; left: 20%; transform: rotate(-7deg); font-size: 1.4rem;">Enlaces en bio para redes sociales</p>
-             <p class="feature-item" style="position: absolute; bottom: 20%; right: 10%; transform: rotate(4deg); font-size: 1.6rem; color: rgba(255,255,255,0.8);">Integraciones con herramientas externas</p>
+           <div class="features-scattered">
+             <div class="feature-block" style="grid-area: a;">
+               <p>Plantillas flexibles que se adaptan a tu estilo</p>
+             </div>
+             <div class="feature-block" style="grid-area: b;">
+               <p>Hosting opcional para dominio propio</p>
+             </div>
+             <div class="feature-block" style="grid-area: c;">
+               <p>Enlaces en bio para redes sociales</p>
+             </div>
+             <div class="feature-block" style="grid-area: d;">
+               <p>Integraciones con herramientas externas</p>
+             </div>
            </div>
          </div>
        </section>
 
        <!-- Panel 3: Pricing -->
        <section class="panel pricing-panel" id="pricing" data-service="pricing" tabindex="0">
-         <video class="panel-video-bg" autoplay muted loop playsinline aria-hidden="true">
-           <source src="https://videos.pexels.com/video-files/3611031/3611031-hd_1920_1080_24fps.mp4" type="video/mp4">
-         </video>
-         <div class="panel-overlay" aria-hidden="true"></div>
          <div class="panel-inner max-w-5xl px-6" data-speed="-0.02">
-           <h2 class="title-huge pricing-title" style="position: absolute; bottom: 20%; right: 10%; transform: rotate(10deg); text-align: right;">Precios</h2>
-           <div class="pricing-content">
-             <div class="price-item free" style="position: absolute; top: 25%; left: 10%; transform: rotate(-2deg);">
+           <h2 class="title-huge pricing-title">Precios</h2>
+           <div class="pricing-scattered">
+             <div class="price-block free" style="grid-area: x;">
                <h4>FREE</h4>
                <div class="price">0 MXN</div>
              </div>
-             <div class="price-item core" style="position: absolute; top: 40%; right: 20%; transform: rotate(3deg);">
+             <div class="price-block core" style="grid-area: y;">
                <h4>CORE</h4>
                <div class="price">59 MXN / mes</div>
              </div>
-             <div class="price-item quantum" style="position: absolute; bottom: 35%; left: 30%; transform: rotate(-4deg);">
+             <div class="price-block quantum" style="grid-area: z;">
                <h4>QUANTUM</h4>
                <div class="price">159 MXN / mes</div>
              </div>
