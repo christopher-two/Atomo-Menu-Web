@@ -124,3 +124,19 @@
   transition: none !important;
   will-change: auto !important;
 }
+
+/* Nuevo estilo para botón de ver plantillas */
+.btn-outline {
+  border: 1px solid rgba(255,255,255,0.5);
+  background: transparent;
+  color: #fff;
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.btn-outline:hover {
+  background: rgba(255,255,255,0.1);
+  border-color: #fff;
+}
