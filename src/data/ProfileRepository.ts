@@ -5,12 +5,12 @@ export class ProfileRepository {
     async getByUsername(username: string): Promise<Profile | null> {
         const { data, error } = await supabase
             .from("profiles")
-            .select("*")
+            .select("id, username, display_name, avatar_url, created_at, social_links")
             .eq("username", username)
             .single();
 
         if (error) {
-            console.warn(`Error fetching profile for username ${username}:`, error.message);
+            // Return null if profile not found or query fails.
             return null;
         }
 

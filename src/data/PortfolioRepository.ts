@@ -6,8 +6,8 @@ export class PortfolioRepository {
         const { data, error } = await supabase
             .from("portfolios")
             .select(`
-                *,
-                items:portfolio_items(*)
+                id, title, description, user_id, is_visible, template_id, primary_color, font_family, created_at,
+                items:portfolio_items(id, title, description, image_url, project_url, sort_order)
             `)
             .eq("slug", slug)
             .eq("is_visible", true)
@@ -28,11 +28,12 @@ export class PortfolioRepository {
     }
 
     async getByUserId(userId: string): Promise<Portfolio | null> {
+        // Query portfolio for the given user. Keep logging minimal.
         const { data, error } = await supabase
             .from("portfolios")
             .select(`
-                *,
-                items:portfolio_items(*)
+                id, title, description, user_id, is_visible, template_id, primary_color, font_family, created_at,
+                items:portfolio_items(id, title, description, image_url, project_url, sort_order)
             `)
             .eq("user_id", userId)
             .eq("is_visible", true)
@@ -40,16 +41,20 @@ export class PortfolioRepository {
             .maybeSingle();
 
         if (error) {
-            console.error(`Error fetching portfolio for user ${userId}:`, error.message);
+            // If table schema doesn't match, log a concise error.
+            console.error(`Error fetching portfolio for user ${userId}: ${error.message}`);
             return null;
         }
 
-        if (!data) return null;
+        if (!data) {
+            return null;
+        }
 
         const portfolio = data as Portfolio;
         if (portfolio && portfolio.items) {
             portfolio.items.sort((a, b) => a.sort_order - b.sort_order);
         }
+        return portfolio;
         return portfolio;
     }
 }

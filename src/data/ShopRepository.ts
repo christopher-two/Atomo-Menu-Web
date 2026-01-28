@@ -6,11 +6,9 @@ export class ShopRepository {
         const { data, error } = await supabase
             .from("shops")
             .select(`
-                *,
-                categories:product_categories(
-                    *,
-                    products(*)
-                )
+                id, name, description, user_id, is_active, primary_color, font_family, created_at,
+                categories:product_categories(id, name, sort_order,
+                    products(id, name, description, price, image_url, is_available, stock, category_id))
             `)
             .eq("slug", slug)
             .eq("is_active", true)
@@ -38,14 +36,13 @@ export class ShopRepository {
     }
 
     async getByUserId(userId: string): Promise<Shop | null> {
+        // Query user's shop without selecting non-existent columns.
         const { data, error } = await supabase
             .from("shops")
             .select(`
-                *,
-                categories:product_categories(
-                    *,
-                    products(*)
-                )
+                id, name, description, user_id, is_active, primary_color, font_family, created_at,
+                categories:product_categories(id, name, sort_order,
+                    products(id, name, description, price, image_url, is_available, stock, category_id))
             `)
             .eq("user_id", userId)
             .eq("is_active", true)
@@ -57,7 +54,9 @@ export class ShopRepository {
             return null;
         }
 
-        if (!data) return null;
+        if (!data) {
+            return null;
+        }
 
         const shop = data as Shop;
 

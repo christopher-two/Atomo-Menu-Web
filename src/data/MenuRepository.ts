@@ -3,17 +3,16 @@ import type { Menu, MenuCategory } from "../domain/models/DigitalMenu";
 
 export class MenuRepository {
     async getBySlug(slug: string): Promise<Menu | null> {
+        // Note: slug column doesn't exist in DB, this method may not work as expected
         const { data, error } = await supabase
             .from("menus")
             .select(`
-                *,
-                dishes(*),
-                categories:menu_categories(
-                    *,
-                    dishes(*)
-                )
+                id, name, description, user_id, is_active, template_id, logo_url, primary_color, font_family, created_at,
+                dishes(id, name, description, price, image_url, is_visible, category_id, sort_order),
+                categories:menu_categories(id, name, sort_order,
+                    dishes(id, name, description, price, image_url, is_visible, category_id, sort_order))
             `)
-            .eq("slug", slug)
+            .eq("name", slug)
             .eq("is_active", true)
             .single();
 
@@ -31,30 +30,26 @@ export class MenuRepository {
     }
 
     async getByUserId(userId: string): Promise<Menu | null> {
+        // Query menu for the user
         const { data, error } = await supabase
             .from("menus")
             .select(`
-                *,
-                dishes(*),
-                categories:menu_categories(
-                    *,
-                    dishes(*)
-                )
+                id, name, description, user_id, is_active, template_id, logo_url, primary_color, font_family, created_at,
+                dishes(id, name, description, price, image_url, is_visible, category_id, sort_order),
+                categories:menu_categories(id, name, sort_order,
+                    dishes(id, name, description, price, image_url, is_visible, category_id, sort_order))
             `)
             .eq("user_id", userId)
-            // .eq("is_active", true) // Allow getting inactive menus for owner? Assuming yes for now, or maybe only active. 
-            // The prompt says "is_active = true" for public view. Repository might be used for owner too.
-            // Let's stick to active for now unless specified otherwise, or make it optional.
-            // But usually getByUserId implies getting "their" menu.
             .limit(1)
             .maybeSingle();
 
         if (error) {
-            console.error(`Error fetching menu for user ${userId}:`, error.message);
             return null;
         }
 
-        if (!data) return null;
+        if (!data) {
+            return null;
+        }
 
         const menu = data as Menu;
         this.sortMenuContent(menu);

@@ -28,21 +28,16 @@ if (!profile) {
 
 const userId = profile.id;
 
-// Fetch availability of services
-const menuRepo = new MenuRepository();
-const menu = await menuRepo.getByUserId(userId);
+// Fetch availability of services in parallel to reduce latency
+const [menu, cv, portfolio, shop, invitation] = await Promise.all([
+    (new MenuRepository()).getByUserId(userId),
+    (new CVRepository()).getByUserId(userId),
+    (new PortfolioRepository()).getByUserId(userId),
+    (new ShopRepository()).getByUserId(userId),
+    (new InvitationRepository()).getByUserId(userId),
+]);
 
-const cvRepo = new CVRepository();
-const cv = await cvRepo.getByUserId(userId);
-
-const portfolioRepo = new PortfolioRepository();
-const portfolio = await portfolioRepo.getByUserId(userId);
-
-const shopRepo = new ShopRepository();
-const shop = await shopRepo.getByUserId(userId);
-
-const invitationRepo = new InvitationRepository();
-const invitation = await invitationRepo.getByUserId(userId);
+// Services availability: derived from repository queries above.
 
 const links = [
   {
