@@ -27,7 +27,6 @@ if (!profile) {
 }
 
 const userId = profile.id;
-console.log("Profile found:", profile.username, "with userId:", userId);
 
 // Fetch availability of services in parallel to reduce latency
 const [menu, cv, portfolio, shop, invitation] = await Promise.all([
@@ -38,7 +37,7 @@ const [menu, cv, portfolio, shop, invitation] = await Promise.all([
     (new InvitationRepository()).getByUserId(userId),
 ]);
 
-console.log("Services for user", user, ":", { menu: !!menu, cv: !!cv, portfolio: !!portfolio, shop: !!shop, invitation: !!invitation });
+// Services availability: derived from repository queries above.
 
 const links = [
   {

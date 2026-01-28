@@ -6,7 +6,7 @@ export class ShopRepository {
         const { data, error } = await supabase
             .from("shops")
             .select(`
-                id, slug, name, description, user_id, is_active, primary_color, font_family, created_at, updated_at,
+                id, name, description, user_id, is_active, primary_color, font_family, created_at,
                 categories:product_categories(id, name, sort_order,
                     products(id, name, description, price, image_url, is_available, stock, category_id))
             `)
@@ -36,11 +36,11 @@ export class ShopRepository {
     }
 
     async getByUserId(userId: string): Promise<Shop | null> {
-        console.log("ShopRepository.getByUserId: querying for userId", userId);
+        // Query user's shop without selecting non-existent columns.
         const { data, error } = await supabase
             .from("shops")
             .select(`
-                id, slug, name, description, user_id, is_active, primary_color, font_family, created_at, updated_at,
+                id, name, description, user_id, is_active, primary_color, font_family, created_at,
                 categories:product_categories(id, name, sort_order,
                     products(id, name, description, price, image_url, is_available, stock, category_id))
             `)
@@ -55,7 +55,6 @@ export class ShopRepository {
         }
 
         if (!data) {
-            console.log("ShopRepository.getByUserId: no data for user", userId);
             return null;
         }
 
@@ -64,7 +63,6 @@ export class ShopRepository {
         if (shop && shop.categories) {
             shop.categories.sort((a, b) => a.sort_order - b.sort_order);
         }
-        console.log("ShopRepository.getByUserId: found shop", shop.id);
         return shop;
     }
 }

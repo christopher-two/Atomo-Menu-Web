@@ -17,7 +17,7 @@ export class AnalyticsService {
         });
 
         if (error) {
-            console.error("Error incrementing view count:", error);
+            // Silently ignore analytics failures to avoid affecting UX.
         }
     }
 

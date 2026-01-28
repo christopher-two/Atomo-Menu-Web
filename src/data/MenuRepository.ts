@@ -3,15 +3,16 @@ import type { Menu, MenuCategory } from "../domain/models/DigitalMenu";
 
 export class MenuRepository {
     async getBySlug(slug: string): Promise<Menu | null> {
+        // Note: slug column doesn't exist in DB, this method may not work as expected
         const { data, error } = await supabase
             .from("menus")
             .select(`
-                id, slug, name, description, user_id, is_active, template_id, logo_url, primary_color, font_family, created_at, updated_at,
+                id, name, description, user_id, is_active, template_id, logo_url, primary_color, font_family, created_at,
                 dishes(id, name, description, price, image_url, is_visible, category_id, sort_order),
                 categories:menu_categories(id, name, sort_order,
                     dishes(id, name, description, price, image_url, is_visible, category_id, sort_order))
             `)
-            .eq("slug", slug)
+            .eq("name", slug)
             .eq("is_active", true)
             .single();
 
@@ -29,11 +30,11 @@ export class MenuRepository {
     }
 
     async getByUserId(userId: string): Promise<Menu | null> {
-        console.log("MenuRepository.getByUserId: querying for userId", userId);
+        // Query menu for the user
         const { data, error } = await supabase
             .from("menus")
             .select(`
-                id, slug, name, description, user_id, is_active, template_id, logo_url, primary_color, font_family, created_at, updated_at,
+                id, name, description, user_id, is_active, template_id, logo_url, primary_color, font_family, created_at,
                 dishes(id, name, description, price, image_url, is_visible, category_id, sort_order),
                 categories:menu_categories(id, name, sort_order,
                     dishes(id, name, description, price, image_url, is_visible, category_id, sort_order))
@@ -43,18 +44,15 @@ export class MenuRepository {
             .maybeSingle();
 
         if (error) {
-            console.error(`Error fetching menu for user ${userId}:`, error.message);
             return null;
         }
 
         if (!data) {
-            console.log("MenuRepository.getByUserId: no data for user", userId);
             return null;
         }
 
         const menu = data as Menu;
         this.sortMenuContent(menu);
-        console.log("MenuRepository.getByUserId: found menu", menu.id);
         return menu;
     }
 

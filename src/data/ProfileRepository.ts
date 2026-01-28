@@ -10,11 +10,10 @@ export class ProfileRepository {
             .single();
 
         if (error) {
-            console.warn(`Error fetching profile for username ${username}:`, error.message);
+            // Return null if profile not found or query fails.
             return null;
         }
 
-        console.log("ProfileRepository.getByUsername: found profile", data.username);
         return data as Profile;
     }
 }

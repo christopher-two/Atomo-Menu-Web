@@ -5,7 +5,7 @@ export class InvitationRepository {
     async getBySlug(slug: string): Promise<Invitation | null> {
         const { data, error } = await supabase
             .from("invitations")
-            .select("id, slug, event_name, description, event_date, location, user_id, is_active, template_id, primary_color, font_family, created_at, updated_at")
+            .select("id, event_name, description, event_date, location, user_id, is_active, template_id, primary_color, font_family, created_at")
             .eq("slug", slug)
             .eq("is_active", true)
             .single();
@@ -23,7 +23,7 @@ export class InvitationRepository {
     async getBySlugAndUser(slug: string, userId: string): Promise<Invitation | null> {
         const { data, error } = await supabase
             .from("invitations")
-            .select("id, slug, event_name, description, event_date, location, user_id, is_active, template_id, primary_color, font_family, created_at, updated_at")
+            .select("id, event_name, description, event_date, location, user_id, is_active, template_id, primary_color, font_family, created_at")
             .eq("slug", slug)
             .eq("user_id", userId)
             .eq("is_active", true)
@@ -42,19 +42,18 @@ export class InvitationRepository {
         console.log("InvitationRepository.getByUserId: querying for userId", userId);
         const { data, error } = await supabase
             .from("invitations")
-            .select("id, slug, event_name, description, event_date, location, user_id, is_active, template_id, primary_color, font_family, created_at, updated_at")
+            .select("id, event_name, description, event_date, location, user_id, is_active, template_id, primary_color, font_family, created_at")
             .eq("user_id", userId)
             .eq("is_active", true)
             .limit(1)
             .maybeSingle();
 
         if (error) {
-            console.error(`Error fetching invitation for user ${userId}:`, error.message);
+            console.error(`Error fetching invitation for user ${userId}: ${error.message}`);
             return null;
         }
 
         if (!data) {
-            console.log("InvitationRepository.getByUserId: no data for user", userId);
             return null;
         }
 

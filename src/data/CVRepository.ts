@@ -7,7 +7,7 @@ export class CVRepository {
         const { data, error } = await supabase
             .from("cvs")
             .select(`
-                id, user_id, title, professional_summary, is_visible, template_id, primary_color, font_family, created_at, updated_at,
+                id, user_id, title, professional_summary, is_visible, template_id, primary_color, font_family, created_at,
                 education:cv_education(id, institution, degree, start_date, end_date, is_current, description, sort_order),
                 experience:cv_experience(id, role, company, start_date, end_date, is_current, description, sort_order),
                 skills:cv_skills(id, name, proficiency)
@@ -17,17 +17,12 @@ export class CVRepository {
             .single();
 
         if (error) {
-            if (error.code !== "PGRST116") {
-                console.error(`Error fetching CV for user ${userId}:`, error.message);
-            } else {
-                console.log("CVRepository.getByUserId: no CV for user", userId);
-            }
+            // If no CV found or another error occurs, return null.
             return null;
         }
 
         const cv = data as CV;
         this.sortCVContent(cv);
-        console.log("CVRepository.getByUserId: found CV", cv.id);
         return cv;
     }
 
