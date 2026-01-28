@@ -7,7 +7,7 @@ export class ShopRepository {
             .from("shops")
             .select(`
                 id, slug, name, description, user_id, is_active, primary_color, font_family, created_at, updated_at,
-                categories(id, name, sort_order,
+                categories:product_categories(id, name, sort_order,
                     products(id, name, description, price, image_url, is_available, stock, category_id))
             `)
             .eq("slug", slug)
@@ -41,7 +41,7 @@ export class ShopRepository {
             .from("shops")
             .select(`
                 id, slug, name, description, user_id, is_active, primary_color, font_family, created_at, updated_at,
-                categories(id, name, sort_order,
+                categories:product_categories(id, name, sort_order,
                     products(id, name, description, price, image_url, is_available, stock, category_id))
             `)
             .eq("user_id", userId)

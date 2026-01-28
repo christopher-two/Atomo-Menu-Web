@@ -8,7 +8,7 @@ export class MenuRepository {
             .select(`
                 id, slug, name, description, user_id, is_active, template_id, logo_url, primary_color, font_family, created_at, updated_at,
                 dishes(id, name, description, price, image_url, is_visible, category_id, sort_order),
-                categories(id, name, sort_order,
+                categories:menu_categories(id, name, sort_order,
                     dishes(id, name, description, price, image_url, is_visible, category_id, sort_order))
             `)
             .eq("slug", slug)
@@ -35,7 +35,7 @@ export class MenuRepository {
             .select(`
                 id, slug, name, description, user_id, is_active, template_id, logo_url, primary_color, font_family, created_at, updated_at,
                 dishes(id, name, description, price, image_url, is_visible, category_id, sort_order),
-                categories(id, name, sort_order,
+                categories:menu_categories(id, name, sort_order,
                     dishes(id, name, description, price, image_url, is_visible, category_id, sort_order))
             `)
             .eq("user_id", userId)

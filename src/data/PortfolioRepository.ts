@@ -7,7 +7,7 @@ export class PortfolioRepository {
             .from("portfolios")
             .select(`
                 id, slug, title, description, user_id, is_visible, template_id, primary_color, font_family, created_at, updated_at,
-                items(id, title, description, image_url, project_url, sort_order)
+                items:portfolio_items(id, title, description, image_url, project_url, sort_order)
             `)
             .eq("slug", slug)
             .eq("is_visible", true)
@@ -33,7 +33,7 @@ export class PortfolioRepository {
             .from("portfolios")
             .select(`
                 id, slug, title, description, user_id, is_visible, template_id, primary_color, font_family, created_at, updated_at,
-                items(id, title, description, image_url, project_url, sort_order)
+                items:portfolio_items(id, title, description, image_url, project_url, sort_order)
             `)
             .eq("user_id", userId)
             .eq("is_visible", true)
