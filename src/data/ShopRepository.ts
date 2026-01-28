@@ -36,6 +36,7 @@ export class ShopRepository {
     }
 
     async getByUserId(userId: string): Promise<Shop | null> {
+        console.log("ShopRepository.getByUserId: querying for userId", userId);
         const { data, error } = await supabase
             .from("shops")
             .select(`
@@ -52,6 +53,20 @@ export class ShopRepository {
             console.error(`Error fetching shop for user ${userId}:`, error.message);
             return null;
         }
+
+        if (!data) {
+            console.log("ShopRepository.getByUserId: no data for user", userId);
+            return null;
+        }
+
+        const shop = data as Shop;
+
+        if (shop && shop.categories) {
+            shop.categories.sort((a, b) => a.sort_order - b.sort_order);
+        }
+        console.log("ShopRepository.getByUserId: found shop", shop.id);
+        return shop;
+    }
 
         if (!data) return null;
 

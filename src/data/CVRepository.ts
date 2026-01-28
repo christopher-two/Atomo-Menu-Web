@@ -3,6 +3,7 @@ import type { CV } from "../domain/models/CV";
 
 export class CVRepository {
     async getByUserId(userId: string): Promise<CV | null> {
+        console.log("CVRepository.getByUserId: querying for userId", userId);
         const { data, error } = await supabase
             .from("cvs")
             .select(`
@@ -18,12 +19,15 @@ export class CVRepository {
         if (error) {
             if (error.code !== "PGRST116") {
                 console.error(`Error fetching CV for user ${userId}:`, error.message);
+            } else {
+                console.log("CVRepository.getByUserId: no CV for user", userId);
             }
             return null;
         }
 
         const cv = data as CV;
         this.sortCVContent(cv);
+        console.log("CVRepository.getByUserId: found CV", cv.id);
         return cv;
     }
 

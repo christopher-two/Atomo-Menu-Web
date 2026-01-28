@@ -28,6 +28,7 @@ export class PortfolioRepository {
     }
 
     async getByUserId(userId: string): Promise<Portfolio | null> {
+        console.log("PortfolioRepository.getByUserId: querying for userId", userId);
         const { data, error } = await supabase
             .from("portfolios")
             .select(`
@@ -43,6 +44,19 @@ export class PortfolioRepository {
             console.error(`Error fetching portfolio for user ${userId}:`, error.message);
             return null;
         }
+
+        if (!data) {
+            console.log("PortfolioRepository.getByUserId: no data for user", userId);
+            return null;
+        }
+
+        const portfolio = data as Portfolio;
+        if (portfolio && portfolio.items) {
+            portfolio.items.sort((a, b) => a.sort_order - b.sort_order);
+        }
+        console.log("PortfolioRepository.getByUserId: found portfolio", portfolio.id);
+        return portfolio;
+    }
 
         if (!data) return null;
 

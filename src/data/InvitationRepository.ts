@@ -39,6 +39,7 @@ export class InvitationRepository {
         return data as Invitation;
     }
     async getByUserId(userId: string): Promise<Invitation | null> {
+        console.log("InvitationRepository.getByUserId: querying for userId", userId);
         const { data, error } = await supabase
             .from("invitations")
             .select("id, slug, event_name, description, event_date, location, user_id, is_active, template_id, primary_color, font_family, created_at, updated_at")
@@ -51,6 +52,14 @@ export class InvitationRepository {
             console.error(`Error fetching invitation for user ${userId}:`, error.message);
             return null;
         }
+
+        if (!data) {
+            console.log("InvitationRepository.getByUserId: no data for user", userId);
+            return null;
+        }
+
+        return data as Invitation;
+    }
 
         return data as Invitation;
     }

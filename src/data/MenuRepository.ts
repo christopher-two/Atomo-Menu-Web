@@ -29,6 +29,7 @@ export class MenuRepository {
     }
 
     async getByUserId(userId: string): Promise<Menu | null> {
+        console.log("MenuRepository.getByUserId: querying for userId", userId);
         const { data, error } = await supabase
             .from("menus")
             .select(`
@@ -45,6 +46,17 @@ export class MenuRepository {
             console.error(`Error fetching menu for user ${userId}:`, error.message);
             return null;
         }
+
+        if (!data) {
+            console.log("MenuRepository.getByUserId: no data for user", userId);
+            return null;
+        }
+
+        const menu = data as Menu;
+        this.sortMenuContent(menu);
+        console.log("MenuRepository.getByUserId: found menu", menu.id);
+        return menu;
+    }
 
         if (!data) {
             console.log("MenuRepository.getByUserId: no data for user", userId);
