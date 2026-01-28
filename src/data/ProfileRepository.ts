@@ -14,6 +14,7 @@ export class ProfileRepository {
             return null;
         }
 
+        console.log("ProfileRepository.getByUsername: found profile", data.username);
         return data as Profile;
     }
 }

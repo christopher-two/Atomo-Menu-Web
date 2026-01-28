@@ -46,10 +46,14 @@ export class MenuRepository {
             return null;
         }
 
-        if (!data) return null;
+        if (!data) {
+            console.log("MenuRepository.getByUserId: no data for user", userId);
+            return null;
+        }
 
         const menu = data as Menu;
         this.sortMenuContent(menu);
+        console.log("MenuRepository.getByUserId: found menu", menu.id);
         return menu;
     }
 

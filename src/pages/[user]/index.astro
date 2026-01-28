@@ -37,6 +37,8 @@ const [menu, cv, portfolio, shop, invitation] = await Promise.all([
     (new InvitationRepository()).getByUserId(userId),
 ]);
 
+console.log("Services for user", user, ":", { menu: !!menu, cv: !!cv, portfolio: !!portfolio, shop: !!shop, invitation: !!invitation });
+
 const links = [
   {
     name: "Digital Menu",
