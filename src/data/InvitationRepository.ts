@@ -5,7 +5,7 @@ export class InvitationRepository {
     async getBySlug(slug: string): Promise<Invitation | null> {
         const { data, error } = await supabase
             .from("invitations")
-            .select("*")
+            .select("id, slug, title, description, event_date, location, user_id, is_active, created_at, updated_at")
             .eq("slug", slug)
             .eq("is_active", true)
             .single();
@@ -23,7 +23,7 @@ export class InvitationRepository {
     async getBySlugAndUser(slug: string, userId: string): Promise<Invitation | null> {
         const { data, error } = await supabase
             .from("invitations")
-            .select("*")
+            .select("id, slug, title, description, event_date, location, user_id, is_active, created_at, updated_at")
             .eq("slug", slug)
             .eq("user_id", userId)
             .eq("is_active", true)
@@ -41,7 +41,7 @@ export class InvitationRepository {
     async getByUserId(userId: string): Promise<Invitation | null> {
         const { data, error } = await supabase
             .from("invitations")
-            .select("*")
+            .select("id, slug, title, description, event_date, location, user_id, is_active, created_at, updated_at")
             .eq("user_id", userId)
             .eq("is_active", true)
             .limit(1)

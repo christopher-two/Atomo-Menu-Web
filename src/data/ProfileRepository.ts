@@ -5,7 +5,7 @@ export class ProfileRepository {
     async getByUsername(username: string): Promise<Profile | null> {
         const { data, error } = await supabase
             .from("profiles")
-            .select("*")
+            .select("id, username, display_name, avatar_url, social_links")
             .eq("username", username)
             .single();
 

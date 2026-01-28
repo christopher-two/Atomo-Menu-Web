@@ -6,8 +6,8 @@ export class PortfolioRepository {
         const { data, error } = await supabase
             .from("portfolios")
             .select(`
-                *,
-                items:portfolio_items(*)
+                id, slug, name, description, user_id, is_visible, created_at, updated_at,
+                items(id, title, description, image_url, link_url, sort_order)
             `)
             .eq("slug", slug)
             .eq("is_visible", true)
@@ -31,8 +31,8 @@ export class PortfolioRepository {
         const { data, error } = await supabase
             .from("portfolios")
             .select(`
-                *,
-                items:portfolio_items(*)
+                id, slug, name, description, user_id, is_visible, created_at, updated_at,
+                items(id, title, description, image_url, link_url, sort_order)
             `)
             .eq("user_id", userId)
             .eq("is_visible", true)

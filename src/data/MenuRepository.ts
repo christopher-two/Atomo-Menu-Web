@@ -6,12 +6,10 @@ export class MenuRepository {
         const { data, error } = await supabase
             .from("menus")
             .select(`
-                *,
-                dishes(*),
-                categories:menu_categories(
-                    *,
-                    dishes(*)
-                )
+                id, slug, name, description, user_id, is_active, created_at, updated_at,
+                dishes(id, name, description, price, category_id, sort_order),
+                categories(id, name, description, sort_order,
+                    dishes(id, name, description, price, category_id, sort_order))
             `)
             .eq("slug", slug)
             .eq("is_active", true)
@@ -34,18 +32,12 @@ export class MenuRepository {
         const { data, error } = await supabase
             .from("menus")
             .select(`
-                *,
-                dishes(*),
-                categories:menu_categories(
-                    *,
-                    dishes(*)
-                )
+                id, slug, name, description, user_id, is_active, created_at, updated_at,
+                dishes(id, name, description, price, category_id, sort_order),
+                categories(id, name, description, sort_order,
+                    dishes(id, name, description, price, category_id, sort_order))
             `)
             .eq("user_id", userId)
-            // .eq("is_active", true) // Allow getting inactive menus for owner? Assuming yes for now, or maybe only active. 
-            // The prompt says "is_active = true" for public view. Repository might be used for owner too.
-            // Let's stick to active for now unless specified otherwise, or make it optional.
-            // But usually getByUserId implies getting "their" menu.
             .limit(1)
             .maybeSingle();
 

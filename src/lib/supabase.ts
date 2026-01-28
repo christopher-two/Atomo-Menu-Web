@@ -4,8 +4,3 @@ export const supabase = createClient(
     import.meta.env.PUBLIC_SUPABASE_URL || import.meta.env.SUPABASE_URL,
     import.meta.env.PUBLIC_SUPABASE_ANON_KEY || import.meta.env.SUPABASE_ANON_KEY
 );
-
-console.log("Supabase Client Initialized:", {
-    hasUrl: !!(import.meta.env.PUBLIC_SUPABASE_URL || import.meta.env.SUPABASE_URL),
-    hasKey: !!(import.meta.env.PUBLIC_SUPABASE_ANON_KEY || import.meta.env.SUPABASE_ANON_KEY)
-});

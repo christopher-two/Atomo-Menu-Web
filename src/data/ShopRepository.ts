@@ -6,11 +6,9 @@ export class ShopRepository {
         const { data, error } = await supabase
             .from("shops")
             .select(`
-                *,
-                categories:product_categories(
-                    *,
-                    products(*)
-                )
+                id, slug, name, description, user_id, is_active, created_at, updated_at,
+                categories(id, name, description, sort_order,
+                    products(id, name, description, price, image_url, category_id))
             `)
             .eq("slug", slug)
             .eq("is_active", true)
@@ -41,11 +39,9 @@ export class ShopRepository {
         const { data, error } = await supabase
             .from("shops")
             .select(`
-                *,
-                categories:product_categories(
-                    *,
-                    products(*)
-                )
+                id, slug, name, description, user_id, is_active, created_at, updated_at,
+                categories(id, name, description, sort_order,
+                    products(id, name, description, price, image_url, category_id))
             `)
             .eq("user_id", userId)
             .eq("is_active", true)
