@@ -6,9 +6,9 @@ export class CVRepository {
         const { data, error } = await supabase
             .from("cvs")
             .select(`
-                id, user_id, title, summary, is_visible, created_at, updated_at,
-                education(id, institution, degree, start_date, end_date, sort_order),
-                experience(id, company, position, description, start_date, end_date, sort_order),
+                id, user_id, title, professional_summary, is_visible, template_id, primary_color, font_family, created_at, updated_at,
+                education(id, institution, degree, start_date, end_date, is_current, description, sort_order),
+                experience(id, role, company, start_date, end_date, is_current, description, sort_order),
                 skills(id, name, proficiency, sort_order)
             `)
             .eq("user_id", userId)
