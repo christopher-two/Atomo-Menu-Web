@@ -60,7 +60,4 @@ export class InvitationRepository {
 
         return data as Invitation;
     }
-
-        return data as Invitation;
-    }
 }

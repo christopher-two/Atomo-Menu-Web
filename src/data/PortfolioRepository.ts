@@ -57,13 +57,4 @@ export class PortfolioRepository {
         console.log("PortfolioRepository.getByUserId: found portfolio", portfolio.id);
         return portfolio;
     }
-
-        if (!data) return null;
-
-        const portfolio = data as Portfolio;
-        if (portfolio && portfolio.items) {
-            portfolio.items.sort((a, b) => a.sort_order - b.sort_order);
-        }
-        return portfolio;
-    }
 }

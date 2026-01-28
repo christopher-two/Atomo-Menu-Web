@@ -67,14 +67,4 @@ export class ShopRepository {
         console.log("ShopRepository.getByUserId: found shop", shop.id);
         return shop;
     }
-
-        if (!data) return null;
-
-        const shop = data as Shop;
-
-        if (shop && shop.categories) {
-            shop.categories.sort((a, b) => a.sort_order - b.sort_order);
-        }
-        return shop;
-    }
 }

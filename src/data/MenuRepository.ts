@@ -58,17 +58,6 @@ export class MenuRepository {
         return menu;
     }
 
-        if (!data) {
-            console.log("MenuRepository.getByUserId: no data for user", userId);
-            return null;
-        }
-
-        const menu = data as Menu;
-        this.sortMenuContent(menu);
-        console.log("MenuRepository.getByUserId: found menu", menu.id);
-        return menu;
-    }
-
     private sortMenuContent(menu: Menu) {
         if (menu.categories && menu.categories.length > 0) {
             menu.categories.sort((a, b) => a.sort_order - b.sort_order);
